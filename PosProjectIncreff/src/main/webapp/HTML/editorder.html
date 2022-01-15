@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lan = "en">
+
+<head th:replace="snippets.html :: name_head"></head>
+<body>
+
+<nav th:replace="snippets.html :: name_navbar"></nav>
+
+
+<div class="container">
+
+		
+		<div class="row">
+		<div class="col" id = "bef-form">
+			<form class="form-inline" id="editorder-form">
+				<div class="row">
+				<div class="col">
+			    <label for="inputId" class="col-sm-2 col-form-label">Id</label>
+			    <div class="col">
+			      <input type="text" class="form-control" name="id" id="inputId" placeholder="enter Id">
+			    </div>
+			  </div>
+				<div class="col">
+				<label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+			    <div class="col">
+			      <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="enter barcode">
+			    </div>
+			  </div>
+			  <div class="col">
+			    <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+			    <div class="col">
+			      <input type="text" class="form-control" name="quantity" id="inputQuantity" placeholder="enter quantity">
+			    </div>
+			  </div>
+			  <div class="col">
+			    <label for="inputMrp" class="col-sm-2 col-form-label">Mrp</label>
+			    <div class="col">
+			      <input type="text" class="form-control" name="mrp" id="inputMrp" placeholder="enter mrp">
+			    </div>
+			  </div>
+			  <div class="row">
+			  <div class="col">
+			  <div class="text-center">
+			  <br>
+			  <button type="button" class="btn btn-outline-dark" id="add-editorder">Update</button>
+			  &nbsp;
+			  <button type="button" class="btn btn-outline-dark" id="refresh-data">Refresh</button>
+			  </div>
+			  </div>
+			  </div>
+			  </div>
+			  </form>
+		</div>
+		</div>
+		<!-- Blank Row -->
+	<div class="row">
+	&nbsp;
+	</div>
+		
+		<div class="row">
+		<div class = "col-12">
+		<table class="table table-dark table-striped" id = "editorder-table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Barcode</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Mrp</th>
+    
+    </tr>
+  </thead>
+  <tbody >
+    
+  </tbody>
+</table>
+		
+		
+		</div>
+	</div>	
+			
+			
+			
+
+			
+	
+</div><!-- Container end -->
+<footer class="footer">
+Copyright Increff 2021
+&nbsp;
+[[${info.getMessage()}]]
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script th:src="@{/static/api5.js}"></script>
+</footer>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
