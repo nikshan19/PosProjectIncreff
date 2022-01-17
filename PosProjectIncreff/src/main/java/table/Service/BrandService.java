@@ -56,7 +56,7 @@ public class BrandService {
 		return p;
 	}
 	// traanactional can only be used on public methods
-	private static void normalize(BrandPojo p) {
+	protected static void normalize(BrandPojo p) {
 		
 		p.setBrand(p.getBrand().toLowerCase().trim());
 		p.setCategory(p.getCategory().toLowerCase().trim());

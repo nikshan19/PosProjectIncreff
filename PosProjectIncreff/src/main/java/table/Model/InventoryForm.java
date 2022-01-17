@@ -2,6 +2,9 @@ package table.Model;
 
 import java.util.List;
 
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import table.Pojo.ProductPojo;
 
 public class InventoryForm {
@@ -25,6 +28,8 @@ public class InventoryForm {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
 	 
 	
  

@@ -5,7 +5,7 @@ function getEmployeeUrl(){
 }
 
 //BUTTON ACTIONS
-function addEmployee(event){
+function addEmployee(){
 	//Set the values to update
 	var $form = $("#employee-form");
 	var json = toJson($form);
@@ -27,7 +27,6 @@ function addEmployee(event){
 	   }
 	});
 
-	return false;
 }
 
 function updateEmployee(event){
@@ -129,10 +128,27 @@ function displayEditEmployee(id){
 }
 
 function displayEmployee(data){
-	$("#employee-edit-form input[name=name]").val(data.brand);	
-	$("#employee-edit-form input[name=age]").val(data.category);	
+	$("#employee-edit-form input[name=brand]").val(data.brand);	
+	$("#employee-edit-form input[name=category]").val(data.category);	
 	$("#employee-edit-form input[name=id]").val(data.id);	
 	$('#edit-employee-modal').modal('toggle');
+}
+
+function myFunction() {
+	
+  var x = $("#employee-form input[name=brand]").val();
+  var y =$("#employee-form input[name=category]").val();  
+  
+  
+  if (x==""||x==null, y==""||y==null) {
+      alert("Please Fill All Required Field");
+      return false;
+  } 
+  else{
+	addEmployee();
+}
+  
+  
 }
 
 
@@ -153,7 +169,7 @@ function toJson($form){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-employee').click(addEmployee);
+	$('#add-brand').click(myFunction);
 	$('#update-employee').click(updateEmployee);
 	$('#refresh-data').click(getEmployeeList);
 }

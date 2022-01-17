@@ -134,6 +134,25 @@ function displayEmployee(data){
 }
 
 
+
+
+function formValidation(){
+	
+	var x = $("#inventory-form input[name=id]").val();
+  	var y = $("#inventory-form input[name=quantity]").val();  
+  	
+  	if(x<=0||y<=0){
+	alert("Enter valid inputs");
+	return false;
+}
+else{
+	addEmployee();
+}
+	
+	
+}
+
+
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
@@ -151,9 +170,10 @@ function toJson($form){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-inventory').click(addEmployee);
+	
 	$('#update-inventory').click(updateEmployee);
 	$('#refresh-data').click(getEmployeeList);
+	$('#add').click(formValidation);
 }
 
 $(document).ready(init);

@@ -89,14 +89,11 @@ public class OrderItemController {
 	private static  OrderItemPojo convert(OrderItemForm form) {
 		OrderItemPojo p = new OrderItemPojo();
 		p.setQuantity(form.getQuantity());
-		//p.setMrp(form.getMrp());
 		return p;
 	}
 	
 	private static OrderItemPojo convert_edit(EditOrderForm form) {
 		OrderItemPojo p = new OrderItemPojo();
-		//p.setQuantity(form.getQuantity());
-		
 		p.setMrp(form.getMrp());
 		return p;
 	}

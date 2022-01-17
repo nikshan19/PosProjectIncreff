@@ -5,9 +5,6 @@ function getEmployeeUrl(){
 }
 
 
-
-
-
 function getEmployeeList(){
 	var url = getEmployeeUrl();
 	$.ajax({

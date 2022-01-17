@@ -26,7 +26,7 @@
 			  <div class="col">
 			    <label for="inputBrandPojo" class="col-sm-2 col-form-label">BrandCategory</label>
 			    <div class="col">
-			      <input type="text" class="form-control" name="brandPojo" id="inputBrandPojo" placeholder="enter brand category">
+			      <input type="number" class="form-control" name="brandPojo" id="inputBrandPojo" placeholder="enter brand category">
 			    </div>
 			  </div>
 			  <div class="col">
@@ -38,7 +38,8 @@
 			  <div class="col">
 			    <label for="inputMrp" class="col-sm-2 col-form-label">Mrp</label>
 			    <div class="col">
-			      <input type="text" class="form-control" name="mrp" id="inputMrp" placeholder="enter mrp">
+			      
+			      <input type="number" class="form-control" id="inputMrp" placeholder="enter mrp" name="mrp" min="0" value="0" step="0.01" pattern="/^\d+(?:\.\d{1,2})?$/"/>
 			    </div>
 			  </div>
 			  </div>

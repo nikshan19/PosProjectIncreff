@@ -140,6 +140,29 @@ function displayEmployee(data){
 }
 
 
+function myFunction() {
+	
+  var x = $("#product-form input[name=barcode]").val();
+  var y =$("#product-form input[name=brandPojo]").val();  
+  var a =$("#product-form input[name=name]").val();  
+  var b =$("#product-form input[name=mrp]").val();  
+ pattern=/^\d+(?:\.\d{1,2})?$/;
+  if (x==""||x==null, a==""||a==null) {
+      alert("Please Fill All Required Fields");
+      return false;
+  } 
+  if(y<=0||!pattern.test(b)){
+	alert("Enter valid Inputs")
+	return false
+}
+  
+	addEmployee();
+
+  
+  
+}
+
+
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
@@ -157,7 +180,7 @@ function toJson($form){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-product').click(addEmployee);
+	$('#add-product').click(myFunction);
 	$('#update-product').click(updateEmployee);
 	$('#refresh-data').click(getEmployeeList);
 }

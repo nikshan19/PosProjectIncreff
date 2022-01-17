@@ -48,11 +48,13 @@ public class OrderItemDao {
 		TypedQuery<OrderPojo> q = em.createQuery(select_all_order, OrderPojo.class);
 		int order_id = q.getResultList().get(q.getResultList().size()-1).getId();
 		
+		
+		
 		if(pp==null || pp.getMrp()!= mrp) {
 			Query qO = em.createQuery(delete_order_id);
 			qO.setParameter("id", order_id);
 			qO.executeUpdate();
-			throw new ApiException("product doesnot exist with barcode :"+barcode);
+			throw new ApiException("product doesnot exist with barcode: "+barcode+" and mrp: "+mrp);
 		}
 		
 		p.setProductId(pp.getId());
@@ -71,7 +73,10 @@ public class OrderItemDao {
 			
 		}
 		else {
+			System.out.println(ip.getQuantity());
+			System.out.println(p.getQuantity());
 			ip.setQuantity(ip.getQuantity()-p.getQuantity());
+			System.out.println(ip.getQuantity());
 		}
 		
 		em.persist(p);

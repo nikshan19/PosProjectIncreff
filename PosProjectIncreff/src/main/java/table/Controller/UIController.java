@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import table.Model.ErrorData;
 import table.Model.InfoData;
 
 @Controller
@@ -12,6 +13,7 @@ public class UIController {
 	
 	@Value("${app.baseUrl}")
 	private String baseUrl;
+	
 
 	
 	@RequestMapping(value = "")
@@ -54,12 +56,12 @@ public class UIController {
 	}
 	
 	
-	
-	private ModelAndView mav(String page) {
+	protected ModelAndView mav(String page) {
 		
 		ModelAndView mav = new ModelAndView(page);
 		mav.addObject("info", new InfoData());
 		mav.addObject("baseUrl", baseUrl);
+		mav.addObject("apierror", new ErrorData());
 		return mav;
 	}
 

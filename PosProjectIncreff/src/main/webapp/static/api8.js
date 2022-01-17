@@ -22,7 +22,8 @@ function getEmployeeList(){
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+		alert("An error has occurred");
+   
 	   }
 	});
 }
@@ -45,6 +46,24 @@ function displayEmployeeList(data){
 	}
 }
 
+function formValidation(){
+	
+	var x = $("#inventory-form input[name=startdate]").val();
+  	var y = $("#inventory-form input[name=endadate]").val();  
+  	var a = $("#inventory-form input[name=brand]").val();
+  	var b = $("#inventory-form input[name=category]").val(); 
+  	
+  	if(x==""||x==null,y==""||y==null,a==""||a==null,b==""||b==null){
+	alert("Please Fill All the Input Fields");
+	return false;
+}
+else{
+	getEmployeeList();
+}
+	
+	
+}
+
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
@@ -62,7 +81,7 @@ function toJson($form){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-employee').click(getEmployeeList);
+	$('#add-employee').click(formValidation);
 	
 }
 

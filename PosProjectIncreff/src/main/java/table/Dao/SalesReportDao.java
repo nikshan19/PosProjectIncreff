@@ -24,18 +24,10 @@ public class SalesReportDao {
 	private static String select_dt_order = "select p from OrderPojo p where dateTime BETWEEN :dt1 AND :dt2";
 	private static String select_oid_product = "select p from ProductPojo p where id=:id";
 	private static String select_brand_cat_brand = "select p from BrandPojo p where brand=:brand AND category=:category";
-	private static String select_id_inventory = "select p from InventoryPojo p where id=:id";
 	private static String select_oid_orderitem = "select p from OrderItemPojo p where orderId=:orderId";
 	@PersistenceContext
 	EntityManager em;
-	
-	
-	
-	
-	
-	
-	
-	@SuppressWarnings("deprecation")
+
 	public HashMap<Integer, Double> selectAll(SalesReportForm form) {
 		TypedQuery<OrderPojo> query = em.createQuery(select_dt_order, OrderPojo.class);
 		query.setParameter("dt1", Timestamp.valueOf(form.getStartdate()));
@@ -67,6 +59,8 @@ public class SalesReportDao {
 		hm.put(quant, rev);
 		return hm;
 	}
+	
+	
 	
 	
 	

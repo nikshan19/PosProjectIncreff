@@ -3,6 +3,7 @@ package table.Dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -29,9 +30,15 @@ public class ProductDao {
 	
 	
 	public void insert(ProductPojo p)throws ApiException {
+		BrandPojo bp;
+		try {
 		TypedQuery<BrandPojo> query = em.createQuery(select_idB, BrandPojo.class);
 		query.setParameter("id", p.getBrandPojo());
-		if(query.getSingleResult()==null) {
+		bp = query.getSingleResult();
+		}catch(NoResultException e) {
+			bp = null;
+		}
+		if(bp==null) {
 			throw new ApiException("brand with given id doesnot exists, id: "+p.getBrandPojo());
 		}
 		else {

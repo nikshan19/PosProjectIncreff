@@ -130,6 +130,19 @@
     <version>3.0.9.RELEASE</version>
 </dependency>
 <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>4.3.9.RELEASE</version>
+    <scope>test</scope>
+</dependency>
+
+
+
+
 
 
 

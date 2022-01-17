@@ -72,6 +72,23 @@ function displayOrderItemList(data){
 }
 
 
+function formValidation(){
+	
+	var x = $("#editorder-form input[name=id]").val();
+  	var y = $("#editorder-form input[name=barcode]").val();  
+  	var a = $("#editorder-form input[name=quantity]").val();
+  	var b = $("#editorder-form input[name=mrp]").val();  
+  	
+  	if(x==""||x==null,y==""||y==null,a==""||a==null,b==""||b==null){
+	alert("Please fill all the input fields");
+	return false;
+}
+else{
+	updateOrderItem();
+}
+	
+}
+
 
 
 //HELPER METHOD
@@ -91,7 +108,7 @@ function toJson($form){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-editorder').click(updateOrderItem);
+	$('#add-editorder').click(formValidation);
 }
 
 $(document).ready(init);

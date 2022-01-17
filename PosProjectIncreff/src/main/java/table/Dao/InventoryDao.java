@@ -1,7 +1,6 @@
 package table.Dao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,7 +10,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-import table.Pojo.BrandPojo;
+
 import table.Pojo.InventoryPojo;
 import table.Pojo.ProductPojo;
 import table.Service.ApiException;
@@ -24,7 +23,7 @@ public class InventoryDao {
 	private static String select_id = "select p from InventoryPojo p where id=:id";
 	private static String select_all = "select p from InventoryPojo p";
 	private static String select_idB = "select p from ProductPojo p where id=:id";
-	private static String select_idP = "select p from BrandPojo p where id=:id";
+
 	
 	@PersistenceContext
 	EntityManager em;

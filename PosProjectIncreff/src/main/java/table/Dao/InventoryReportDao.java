@@ -21,7 +21,7 @@ public class InventoryReportDao {
 	private static String select_id_inventory = "select p from InventoryPojo p where id=:id";
 	private static String select_bc_product = "select p from ProductPojo p where brandPojo=:brandPojo";
 	private static String select_all_brand = "select p from BrandPojo p";
-	private static String select_idB = "select p from BrandPojo p where id=:id";
+
 	
 	@PersistenceContext
 	EntityManager em;
