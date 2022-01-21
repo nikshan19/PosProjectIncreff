@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,25 +38,40 @@ public class BrandController {
 	
 	@ApiOperation(value="Adds an employee")
 	@RequestMapping(path="/api/brand", method=RequestMethod.POST)
-	public void add(@RequestBody BrandForm form) {
+	public ResponseEntity<Object> add(@RequestBody BrandForm form) {
+		try {
 		BrandPojo p = convert(form);
 		service.add(p);
+		return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<Object>("Brand-Category Combination cannot be repeated",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	
 
 	@ApiOperation(value="Deletes an employee")
 	@RequestMapping(path="/api/brand/{id}", method=RequestMethod.DELETE)
-	public void delete(@PathVariable int id) throws ApiException {
+	public ResponseEntity<Object> delete(@PathVariable int id) throws ApiException {
+		try {
 		 service.delete(id);
+		 return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	
 	@ApiOperation(value="Updates an employee")
 	@RequestMapping(path="/api/brand/{id}", method=RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException {
+	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException {
+		try {
 		 BrandPojo p = convert(form);
 		 service.update(id, p);
+		 return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		 
 	}
 
@@ -62,7 +79,6 @@ public class BrandController {
 	@ApiOperation(value="Gets a single employee by ID")
 	@RequestMapping(path="/api/brand/{id}", method=RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException{
-		
 		BrandPojo p = service.get(id);
 		return convert(p);
 	}

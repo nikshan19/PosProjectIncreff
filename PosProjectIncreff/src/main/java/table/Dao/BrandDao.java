@@ -3,6 +3,7 @@ package table.Dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -45,9 +46,15 @@ public class BrandDao {
 	}
 	
 	public BrandPojo select(int id) {
+		BrandPojo p;
+		try {
 		TypedQuery<BrandPojo> query = getQuery(select_id);
 		query.setParameter("id", id);
-		return query.getSingleResult();
+		p=query.getSingleResult();
+		}catch(NoResultException e) {
+			p=null;
+		}
+		return p;
 	}
 	
 	public List<BrandPojo> selectAll() {

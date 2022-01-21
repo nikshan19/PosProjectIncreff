@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,30 +33,45 @@ public class InventoryController {
 	
 	@ApiOperation(value="Adds an inventory")
 	@RequestMapping(path="/api/inventory", method=RequestMethod.POST)
-	public void add(@RequestBody InventoryForm form) throws ApiException {
+	public ResponseEntity<Object> add(@RequestBody InventoryForm form) throws ApiException {
+		try {
 		InventoryPojo p = convert(form);
 		service.add(p);
+		return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	
 
 	@ApiOperation(value="Deletes an inventory")
 	@RequestMapping(path="/api/inventory/{id}", method=RequestMethod.DELETE)
-	public void delete(@PathVariable int id) throws ApiException {
+	public ResponseEntity<Object> delete(@PathVariable int id) throws ApiException {
+		try {
 		 service.delete(id);
+		 return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	
 	@ApiOperation(value="Updates an inventory")
 	@RequestMapping(path="/api/inventory/{id}", method=RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException {
+	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException {
+		try {
 		 InventoryPojo p = new InventoryPojo();
 		 p.setQuantity(form.getQuantity());
 		 service.update(id, p);
+		 return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		 
 	}
 
-
+// no need to put this code in try catch blocks as id will never be updated.
 	@ApiOperation(value="Gets a single inventory by ID")
 	@RequestMapping(path="/api/inventory/{id}", method=RequestMethod.GET)
 	public InventoryData get(@PathVariable int id) throws ApiException{

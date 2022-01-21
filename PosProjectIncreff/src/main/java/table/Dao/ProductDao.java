@@ -60,9 +60,15 @@ public class ProductDao {
 	}
 	
 	public ProductPojo select(int id) {
+		ProductPojo p;
+		try {
 		TypedQuery<ProductPojo> query = getQuery(select_id);
 		query.setParameter("id", id);
-		return query.getSingleResult();
+		p=query.getSingleResult();
+		}catch(NoResultException e) {
+			p=null;
+		}
+		return p;
 	}
 	
 	public List<ProductPojo> selectAll() {
@@ -79,6 +85,7 @@ public class ProductDao {
 		return em.createQuery(jpql, ProductPojo.class);
 		
 	}
+	
 
 	
 

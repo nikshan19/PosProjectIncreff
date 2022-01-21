@@ -4,8 +4,16 @@
 
 <head th:replace="snippets.html :: name_head"></head>
 <body>
-
 <nav th:replace="snippets.html :: name_navbar"></nav>
+
+
+<header>
+
+
+<div class="toast align-items-center text-white bg-primary border-0"  style="position: absolute; top: 10px; right: 10px;" role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
+
+
+</header>
 
 
 <div class="container">
@@ -27,13 +35,13 @@
 				<div class="col">
 				<label for="inputBarcode0" class="col-sm-2 col-form-label">Barcode</label>
 			    <div class="col">
-			      <input type="" class="form-control" name="barcode" id="inputBarcode0" placeholder="enter barcode">
+			      <input type="text" class="form-control" name="barcode" id="inputBarcode0" placeholder="enter barcode">
 			    </div>
 			  </div>
 			  <div class="col">
 			    <label for="inputQuantity0" class="col-sm-2 col-form-label">Quantity</label>
 			    <div class="col">
-			      <input type="number" class="form-control" name="quantity" id="inputQuantity0" placeholder="enter quantity">
+			      <input type="number" class="form-control" name="quantity" id="inputQuantity0" placeholder="enter quantity" min="0" value="0">
 			    </div>
 			  </div>
 			  <div class="col">
@@ -66,6 +74,9 @@
 			 	</div>
 			 	</div>
 			 	</div>
+			 	
+			 	
+			
 		</div>
 		<!-- Blank Row -->
 	<div class="row">

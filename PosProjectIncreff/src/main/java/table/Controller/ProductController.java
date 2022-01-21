@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,25 +29,44 @@ public class ProductController {
 	
 	@ApiOperation(value="Adds an product")
 	@RequestMapping(path="/api/product", method=RequestMethod.POST)
-	public void add(@RequestBody ProductForm form) throws ApiException {
+	public ResponseEntity<Object> add(@RequestBody ProductForm form) throws ApiException {
+		
+		try {
 		ProductPojo p = convert(form);
 		service.add(p);
+		return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	
 
 	@ApiOperation(value="Deletes an product")
 	@RequestMapping(path="/api/product/{id}", method=RequestMethod.DELETE)
-	public void delete(@PathVariable int id) throws ApiException {
+	public ResponseEntity<Object> delete(@PathVariable int id) throws ApiException {
+		
+		try {
 		 service.delete(id);
+		 return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	
 	@ApiOperation(value="Updates an product")
 	@RequestMapping(path="/api/product/{id}", method=RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
+	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
+		
+		try {
 		 ProductPojo p = convert(form);
 		 service.update(id, p);
+		 return new ResponseEntity<Object>(HttpStatus.OK);
+		}catch(ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		 
 	}
 

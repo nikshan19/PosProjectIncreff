@@ -3,12 +3,14 @@ package table.Dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
+import table.Pojo.BrandPojo;
 import table.Pojo.OrderPojo;
 
 
@@ -36,9 +38,15 @@ public class OrderDao {
 	}
 	
 	public OrderPojo select(int id) {
+		OrderPojo p;
+		try {
 		TypedQuery<OrderPojo> query = getQuery(select_id);
 		query.setParameter("id", id);
-		return query.getSingleResult();
+		p=query.getSingleResult();
+		}catch(NoResultException e) {
+			p=null;
+		}
+		return p;
 	}
 	
 	public List<OrderPojo> selectAll() {

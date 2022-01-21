@@ -4,13 +4,14 @@ package table.Dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-
+import table.Pojo.BrandPojo;
 import table.Pojo.InventoryPojo;
 import table.Pojo.ProductPojo;
 import table.Service.ApiException;
@@ -30,9 +31,15 @@ public class InventoryDao {
 	
 	
 	public void insert(InventoryPojo p) throws ApiException {
+		ProductPojo pp;
+		try {
 		TypedQuery<ProductPojo> query = em.createQuery(select_idB, ProductPojo.class);
 		query.setParameter("id", p.getId());
-		if(query.getSingleResult()==null) {
+		pp=query.getSingleResult();
+		}catch(NoResultException e) {
+			pp=null;
+		}
+		if(pp==null) {
 			throw new ApiException("product with given id doesnot exists, id: "+p.getId());
 		}
 		else {
@@ -49,9 +56,15 @@ public class InventoryDao {
 	}
 	
 	public InventoryPojo select(int id) {
+		InventoryPojo p;
+		try {
 		TypedQuery<InventoryPojo> query = getQuery(select_id);
 		query.setParameter("id", id);
-		return query.getSingleResult();
+		p=query.getSingleResult();
+		}catch(NoResultException e) {
+			p=null;
+		}
+		return p;
 	}
 	
 	public List<InventoryPojo> selectAll() {

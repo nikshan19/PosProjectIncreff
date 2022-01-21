@@ -18,12 +18,12 @@ function addEmployee(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee created");	
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -47,12 +47,12 @@ function updateEmployee(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee update");	
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -71,7 +71,7 @@ function getEmployeeList(){
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		showError("An error has occurred");
 	   }
 	});
 }
@@ -82,12 +82,12 @@ function deleteEmployee(id){
 	$.ajax({
 	   url: url,
 	   type: 'DELETE',
-	   success: function(data) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee deleted");
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 }
@@ -122,7 +122,7 @@ function displayEditEmployee(id){
 	   		displayEmployee(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		showError("An error has occurred");
 	   }
 	});	
 }
@@ -142,7 +142,7 @@ function formValidation(){
   	var y = $("#inventory-form input[name=quantity]").val();  
   	
   	if(x<=0||y<=0){
-	alert("Enter valid inputs");
+	showError("Enter valid inputs");
 	return false;
 }
 else{
@@ -151,6 +151,29 @@ else{
 	
 	
 }
+
+function showError(msg){
+	
+	$('#EpicToast').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
+
 
 
 //HELPER METHOD

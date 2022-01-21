@@ -27,13 +27,13 @@ function addOrderItem(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("OrderItem created");	
 	   		getEmployeeList(); 
 	   		    //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   		flag=0;
 	   }
 	});
@@ -215,7 +215,7 @@ function displayEmployeeList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button onclick="deleteEmployee(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="editOrder(' + e.id + ')">edit</button>';
+		buttonHtml += ' <button onclick="editOrder(' + e.id + ')">more</button>';
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.dateTime + '</td>'
@@ -249,14 +249,6 @@ function displayEmployee(data){
 	$('#edit-order-modal').modal('toggle');
 }
 
-function check(){
-	
-	for(leti=0;i<=count;i++){
-		
-	}
-	
-	
-}
 
 
 function formValidate1(){
@@ -266,14 +258,20 @@ function formValidate1(){
 		var c = document.getElementById("inputMrp"+i).value;
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
-		if(a==""||a==null,b==""||a==null,b==""||a==null){
-			alert("All input fields must be filled");
+		if(a==""||a==null){
+			showError("All input fields must be filled");
 			return false;
 		}
-		if(b<=0||!pattern.test(c)){
-			alert("Invalid input")
+		else if(b<=0||c<=0){
+			showError("Quantity and Mrp cannot be zero");
 			return false;
 		}
+		else if(!pattern.test(c)){
+			showError("Mrp has to be in '0.00' format");
+			return false;
+			
+		}
+		
 	}
 	formValidate2();
 	
@@ -285,7 +283,8 @@ function formValidate2(){
 	for(let i =0;i<=count;i++){
 		var v = document.getElementById("inputBarcode"+i).value;
 		if(l.length!=0 && l.includes(v)){
-			alert("barcodes cannot be repeated in a single order");
+			msg = "barcodes cannot be repeated in a single order";
+			showError(msg);
 			return false;
 		}
 		else{
@@ -295,6 +294,31 @@ function formValidate2(){
 	}
 	addEmployee();
 	
+	
+}
+
+
+
+
+function showError(msg){
+	
+	$('#EpicToast').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
 	
 }
 
@@ -322,10 +346,12 @@ function init(){
 	$('#add-order').click(formValidate1);
 	$('#update-order').click(updateEmployee);
 	$('#refresh-data').click(getEmployeeList);
+
 }
 
 $(document).ready(init);
 $(document).ready(getEmployeeList);
+$(document).ready();
 
 $(document).ready(rows);
 
@@ -344,7 +370,7 @@ function rows(){
 			 + '<div class="col">'
 			    +'<label for="inputQuantity'+i+'" class="col-sm-2 col-form-label">Quantity</label>'
 			    +'<div class="col">'
-			     + '<input type="number" class="form-control" name="quantity" id="inputQuantity'+i+'" placeholder="enter quantity">'
+			     + '<input type="number" class="form-control" name="quantity" id="inputQuantity'+i+'" placeholder="enter quantity" min="0" value="0">'
 			   + '</div>'
 			  +'</div>'
 			 + '<div class="col">'

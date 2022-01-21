@@ -18,12 +18,12 @@ function addEmployee(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee created");	
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -47,12 +47,12 @@ function updateEmployee(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee update");	
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -71,7 +71,7 @@ function getEmployeeList(){
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		showError("An error has occurred");
 	   }
 	});
 }
@@ -82,12 +82,12 @@ function deleteEmployee(id){
 	$.ajax({
 	   url: url,
 	   type: 'DELETE',
-	   success: function(data) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee deleted");
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 }
@@ -125,7 +125,7 @@ function displayEditEmployee(id){
 	   		displayEmployee(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		showError("An error has occurred");
 	   }
 	});	
 }
@@ -147,20 +147,48 @@ function myFunction() {
   var a =$("#product-form input[name=name]").val();  
   var b =$("#product-form input[name=mrp]").val();  
  pattern=/^\d+(?:\.\d{1,2})?$/;
-  if (x==""||x==null, a==""||a==null) {
-      alert("Please Fill All Required Fields");
+  	if (x==""||x==null, a==""||a==null) {
+      showError("Please Fill All Required Fields");
       return false;
   } 
-  if(y<=0||!pattern.test(b)){
-	alert("Enter valid Inputs")
+  	else if(y<=0||b<=0){
+	showError("BrandCategory and Mrp cannot be zero");
 	return false
 }
-  
+	else if(!pattern.test(b)){
+		showError("Mrp has to be in '0.00' format");
+		return false
+	}
+  else{
 	addEmployee();
 
-  
+  }
   
 }
+
+function showError(msg){
+	
+	$('#EpicToast').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
+
+
 
 
 //HELPER METHOD

@@ -18,12 +18,12 @@ function addEmployee(){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee created");	
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -46,12 +46,12 @@ function updateEmployee(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee update");	
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -81,12 +81,12 @@ function deleteEmployee(id){
 	$.ajax({
 	   url: url,
 	   type: 'DELETE',
-	   success: function(data) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee deleted");
 	   		getEmployeeList();     //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 }
@@ -122,7 +122,7 @@ function displayEditEmployee(id){
 	   		displayEmployee(data);     //...
 	   },
 	   error: function(){
-	   		alert("An error has occurred");
+	   		showError("An error has occurred");
 	   }
 	});	
 }
@@ -141,7 +141,7 @@ function myFunction() {
   
   
   if (x==""||x==null, y==""||y==null) {
-      alert("Please Fill All Required Field");
+      showError("Please Fill All Required Field");
       return false;
   } 
   else{
@@ -149,6 +149,29 @@ function myFunction() {
 }
   
   
+}
+
+
+function showError(msg){
+	
+	$('#EpicToast').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
 }
 
 

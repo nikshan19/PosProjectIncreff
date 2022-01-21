@@ -30,7 +30,7 @@ public class OrderItemService {
 	}
 	
 	@Transactional(rollbackOn = ApiException.class)
-	public HashMap<OrderItemPojo, String> get(int id) throws ApiException {
+	public HashMap<OrderItemPojo, String> get(int id){
 		return dao.select(id);
 		
 	}
@@ -42,9 +42,9 @@ public class OrderItemService {
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(OrderItemPojo newPojo, String barcode, int id, int quantity) throws ApiException {
 		normalize(newPojo, barcode);
-		OrderItemPojo ex = dao.onlySelect(id);
+		OrderItemPojo ex = dao.onlySelect(id, newPojo.getOrderId());
 		if(ex == null) {
-			throw new ApiException("Brand with given id doesnot exists, id: "+id);
+			throw new ApiException("OrderItem with given id doesnot exists, id: "+id);
 		}
 		
 		ex.setOrderId(newPojo.getOrderId());
@@ -57,7 +57,7 @@ public class OrderItemService {
 	public HashMap<OrderItemPojo, String> getCheck(int id) throws ApiException {
 		HashMap<OrderItemPojo, String> list = dao.select(id);
 		if(list.size() == 0) {
-			throw new ApiException("Order with given id doesnot exists, id: "+id);
+			throw new ApiException("Order with given id doesnot exists in this ORDER, id: "+id);
 		}
 		return list;
 	}

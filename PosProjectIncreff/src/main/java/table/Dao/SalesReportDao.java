@@ -25,13 +25,17 @@ public class SalesReportDao {
 	private static String select_oid_product = "select p from ProductPojo p where id=:id";
 	private static String select_brand_cat_brand = "select p from BrandPojo p where brand=:brand AND category=:category";
 	private static String select_oid_orderitem = "select p from OrderItemPojo p where orderId=:orderId";
+	private static String join_order_and_orderitems = "select o from OrderPojo o AND oi from OrderItemPojo oi o.id=:oi.orderId";
+	
 	@PersistenceContext
 	EntityManager em;
 
 	public HashMap<Integer, Double> selectAll(SalesReportForm form) {
+		String startdate = form.getStartdate() +" 00:00:00.0";
+		String enddate = form.getEnddate()+" 00:00:00.0";
 		TypedQuery<OrderPojo> query = em.createQuery(select_dt_order, OrderPojo.class);
-		query.setParameter("dt1", Timestamp.valueOf(form.getStartdate()));
-		query.setParameter("dt2", Timestamp.valueOf(form.getEnddate()));
+		query.setParameter("dt1", Timestamp.valueOf(startdate));
+		query.setParameter("dt2", Timestamp.valueOf(enddate));
 		List<OrderPojo> lo = query.getResultList();
 		HashMap<Integer, Double> hm = new HashMap<Integer, Double>();
 		double rev = 0;
@@ -60,6 +64,11 @@ public class SalesReportDao {
 		return hm;
 	}
 	
+	public void select_everyOne(SalesReportForm form) {
+		
+		
+		
+	}
 	
 	
 	

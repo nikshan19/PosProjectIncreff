@@ -14,7 +14,8 @@ function getOrderList(){
 	   success: function(data) {
 	   		console.log("Employee data fetched");
 	   		console.log(data);	
-	   		displayOrderItemList(data);     //...
+	   		displayOrderItemList(data); 
+	   		    //...
 	   },
 	   error: function(){
 	   		alert("An error has occurred");
@@ -37,14 +38,14 @@ function updateOrderItem(event){
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
-	   success: function(response) {
+	   success: function(data, textStatus, xhr) {
 	   		console.log("Employee update");	
 	   		
 	   		getOrderList();
 	   		    //...
 	   },
-	   error: function(){
-	   		alert("An error has occurred");
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
 	   }
 	});
 
@@ -78,17 +79,71 @@ function formValidation(){
   	var y = $("#editorder-form input[name=barcode]").val();  
   	var a = $("#editorder-form input[name=quantity]").val();
   	var b = $("#editorder-form input[name=mrp]").val();  
-  	
-  	if(x==""||x==null,y==""||y==null,a==""||a==null,b==""||b==null){
-	alert("Please fill all the input fields");
+  	var pattern= /^\d+(?:\.\d{1,2})?$/;
+  	if(y==""||y==null){
+	showError("Please fill all the input fields");
 	return false;
 }
+	else if(isNaN(x)||x<=0){
+		showError("Enter valid Id");
+		return false;
+	}
+	else if(isNaN(a)||a<=0){
+		showError("Enter valid Quantity");
+		return false;
+	}
+	else if(!pattern.test(b)||b<=0 ){
+		showError("Enter valid Mrp");
+		return false;
+	}
 else{
 	updateOrderItem();
 }
 	
 }
 
+
+function showError(msg){
+	
+	$('#EpicToast').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
+
+function pdf(){
+	var loc = window.location.href;
+	var id = loc.substring(loc.lastIndexOf('/') + 1)
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	var url = baseUrl + "/api/pdf" + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function() {
+	   		console.log("Pdf done");
+	   		location.href = "http://localhost:8080/PosProjectIncreff/api/pdf/"+id;	    //...
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+	
+	
+}
 
 
 //HELPER METHOD
@@ -109,6 +164,7 @@ function toJson($form){
 //INITIALIZATION CODE
 function init(){
 	$('#add-editorder').click(formValidation);
+	$('#pdf-data').click(pdf);
 }
 
 $(document).ready(init);

@@ -29,6 +29,8 @@ function getEmployeeList(){
 }
 
 
+
+
 //UI DISPLAY METHODS
 
 function displayEmployeeList(data){
@@ -48,10 +50,10 @@ function displayEmployeeList(data){
 
 function formValidation(){
 	
-	var x = $("#inventory-form input[name=startdate]").val();
-  	var y = $("#inventory-form input[name=endadate]").val();  
-  	var a = $("#inventory-form input[name=brand]").val();
-  	var b = $("#inventory-form input[name=category]").val(); 
+	var x = $("#salesreport-form input[name=startdate]").val();
+  	var y = $("#salesreport-form input[name=endadate]").val();  
+  	var a = $("#salesreport-form input[name=brand]").val();
+  	var b = $("#salesreport-form input[name=category]").val(); 
   	
   	if(x==""||x==null,y==""||y==null,a==""||a==null,b==""||b==null){
 	alert("Please Fill All the Input Fields");
@@ -86,3 +88,15 @@ function init(){
 }
 
 $(document).ready(init);
+$(document).ready(show);
+
+function show(){
+	$("#datepicker1").datepicker({
+  format: 'yyyy-mm-dd' // change format here
+  
+  });
+  $("#datepicker2").datepicker({
+  format: 'yyyy-mm-dd' // change format here
+  
+  });
+}

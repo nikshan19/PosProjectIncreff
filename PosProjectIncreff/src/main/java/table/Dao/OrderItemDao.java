@@ -23,7 +23,7 @@ import table.Service.ApiException;
 public class OrderItemDao {
 	
 	private static String delete_id = "delete from OrderItemPojo p where orderId=:orderId";
-	private static String select_id = "select p from OrderItemPojo p where id=:id";
+	private static String select_id = "select p from OrderItemPojo p where id=:id AND orderId=:orderId";
 	private static String select_all = "select p from OrderItemPojo p";
 	private static String select_barcode = "select p from ProductPojo p where barcode=:barcode";
 	private static String select_productid = "select p from ProductPojo p where id=:id";
@@ -50,11 +50,18 @@ public class OrderItemDao {
 		
 		
 		
-		if(pp==null || pp.getMrp()!= mrp) {
+		if(pp==null) {
 			Query qO = em.createQuery(delete_order_id);
 			qO.setParameter("id", order_id);
 			qO.executeUpdate();
-			throw new ApiException("product doesnot exist with barcode: "+barcode+" and mrp: "+mrp);
+			throw new ApiException("product doesnot exist with barcode: "+barcode);
+		}
+		
+		if(pp.getMrp()!= mrp) {
+			Query qO = em.createQuery(delete_order_id);
+			qO.setParameter("id", order_id);
+			qO.executeUpdate();
+			throw new ApiException("product doesnot exist with mrp: "+mrp);
 		}
 		
 		p.setProductId(pp.getId());
@@ -106,10 +113,18 @@ public class OrderItemDao {
 			
 		}
 	
-	public OrderItemPojo onlySelect(int id) {
+	public OrderItemPojo onlySelect(int id, int orderId) {
+		OrderItemPojo p;
+		try {
 		TypedQuery<OrderItemPojo> query = getQuery(select_id);
 		query.setParameter("id", id);
-		return query.getSingleResult();
+		query.setParameter("orderId", orderId);
+		p= query.getSingleResult();
+		}
+		catch(NoResultException e) {
+			p=null;
+		}
+		return p;
 		
 	}
 	
@@ -129,19 +144,38 @@ public class OrderItemDao {
 	}
 	
 	public void update(OrderItemPojo p, String barcode, int quantity) throws ApiException {
+		ProductPojo pp;
+		try {
 		TypedQuery<ProductPojo> query = em.createQuery(select_barcode, ProductPojo.class);
 		query.setParameter("barcode", barcode);
-		p.setProductId(query.getSingleResult().getId());
+		pp = query.getSingleResult();
+		}catch(NoResultException e) {
+			throw new ApiException("product doesnot exist with barcode: "+barcode);
+		}
+		int old_pid = p.getProductId();
 		TypedQuery<InventoryPojo> qIp = em.createQuery(select_quantity, InventoryPojo.class);
-		qIp.setParameter("id", p.getProductId());
+		qIp.setParameter("id", old_pid);
 		InventoryPojo ip = qIp.getSingleResult();
-		int add_value = ip.getQuantity()+ p.getQuantity()-quantity;
+		ip.setQuantity(p.getQuantity()+ip.getQuantity());
+		
+		p.setProductId(pp.getId());
+		
+		TypedQuery<InventoryPojo> qIp2 = em.createQuery(select_quantity, InventoryPojo.class);
+		qIp2.setParameter("id", p.getProductId());
+		InventoryPojo ip2 = qIp2.getSingleResult();
+		
+		int add_value = ip2.getQuantity()-quantity;
 		if(add_value<0) {
 			throw new ApiException("qunatity in inventory has value less than added :"+ip.getQuantity());
 		}
 		else {
 			p.setQuantity(quantity);
-			ip.setQuantity(add_value);
+			ip2.setQuantity(add_value);
+		}
+		
+		
+		if(p.getMrp()!=pp.getMrp()) {
+			throw new ApiException("Mrp of this product is: "+pp.getMrp());
 		}
 		
 		
