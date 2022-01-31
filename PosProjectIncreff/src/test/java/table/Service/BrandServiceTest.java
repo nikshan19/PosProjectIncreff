@@ -20,7 +20,7 @@ public class BrandServiceTest extends AbstractUnitTest{
 	BrandPojo p;
 
 	@Test
-	public void testAdd() {
+	public void testAdd() throws ApiException {
 		p = new BrandPojo();
 		p.setBrand(" Romil Jain ");
 		p.setCategory("   Nikshan");

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import table.Model.OrderItemData;
 import table.Pojo.BrandPojo;
 import table.Pojo.OrderItemPojo;
+import table.Pojo.OrderPojo;
 import table.Pojo.ProductPojo;
 import table.Service.ApiException;
 
@@ -24,12 +25,14 @@ public class PDFGeneratorDao {
 
 	private static String select_id = "select p from BrandPojo p where id=:id";
 	private static String select_idP = "select p from ProductPojo p where id=:id";
+	private static String select_all_order = "select p from OrderPojo p";
+	private static String select_oi = "select p from OrderItemPojo p where orderId=:id";
 	
 	@PersistenceContext
 	EntityManager em;
 	
 	
-	public List<String> get(OrderItemData p) {
+	public List<String> get(OrderItemPojo p) {
 		
 		TypedQuery<ProductPojo> query = em.createQuery(select_idP, ProductPojo.class);
 		query.setParameter("id", p.getProductId());
@@ -41,6 +44,19 @@ public class PDFGeneratorDao {
 		l.add(bp.getBrand());
 		l.add(pp.getName());
 		return l;
+		
+	}
+	
+	public List<OrderItemPojo> getList(){
+		
+		TypedQuery<OrderPojo> query = em.createQuery(select_all_order, OrderPojo.class);
+		List<OrderPojo> l = query.getResultList();
+		int latest = l.get(l.size()-1).getId();
+		TypedQuery<OrderItemPojo> q = em.createQuery(select_oi, OrderItemPojo.class);
+		q.setParameter("id", latest);
+		List<OrderItemPojo> ll = q.getResultList();
+		return ll;
+		
 		
 	}
 	

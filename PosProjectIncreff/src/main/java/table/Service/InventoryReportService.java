@@ -12,16 +12,13 @@ import table.Pojo.BrandPojo;
 
 @Service
 public class InventoryReportService {
-	
+
 	@Autowired
 	private InventoryReportDao dao;
-	
-	
-	
+
 	@Transactional
 	public HashMap<BrandPojo, Integer> getAll() {
 		return dao.selectAll();
 	}
-	
 
 }

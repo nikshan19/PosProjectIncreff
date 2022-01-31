@@ -3,7 +3,10 @@ function getEmployeeUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/brand";
 }
-
+function getEmployeeUrl2(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/upload/brand";
+}
 //BUTTON ACTIONS
 function addEmployee(){
 	//Set the values to update
@@ -19,10 +22,13 @@ function addEmployee(){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee created");	
+			$('#brand-modal').modal('toggle');
+			$("#employee-form").trigger("reset");
+	   		showSuccess("Brand added");		
 	   		getEmployeeList();     //...
 	   },
 	   error: function(data, textStatus, xhr){
+			$('#brand-modal').modal('toggle');
 	   		showError("Error: "+data.responseText);
 	   }
 	});
@@ -47,7 +53,7 @@ function updateEmployee(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee update");	
+	   		showSuccess("Brand Updated");		
 	   		getEmployeeList();     //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -82,7 +88,7 @@ function deleteEmployee(id){
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee deleted");
+	   		showSuccess("Brand deleted");	
 	   		getEmployeeList();     //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -97,17 +103,19 @@ function displayEmployeeList(data){
 	console.log('Printing employee data');
 	var $tbody = $('#employee-table').find('tbody');
 	$tbody.empty();
+	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteEmployee(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditEmployee(' + e.id + ')">edit</button>'
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteEmployee(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditEmployee(' + e.id + ')"><i class="bi bi-pen"></i></button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + c + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
+        c++;
 	}
 }
 
@@ -174,6 +182,27 @@ function showError(msg){
 	
 }
 
+function showSuccess(msg){
+	
+	$('#EpicToast1').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast1");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
 
 //HELPER METHOD
 function toJson($form){
@@ -190,11 +219,112 @@ function toJson($form){
 }
 
 
+function start(){
+	var cur = window.location.href;
+	 var last = cur.substring(cur.lastIndexOf("/") + 1);
+	 
+	 document.getElementById(last).style.color="blue"
+	
+	
+}
+
+// FILE UPLOAD METHODS
+var fileData = [];
+var errorData = [];
+var processCount = 0;
+
+
+function processData(){
+	var file = $('#employeeFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRows();
+}
+
+function uploadRows(){
+	//Update progress
+	updateUploadDialog();
+	//If everything processed then return
+	if(processCount==fileData.length){
+		return;
+	}
+	
+	//Process next row
+	var row = fileData[processCount];
+	processCount++;
+	
+	var json = JSON.stringify(row);
+	var url = getEmployeeUrl2();
+	console.log(json);
+	//Make ajax call
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },	   
+	   success: function(response) {
+			uploadRows();
+			getEmployeeList();  
+	   },
+	   error: function(response){
+			
+	   		row.error=response.responseText
+	   		errorData.push(row);
+	   		uploadRows();
+	   }
+	});
+
+}
+
+function downloadErrors(){
+	writeFileData(errorData);
+}
+
+
+function resetUploadDialog(){
+	//Reset file name
+	var $file = $('#employeeFile');
+	$file.val('');
+	$('#employeeFileName').html("Choose File");
+	//Reset various counts
+	processCount = 0;
+	fileData = [];
+	errorData = [];
+	//Update counts	
+	updateUploadDialog();
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + processCount);
+	$('#errorCount').html("" + errorData.length);
+}
+
+function updateFileName(){
+	var $file = $('#employeeFile');
+	var fileName = $file.val();
+	$('#employeeFileName').html(fileName);
+}
+
+function displayUploadData(){
+ 	resetUploadDialog(); 	
+	$('#upload-employee-modal').modal('toggle');
+}
+
 //INITIALIZATION CODE
 function init(){
 	$('#add-brand').click(myFunction);
 	$('#update-employee').click(updateEmployee);
 	$('#refresh-data').click(getEmployeeList);
+	$('#upload-data').click(displayUploadData);
+	$('#process-data').click(processData);
+	$('#download-errors').click(downloadErrors);
+    $('#employeeFile').on('change', updateFileName)
 }
 
 $(document).ready(init);

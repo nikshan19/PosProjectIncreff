@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lan="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+<body>
+
+
+
+	<div class="container-fluid">
+
+
+
+		<!-- Blank Row -->
+		<div class="row">
+			<div class="text-center">
+				<h1>Invoice</h1>
+			</div>
+			<a th:href="@{/ui/cart}"
+				style="position: absolute; top: 16px; left: 12px;"><i
+				class="bi bi-arrow-left"></i></a>
+			<button type="button" class="btn btn-outline-dark" id="pdf"
+				style="position: absolute; top: 45px; left: 48%; width: 50px;">
+				<i class="bi bi-printer"></i>
+			</button>
+			<br>
+		</div>
+
+
+
+
+
+
+
+
+	</div>
+	<!-- Container end -->
+	<footer class="footer">
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script th:src="@{/static/api_invoice.js}"></script>
+	</footer>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

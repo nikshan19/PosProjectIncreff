@@ -1,57 +1,64 @@
 
 <!DOCTYPE html>
-<html lan = "en">
+<html lan="en">
 
 <head th:replace="snippets.html :: name_head"></head>
 <body>
 
-<nav th:replace="snippets.html :: name_navbar"></nav>
+	<nav th:replace="snippets.html :: name_navbar"></nav>
 
 
-<div class="container">
+	<div class="container-fluid">
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: red; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: green; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast1"></div>
 
-		
+		<a id="pdf" style="position: absolute; top: 15%; right: 12px;"><i
+			class="bi bi-printer"></i></a>
 		<!-- Blank Row -->
-	<div class="row">
-	<div class = "text-center"><h1>Inventory Report</h1></div>
-	<br>
-	<br>
-	</div>
-		
 		<div class="row">
-		<div class = "col-12">
-		<table class="table table-dark table-striped" id = "inventoryreport-table">
-  <thead>
-    <tr>
-      <th scope="col">Brand</th>
-      <th scope="col">Category</th>
-      <th scope="col">Quantity</th>
-    
-    </tr>
-  </thead>
-  <tbody >
-   
-  </tbody>
-</table>
-		
-		
+			<div class="text-center">
+				<h1>Inventory Report</h1>
+			</div>
+			<br> <br>
 		</div>
-	</div>	
-			
-			
-			
-			
-			
-	
-</div><!-- Container end -->
-<footer class="footer">
-Copyright Increff 2021
-&nbsp;
-[[${info.getMessage()}]]
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script th:src="@{/static/api7.js}"></script>
-</footer>
+
+		<div class="row">
+			<div class="col-12 table-responsive">
+				<table class="table table-striped" id="inventoryreport-table">
+					<thead>
+						<tr>
+							<th scope="col">Brand</th>
+							<th scope="col">Category</th>
+							<th scope="col">Quantity</th>
+
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
+
+
+			</div>
+		</div>
+
+
+
+
+
+
+	</div>
+	<!-- Container end -->
+	<footer class="footer">
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script th:src="@{/static/api7.js}"></script>
+	</footer>
 
 
 

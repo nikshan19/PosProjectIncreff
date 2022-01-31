@@ -9,6 +9,9 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import table.Model.InventoryData;
+import table.Model.InventoryForm;
+import table.Model.ProductForm;
 import table.Pojo.BrandPojo;
 import table.Pojo.InventoryPojo;
 import table.Pojo.ProductPojo;
@@ -30,39 +33,55 @@ public class InventoryDaoTest extends AbstractUnitTest{
 	@Test
 	public void testAdd() throws ApiException {
 		BrandPojo p = new BrandPojo();
-		p.setBrand(" Romil Jain ");
-		p.setCategory("   Nikshan");
+		p.setBrand("romil jain");
+		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-		pp.setBarcode("  ggjhg");
-		pp.setBrandPojo(1);
+//		pp.setBarcode("  ggjhg");
+//		pp.setBrandPojo(1);
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
-		pdao.insert(pp);
+		ProductForm form = new ProductForm();
+		form.setBarcode("ggjhg");
+		form.setBrand("romil jain");
+		form.setCategory("nikshan");
+		form.setMrp(77);
+		form.setName("nnnnn");
+		pdao.insert(pp, form);
 		InventoryPojo ppp = new InventoryPojo();
-		ppp.setId(1);
 		ppp.setQuantity(100);
-		idao.insert(ppp);
+		InventoryForm form2 = new InventoryForm();
+		form2.setBarcode("ggjhg");
+		form2.setQuantity(100);
+		idao.insert(ppp, form2);
 		assertEquals(1,ppp.getId());
 	}
 	
 	@Test
 	public void testGet() throws ApiException {
 		BrandPojo p = new BrandPojo();
-		p.setBrand(" Romil Jain ");
-		p.setCategory("   Nikshan");
+		p.setBrand("romil jain");
+		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-		pp.setBarcode("  ggjhg");
-		pp.setBrandPojo(2);
+//		pp.setBarcode("  ggjhg");
+//		pp.setBrandPojo(2);
 		pp.setMrp(77);
-		pp.setName(" nnnnn");
-		pdao.insert(pp);
+		pp.setName("nnnnn");
+		ProductForm form = new ProductForm();
+		form.setBarcode("ggjhg");
+		form.setBrand("romil jain");
+		form.setCategory("nikshan");
+		form.setMrp(77);
+		form.setName("nnnnn");
+		pdao.insert(pp, form);
 		InventoryPojo ppp = new InventoryPojo();
-		ppp.setId(2);
 		ppp.setQuantity(100);
-		idao.insert(ppp);
-		InventoryPojo bp = idao.select(2);
+		InventoryForm form2 = new InventoryForm();
+		form2.setBarcode("ggjhg");
+		form2.setQuantity(100);
+		idao.insert(ppp, form2);
+		InventoryData bp = idao.select(2);
 		System.out.println("testGet "+bp.getId());
 		assertEquals(2, bp.getId());
 	} 
@@ -73,20 +92,28 @@ public class InventoryDaoTest extends AbstractUnitTest{
 	@Test
 	public void testGetAll() throws ApiException{
 		BrandPojo p = new BrandPojo();
-		p.setBrand(" Romil Jain ");
-		p.setCategory("   Nikshan");
+		p.setBrand("romil jain");
+		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-		pp.setBarcode("  ggjhg");
-		pp.setBrandPojo(3);
+//		pp.setBarcode("  ggjhg");
+//		pp.setBrandPojo(3);
 		pp.setMrp(77);
-		pp.setName(" nnnnn");
-		pdao.insert(pp);
+		pp.setName("nnnnn");
+		ProductForm form = new ProductForm();
+		form.setBarcode("ggjhg");
+		form.setBrand("romil jain");
+		form.setCategory("nikshan");
+		form.setMrp(77);
+		form.setName("nnnnn");
+		pdao.insert(pp,form);
 		InventoryPojo ppp = new InventoryPojo();
-		ppp.setId(3);
 		ppp.setQuantity(100);
-		idao.insert(ppp);
-		List<InventoryPojo> l = idao.selectAll();
+		InventoryForm form2 = new InventoryForm();
+		form2.setBarcode("ggjhg");
+		form2.setQuantity(100);
+		idao.insert(ppp, form2);
+		List<InventoryData> l = idao.selectAll();
 		
 		assertEquals(1, l.size());
 	

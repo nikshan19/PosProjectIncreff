@@ -12,6 +12,7 @@ public class InventoryForm {
 	
 	private int quantity;
 	private int id;
+	private String barcode;
 	public int getQuantity() {
 		return quantity;
 	}
@@ -27,6 +28,14 @@ public class InventoryForm {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
 	}
 	
 	

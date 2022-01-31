@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lan="en">
+
+<head th:replace="snippets_o.html :: name_head"></head>
+<body>
+	<nav th:replace="snippets_o.html :: name_navbar"></nav>
+
+
+	<header>
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: red; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: green; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast1"></div>
+
+	</header>
+
+
+	<div class="container-fluid">
+
+		<div class="split left bg-light">
+
+			<img th:src="@{/static/choices.png}" height="130px" width="90px"
+				style="position: absolute; top: 30%; left: 42%;">
+
+			<button type="button" class="btn btn-sm btn-outline-primary mr-2"
+				style="position: relative; top: 48%; left: 35%;" id="place-order">
+				<i class="fa fa-folder"></i> Place Order
+			</button>
+			<button type="button" class="btn btn-sm btn-outline-dark"
+				style="position: relative; top: 48%; left: 36%;">Refresh</button>
+		</div>
+
+
+		<div class="row">
+			<div class="col">
+				<form class="form-inline" id="demo-form"></form>
+			</div>
+		</div>
+
+
+
+		<div class="split right bg-white">
+
+
+
+			<div class="row">
+				<div class="col-12 table-responsive">
+					<table class="table table-striped" id="order-table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">DateTime</th>
+
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+
+
+				</div>
+			</div>
+
+
+
+
+
+
+		</div>
+
+
+	</div>
+	<!-- Container end -->
+	<footer class="footer">
+		Copyright Increff 2021 &nbsp; [[${info.getMessage()}]]
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script th:src="@{/static/api_order.js}"></script>
+	</footer>
+
+
+
+
+
+
+
+
+</body>
+</html>

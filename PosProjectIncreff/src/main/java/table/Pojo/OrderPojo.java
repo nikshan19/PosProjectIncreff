@@ -16,8 +16,7 @@ import javax.persistence.TemporalType;
 @Entity
 
 public class OrderPojo {
-	 @TableGenerator(name = "id_generator", table = "id_gen", pkColumnName = "gen_name", valueColumnName = "gen_value",
-		        pkColumnValue="task_gen", initialValue=10000, allocationSize=10)
+
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.TABLE, generator = "id_generator")
 	 private int id;

@@ -3,6 +3,10 @@ function getEmployeeUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/product";
 }
+function getEmployeeUrl2(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/upload/product";
+}
 
 //BUTTON ACTIONS
 function addEmployee(event){
@@ -19,10 +23,13 @@ function addEmployee(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee created");	
+			$('#brand-modal').modal('toggle');
+			$("#product-form").trigger("reset");
+	   		showSuccess("Product added");		
 	   		getEmployeeList();     //...
 	   },
 	   error: function(data, textStatus, xhr){
+			$('#brand-modal').modal('toggle');
 	   		showError("Error: "+data.responseText);
 	   }
 	});
@@ -48,7 +55,7 @@ function updateEmployee(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee update");	
+	   		showSuccess("Product updated");	
 	   		getEmployeeList();     //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -83,7 +90,7 @@ function deleteEmployee(id){
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee deleted");
+	   		showSuccess("Product deleted");	
 	   		getEmployeeList();     //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -98,19 +105,22 @@ function displayEmployeeList(data){
 	console.log('Printing employee data');
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
+	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteEmployee(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditEmployee(' + e.id + ')">edit</button>'
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0"  onclick="deleteEmployee(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditEmployee(' + e.id + ')"><i class="bi bi-pen"></i></button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.barcode + '</td>'
-		+ '<td>'  + e.brandPojo + '</td>'
+		+ '<td>' + c + '</td>'
 		+ '<td>'  + e.name + '</td>'
+		+ '<td>' + e.barcode + '</td>'
+		+ '<td>'  + e.brand + '</td>'
+		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
+        c++
 	}
 }
 
@@ -132,7 +142,8 @@ function displayEditEmployee(id){
 
 function displayEmployee(data){
 	$("#product-edit-form input[name=barcode]").val(data.barcode);	
-	$("#product-edit-form input[name=brandPojo]").val(data.brandPojo);	
+	$("#product-edit-form input[name=brand]").val(data.brand);	
+	$("#product-edit-form input[name=category]").val(data.category);	
 	$("#product-edit-form input[name=name]").val(data.name);	
 	$("#product-edit-form input[name=mrp]").val(data.mrp);	
 	$("#product-edit-form input[name=id]").val(data.id);	
@@ -143,22 +154,25 @@ function displayEmployee(data){
 function myFunction() {
 	
   var x = $("#product-form input[name=barcode]").val();
-  var y =$("#product-form input[name=brandPojo]").val();  
+  var y =$("#product-form input[name=brand]").val();  
+   var z =$("#product-form input[name=category]").val();  
   var a =$("#product-form input[name=name]").val();  
   var b =$("#product-form input[name=mrp]").val();  
  pattern=/^\d+(?:\.\d{1,2})?$/;
-  	if (x==""||x==null, a==""||a==null) {
+ pattern2=/^\d*/;
+  	if (x==""||x==null, a==""||a==null, y==""||y==null, z==""||z==null) {
       showError("Please Fill All Required Fields");
       return false;
   } 
-  	else if(y<=0||b<=0){
-	showError("BrandCategory and Mrp cannot be zero");
+  	else if(b<=0){
+	showError("MRP cannot be zero");
 	return false
 }
 	else if(!pattern.test(b)){
 		showError("Mrp has to be in '0.00' format");
 		return false
 	}
+	
   else{
 	addEmployee();
 
@@ -188,6 +202,116 @@ function showError(msg){
 	
 }
 
+function showSuccess(msg){
+	
+	$('#EpicToast1').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast1");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
+
+// FILE UPLOAD METHODS
+var fileData = [];
+var errorData = [];
+var processCount = 0;
+
+
+function processData(){
+	var file = $('#employeeFile')[0].files[0];
+	readFileData(file, readFileDataCallback);
+}
+
+function readFileDataCallback(results){
+	fileData = results.data;
+	uploadRows();
+}
+
+function uploadRows(){
+	//Update progress
+	updateUploadDialog();
+	//If everything processed then return
+	if(processCount==fileData.length){
+		return;
+	}
+	
+	//Process next row
+	var row = fileData[processCount];
+	processCount++;
+	
+	var json = JSON.stringify(row);
+	var url = getEmployeeUrl2();
+	console.log(json);
+	//Make ajax call
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },	   
+	   success: function(response) {
+	   		uploadRows();  
+	   		getEmployeeList();
+	   },
+	   error: function(response){
+			
+	   		row.error=response.responseText
+	   		errorData.push(row);
+	   		uploadRows();
+	   }
+	});
+
+}
+
+function downloadErrors(){
+	writeFileData(errorData);
+}
+
+
+function resetUploadDialog(){
+	//Reset file name
+	var $file = $('#employeeFile');
+	$file.val('');
+	$('#employeeFileName').html("Choose File");
+	//Reset various counts
+	processCount = 0;
+	fileData = [];
+	errorData = [];
+	//Update counts	
+	updateUploadDialog();
+}
+
+function updateUploadDialog(){
+	$('#rowCount').html("" + fileData.length);
+	$('#processCount').html("" + processCount);
+	$('#errorCount').html("" + errorData.length);
+}
+
+function updateFileName(){
+	var $file = $('#employeeFile');
+	var fileName = $file.val();
+	$('#employeeFileName').html(fileName);
+}
+
+function displayUploadData(){
+ 	resetUploadDialog(); 	
+	$('#upload-employee-modal').modal('toggle');
+}
+
 
 
 
@@ -211,6 +335,10 @@ function init(){
 	$('#add-product').click(myFunction);
 	$('#update-product').click(updateEmployee);
 	$('#refresh-data').click(getEmployeeList);
+	$('#upload-data').click(displayUploadData);
+	$('#process-data').click(processData);
+	$('#download-errors').click(downloadErrors);
+    $('#employeeFile').on('change', updateFileName)
 }
 
 $(document).ready(init);

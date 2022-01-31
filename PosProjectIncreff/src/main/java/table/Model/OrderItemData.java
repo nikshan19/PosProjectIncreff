@@ -2,7 +2,7 @@ package table.Model;
 
 import java.time.LocalDateTime;
 
-public class OrderItemData extends OrderItemForm {
+public class OrderItemData extends OrderItemForm implements Comparable<OrderItemData> {
 	
 	private int id;
 	private int orderId;
@@ -31,6 +31,9 @@ public class OrderItemData extends OrderItemForm {
 	}
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
+	}
+	public int compareTo(OrderItemData o) {
+		return this.getBarcode().compareTo(o.getBarcode());
 	}
 
 }

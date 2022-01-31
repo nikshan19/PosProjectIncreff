@@ -13,7 +13,8 @@ function getEmployeeList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		console.log(data);
+	   		d = data;	
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
@@ -22,7 +23,66 @@ function getEmployeeList(){
 	});
 }
 
+function pdf(){
+var baseUrl = $("meta[name=baseUrl]").attr("content")
+	var url = baseUrl + "/api/brandreport/pdf";
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data, textStatus, xhr) {
+	   		console.log("Pdf done");
+	   		location.href = "http://localhost:8080/PosProjectIncreff/api/brandreport/pdf";	    //...
+	   },
+	   error: function(data, textStatus, xhr){
+	   		showError("An error has occurred");
+	   }
+	});
+}
 
+
+function showError(msg){
+	
+	$('#EpicToast').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
+
+function showSuccess(msg){
+	
+	$('#EpicToast1').html('<div class="d-flex">'
+    			+'<div class="toast-body">'
+      			+''+msg+''
+   				+' </div>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+  				+'</div>'
+				
+	);
+	
+	
+	var option={
+		animation:true,
+		delay:2000
+	};
+	var t = document.getElementById("EpicToast1");
+	var tElement = new bootstrap.Toast(t, option);
+	tElement.show();
+	
+}
 
 //UI DISPLAY METHODS
 
@@ -33,7 +93,6 @@ function displayEmployeeList(data){
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '</tr>';
@@ -59,7 +118,7 @@ function toJson($form){
 
 //INITIALIZATION CODE
 function init(){
-
+$("#pdf").click(pdf);
 }
 
 $(document).ready(init);
