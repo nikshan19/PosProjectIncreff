@@ -44,8 +44,7 @@ public class OrderItemDaoTest2 extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(1);
+
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
@@ -62,9 +61,9 @@ public class OrderItemDaoTest2 extends AbstractUnitTest{
 		form2.setQuantity(100);
 		idao.insert(ppp, form2);
 		OrderItemPojo oi = new OrderItemPojo();
-		//oi.setMrp(66);
+
 		oi.setOrderId(0);
-		//oi.setProductId(1);
+
 		oi.setQuantity(56);
 		oidao.insert(oi, "ggjhg", 56);
 		HashMap<OrderItemPojo, String> hm = oidao2.select(1);
@@ -84,8 +83,7 @@ public class OrderItemDaoTest2 extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(2);
+
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
@@ -102,9 +100,9 @@ public class OrderItemDaoTest2 extends AbstractUnitTest{
 		form2.setQuantity(100);
 		idao.insert(ppp, form2);
 		OrderItemPojo oi = new OrderItemPojo();
-		//oi.setMrp(66);
+
 		oi.setOrderId(0);
-		//oi.setProductId(1);
+
 		oi.setQuantity(56);
 		oidao.insert(oi, "ggjhg", 56);
 		

@@ -8,7 +8,7 @@ function pdf(){
 	   url: url,
 	   type: 'GET',
 	   success: function() {
-	   		console.log("Pdf done");
+	   		
 	   		location.href = "http://localhost:8080/PosProjectIncreff/api/pdf";	    //...
 	   },
 	   error: function(){

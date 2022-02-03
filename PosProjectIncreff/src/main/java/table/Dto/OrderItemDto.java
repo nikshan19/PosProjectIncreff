@@ -35,6 +35,30 @@ public class OrderItemDto {
 
 		return service.getAll(id);
 	}
+	
+	public void delete(int id) throws ApiException {
+		service.delete(id);
+	}
+	public void update(int id, OrderItemForm form) throws ApiException {
+		OrderItemPojo p = getCheck2(id);
+		service.update(p, form.getBarcode(), form.getQuantity(), form.getMrp());
+
+	}
+
+	public OrderItemData get(int id) throws ApiException {
+
+		HashMap<OrderItemPojo, String> hm = service.get(id);
+		
+		List<OrderItemPojo> l = new ArrayList<OrderItemPojo>(hm.keySet());
+		OrderItemPojo p = l.get(0);
+		String barcode = hm.get(p);
+
+		OrderItemData data = convert(p);
+		data.setBarcode(barcode);
+		return data;
+
+	}
+	
 
 	public OrderItemPojo convert(OrderItemForm form) {
 		OrderItemPojo p = new OrderItemPojo();
@@ -63,5 +87,34 @@ public class OrderItemDto {
 		String b = barcode.toLowerCase().trim();
 		return b;
 	}
+	public String normalize2(String barcode) {
 
+		String b = barcode.toLowerCase().trim();
+		return b;
+	}
+	
+
+	@Transactional(rollbackOn = ApiException.class)
+	public HashMap<OrderItemPojo, String> getCheck(int id) throws ApiException {
+		HashMap<OrderItemPojo, String> hm = dao.selectAll(id);
+		
+		List<OrderItemPojo> l = new ArrayList<OrderItemPojo>(hm.keySet());
+		OrderItemPojo p = l.get(0);
+		if (p == null) {
+			throw new ApiException("Brand with given id doesnot exists, id: " + id);
+		}
+	
+		return hm;
+		
+	}
+	
+	@Transactional(rollbackOn = ApiException.class)
+	public OrderItemPojo getCheck2(int id) throws ApiException {
+		OrderItemPojo p = dao.onlySelect2(id);
+
+		if (p == null) {
+			throw new ApiException("Brand with given id doesnot exists, id: " + id);
+		}
+		return p;
+	}
 }

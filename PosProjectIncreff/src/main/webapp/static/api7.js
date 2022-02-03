@@ -11,8 +11,7 @@ function getEmployeeList(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
@@ -48,7 +47,7 @@ var baseUrl = $("meta[name=baseUrl]").attr("content")
 	   url: url,
 	   type: 'GET',
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Pdf done");
+	   		
 	   		location.href = "http://localhost:8080/PosProjectIncreff/api/inventoryreport/pdf";	    //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -106,14 +105,14 @@ function showSuccess(msg){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+   
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 

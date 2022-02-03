@@ -44,11 +44,11 @@ public class OrderService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void update(int id, OrderPojo newPojo) throws ApiException {
-		dto.normalize(newPojo);
-		OrderPojo ex = dto.getCheck(id);
+	public void update(int id) throws ApiException {
+		
+		
 
-		dao.update(newPojo);
+		dao.update(id);
 	}
 
 }

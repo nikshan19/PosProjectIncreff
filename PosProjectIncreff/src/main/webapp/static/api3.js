@@ -65,7 +65,7 @@ function addEmployee(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(response) {
-	   		console.log("Employee created");
+	   		
 	   		//location.reload();
 	   		addOrderItem();
 	   		//getEmployeeList(); 
@@ -101,7 +101,7 @@ function updateEmployee(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(response) {
-	   		console.log("Employee update");	
+	   		
 	   		getEmployeeList();
 	   		    //...
 	   },
@@ -120,8 +120,7 @@ function getEmployeeList(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
@@ -154,7 +153,7 @@ function deleteOrderList(id){
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data) {
-	   		console.log("Employee deleted");
+	   		
 	   		     //...
 	   },
 	   error: function(){
@@ -178,8 +177,7 @@ function displayOrderList(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		
 	   		displayOrderItemList(data);
 	   		
 	   },
@@ -328,14 +326,14 @@ function showError(msg){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+   
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 

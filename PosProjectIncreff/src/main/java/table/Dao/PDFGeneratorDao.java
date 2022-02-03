@@ -60,5 +60,14 @@ public class PDFGeneratorDao {
 		
 	}
 	
+	public List<OrderItemPojo> getSpecList(int id){
+		TypedQuery<OrderItemPojo> query = em.createQuery(select_oi, OrderItemPojo.class);
+		query.setParameter("id", id);
+		List<OrderItemPojo> l = query.getResultList();
+		return l;
+		
+	}
+	
+	
 
 }

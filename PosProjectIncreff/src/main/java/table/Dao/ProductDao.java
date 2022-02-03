@@ -1,5 +1,6 @@
 package table.Dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,9 +9,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import table.Model.InventoryForm;
 import table.Model.ProductForm;
 import table.Pojo.BrandPojo;
 import table.Pojo.InventoryPojo;
@@ -30,6 +32,9 @@ public class ProductDao {
 
 	@PersistenceContext
 	EntityManager em;
+	
+	@Autowired
+	InventoryDao dao;
 
 	public void insert(ProductPojo p, ProductForm form) throws ApiException {
 		ProductPojo pp;
@@ -45,9 +50,8 @@ public class ProductDao {
 			p.setBarcode(form.getBarcode());
 			BrandPojo bp;
 			try {
-				TypedQuery<BrandPojo> query = em.createQuery(select_idBC, BrandPojo.class);
-				query.setParameter("brand", form.getBrand());
-				query.setParameter("category", form.getCategory());
+				TypedQuery<BrandPojo> query = em.createQuery(select_idB, BrandPojo.class);
+				query.setParameter("id", p.getBrandPojo());
 				bp = query.getSingleResult();
 			} catch (NoResultException e) {
 				bp = null;
@@ -57,6 +61,15 @@ public class ProductDao {
 			} else {
 				p.setBrandPojo(bp.getId());
 				em.persist(p);
+				
+				InventoryPojo ip = new InventoryPojo();
+				ip.setId(p.getId());
+				ip.setQuantity(0);
+				InventoryForm form1 = new InventoryForm();
+				form1.setBarcode(p.getBarcode());
+				form1.setId(p.getId());
+				form1.setQuantity(0);
+				dao.insert(ip, form1);
 			}
 		} else {
 			throw new ApiException("product with barcode: " + form.getBarcode() + " already exists");
@@ -106,10 +119,10 @@ public class ProductDao {
 	}
 
 	public List<ProductPojo> selectAll() {
-		Session session = em.unwrap(Session.class);
-		String hql = "FROM ProductPojo p ORDER BY p.name asc";
-		Query query = session.createQuery(hql);
-		return query.getResultList();
+		TypedQuery<ProductPojo> query = getQuery(select_all);
+		List<ProductPojo> l = query.getResultList();
+		Collections.reverse(l);
+		return l;
 	}
 
 	public void update(ProductPojo p, ProductForm form) throws ApiException {
@@ -124,25 +137,30 @@ public class ProductDao {
 		}
 		if ((pp == null) || (pp != null && pp.getId() == p.getId())) {
 			p.setBarcode(form.getBarcode());
-			BrandPojo bp;
-			try {
-				TypedQuery<BrandPojo> query = em.createQuery(select_idBC, BrandPojo.class);
-				query.setParameter("brand", form.getBrand());
-				query.setParameter("category", form.getCategory());
-				bp = query.getSingleResult();
-			} catch (NoResultException e) {
-				bp = null;
-			}
-			if (bp == null) {
-				throw new ApiException("brand with given brand-category combination doesnot exist");
-			} else {
-				p.setBrandPojo(bp.getId());
-			}
+			
 		}
 
 		else {
 			throw new ApiException("product with barcode: " + form.getBarcode() + " already exists");
 		}
+	}
+	
+	
+	public int getBrandCat(String brand, String category) throws ApiException {
+		BrandPojo bp;
+		try {
+		TypedQuery<BrandPojo> query = em.createQuery("select p from BrandPojo p where brand=:brand AND category=:category", BrandPojo.class);
+		query.setParameter("brand", brand);
+		query.setParameter("category", category);
+		bp = query.getSingleResult();
+		}catch(NoResultException e) {
+			bp=null;
+		}
+		if(bp==null) {
+			throw new ApiException("Brand with brand: "+brand+" and category: "+category+" doesnot exists");
+		}
+		
+		return bp.getId();
 	}
 
 	TypedQuery<ProductPojo> getQuery(String jpql) {

@@ -20,8 +20,7 @@ function getOrderItemList(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   			
 	   		displayOrderItemList(data);     //...
 	   },
 	   error: function(){
@@ -70,7 +69,7 @@ function addOrder(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee created");
+	   		
 	   		//location.reload();
 	   		getOrderItemList();
 	   		//getEmployeeList(); 
@@ -121,8 +120,7 @@ function displayEditOrderItem(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		
 	   		displayOrderItem(data);     //...
 	   },
 	   error: function(){
@@ -234,14 +232,14 @@ function showSuccess(msg){
 
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+    
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 

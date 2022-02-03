@@ -17,8 +17,7 @@ function getEmployeeList(){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -132,6 +131,9 @@ function showError(msg){
 	
 }
 
+function refresh(){
+	location.reload();
+}
 
 
 
@@ -139,7 +141,7 @@ function showError(msg){
 //INITIALIZATION CODE
 function init(){
 	$('#add-employee').click(getEmployeeList);
-	
+	$('#refresh-data').click(refresh);
 }
 
 $(document).ready(init);

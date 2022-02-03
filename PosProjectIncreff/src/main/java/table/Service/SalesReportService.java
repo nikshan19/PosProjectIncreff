@@ -24,22 +24,22 @@ public class SalesReportService {
 	
 	@Transactional
 	public HashMap<List<String>, HashMap<Integer, Double>> getAll(SalesReportForm form) throws ApiException {
-		if((form.getStartdate()==""||form.getStartdate()==null)&&(form.getEnddate()==""||form.getEnddate()==null)&&(form.getBrand()==""||form.getBrand()==null)&&(form.getCategory()==""||form.getCategory()==null)){
+		if((form.getStartdate().length()==0)&&(form.getEnddate().length()==0)&&(form.getBrand().length()==0)&&(form.getCategory().length()==0)){
 			return dao.select_everyOne(form);
 		}
 
-		else if((form.getStartdate()!=""||form.getStartdate()!=null)&&(form.getEnddate()!=""||form.getEnddate()!=null)&&(form.getBrand()==""||form.getBrand()==null)&&(form.getCategory()==""||form.getCategory()==null)) {
+		if((form.getStartdate().length()>0)&&(form.getEnddate().length()>0)&&(form.getBrand().length()==0)&&(form.getCategory().length()==0)) {
 			return dao.brandCategoryNull(form);
 		}
-		else if((form.getStartdate()!=""||form.getStartdate()!=null)&&(form.getEnddate()!=""||form.getEnddate()!=null)&&(form.getBrand()!=""||form.getBrand()!=null)&&(form.getCategory()==""||form.getCategory()==null)) {
+		if((form.getStartdate().length()>0)&&(form.getEnddate().length()>0)&&(form.getBrand().length()>0)&&(form.getCategory().length()==0)) {
 			dto.normalize2(form);
 			return dao.catNull(form);
 		}
-		else if((form.getStartdate()!=""||form.getStartdate()!=null)&&(form.getEnddate()!=""||form.getEnddate()!=null)&&(form.getBrand()==""||form.getBrand()==null)&&(form.getCategory()!=""||form.getCategory()!=null)) {
+		if((form.getStartdate().length()>0)&&(form.getEnddate().length()>0)&&(form.getBrand().length()==0)&&(form.getCategory().length()>0)) {
 			dto.normalize1(form);
 			return dao.brandNull(form);
 		}
-		else if((form.getStartdate()!=""||form.getStartdate()!=null)&&(form.getEnddate()!=""||form.getEnddate()!=null)&&(form.getBrand()!=""||form.getBrand()!=null)&&(form.getCategory()!=""||form.getCategory()!=null)) {
+		if((form.getStartdate().length()>0)&&(form.getEnddate().length()>0)&&(form.getBrand().length()>0)&&(form.getCategory().length()>0)) {
 		dto.normalize(form);
 		return dao.selectAll(form);
 		}

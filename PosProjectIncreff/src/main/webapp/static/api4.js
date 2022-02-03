@@ -72,8 +72,7 @@ function getEmployeeList(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	  
 	   		displayEmployeeList(data);     //...
 	   },
 	   error: function(){
@@ -128,8 +127,7 @@ function displayEditEmployee(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   			
 	   		displayEmployee(data);     //...
 	   },
 	   error: function(){
@@ -214,14 +212,14 @@ function showSuccess(msg){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+    
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 // FILE UPLOAD METHODS
@@ -254,7 +252,7 @@ function uploadRows(){
 	
 	var json = JSON.stringify(row);
 	var url = getEmployeeUrl2();
-	console.log(json);
+	
 	//Make ajax call
 	$.ajax({
 	   url: url,

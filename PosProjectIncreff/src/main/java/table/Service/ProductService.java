@@ -53,6 +53,7 @@ public class ProductService {
 
 		ex.setName(newPojo.getName());
 		ex.setMrp(newPojo.getMrp());
+		ex.setBrandPojo(newPojo.getBrandPojo());
 
 	}
 

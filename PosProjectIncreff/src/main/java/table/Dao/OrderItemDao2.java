@@ -45,11 +45,11 @@ public class OrderItemDao2 {
 		Query query = em.createQuery(delete_id);
 		query.setParameter("id", id);
 
-		TypedQuery<InventoryPojo> query1 = em.createQuery(select_inventory, InventoryPojo.class);
-		query1.setParameter("id", p.getProductId());
-		InventoryPojo ip = query1.getSingleResult();
-		int addv = p.getQuantity() + ip.getQuantity();
-		ip.setQuantity(addv);
+//		TypedQuery<InventoryPojo> query1 = em.createQuery(select_inventory, InventoryPojo.class);
+//		query1.setParameter("id", p.getProductId());
+//		InventoryPojo ip = query1.getSingleResult();
+//		int addv = p.getQuantity() + ip.getQuantity();
+//		ip.setQuantity(addv);
 
 		return query.executeUpdate();
 

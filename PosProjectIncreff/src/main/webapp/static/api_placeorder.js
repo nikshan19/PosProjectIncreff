@@ -29,9 +29,9 @@ function addOrderItem2(event){
 	
 
 	var $form = $("#order-edit-form");
-	console.log($form);
+	
 	var json = toJson($form);
-	console.log(json);
+	
 	var url = getOrderItemUrl();
 
 
@@ -67,8 +67,7 @@ function displayOrderList(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   		
 	   		displayOrderItemList(data);
 	   		
 	   },
@@ -89,8 +88,7 @@ function getProductList(){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   			
 	   		d=data;
 	   		displayProductList(data);     //...
 	   },
@@ -134,7 +132,7 @@ function addE(id){
 		}
 	}
 	
-	console.log("addE");
+	
 	$("#order-edit-form input[name=barcode]").val(barcode);	
 	$("#order-edit-form input[name=mrp]").val(mrp);	
 	$('#edit-order-modal').modal('toggle');
@@ -149,8 +147,7 @@ function displayEditEmployee(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
-	   		console.log(data);	
+	   			
 	   		displayEmployee(data);
 	   		displayOrderItem();     //...
 	   },
@@ -174,7 +171,7 @@ function formValidate1(){
 		var a = $("#order-form input[name=barcode]").val()
 		var b = $("#order-form input[name=quantity]").val()
 		var c = $("#order-form input[name=mrp]").val()
-		console.log("its working");
+		
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
 		if(a==""||a==null){
@@ -202,7 +199,7 @@ function formValidate2(){
 		var a = $("#order-edit-form input[name=barcode]").val()
 		var b = $("#order-edit-form input[name=quantity]").val()
 		var c = $("#order-edit-form input[name=mrp]").val()
-		console.log("its working");
+		
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
 		if(a==""||a==null){
@@ -283,14 +280,14 @@ return false;
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+    
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 
@@ -385,7 +382,7 @@ function display(barcode){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		console.log("Employee data fetched");
+	   		
 	   		$("#detail-form input[name=quantity]").val(data.quantity);
 	   		   //...
 	   },

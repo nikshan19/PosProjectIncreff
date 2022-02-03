@@ -38,6 +38,7 @@ public class OrderDao {
 		}
 
 		else {
+			p.setToggle(0);
 			em.persist(p);
 			TypedQuery<OrderPojo> query = getQuery(select_all);
 
@@ -84,7 +85,18 @@ public class OrderDao {
 		return query.getResultList();
 	}
 
-	public void update(OrderPojo p) {
+	public void update(int id) {
+		OrderPojo p;
+		try {
+			TypedQuery<OrderPojo> query = getQuery(select_id);
+			query.setParameter("id", id);
+			p = query.getSingleResult();
+		} catch (NoResultException e) {
+			p = null;
+		}
+		if (p!=null) {
+			p.setToggle(1);
+		}
 
 	}
 

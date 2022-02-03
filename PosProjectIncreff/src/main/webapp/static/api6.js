@@ -30,7 +30,7 @@ var baseUrl = $("meta[name=baseUrl]").attr("content")
 	   url: url,
 	   type: 'GET',
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Pdf done");
+	   		
 	   		location.href = "http://localhost:8080/PosProjectIncreff/api/brandreport/pdf";	    //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -104,14 +104,14 @@ function displayEmployeeList(data){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+   
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 

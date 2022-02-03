@@ -52,6 +52,9 @@ public class PDFGeneratorService {
 
 		cell.setPhrase(new Phrase("Price", font));
 		table.addCell(cell);
+		
+		cell.setPhrase(new Phrase("Subtotal", font));
+		table.addCell(cell);
 
 	}
 
@@ -65,13 +68,13 @@ public class PDFGeneratorService {
 		Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		fontTitle.setSize(18);
 
-		Paragraph paragraph = new Paragraph("Increff", fontTitle);
+		Paragraph paragraph = new Paragraph("Invoice", fontTitle);
 		paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 		document.add(paragraph);
 
-		PdfPTable table = new PdfPTable(4);
+		PdfPTable table = new PdfPTable(5);
 		table.setWidthPercentage(100f);
-		table.setWidths(new float[] { 3.5f, 3.5f, 1.5f, 1.5f });
+		table.setWidths(new float[] { 3.5f, 3.5f, 1.5f, 1.5f, 1.5f });
 		table.setSpacingBefore(10);
 
 		writeTableHeader(table);
@@ -83,6 +86,7 @@ public class PDFGeneratorService {
 			table.addCell(l.get(1));
 			table.addCell(String.valueOf(o.getQuantity()));
 			table.addCell(String.valueOf(o.getMrp()));
+			table.addCell(String.valueOf(o.getMrp()*o.getQuantity()));
 			val += o.getMrp() * o.getQuantity();
 
 		}
@@ -112,5 +116,10 @@ public class PDFGeneratorService {
 	@Transactional
 	public List<OrderItemPojo> getList() {
 		return dao.getList();
+	}
+	
+	@Transactional
+	public List<OrderItemPojo> getSpecList(int id) {
+		return dao.getSpecList(id);
 	}
 }

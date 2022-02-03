@@ -45,8 +45,7 @@ public class OrderItemServiceTest2 extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(1);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
@@ -63,9 +62,9 @@ public class OrderItemServiceTest2 extends AbstractUnitTest{
 		form2.setQuantity(100);
 		iservice.add(ppp, form2);
 		OrderItemPojo oi = new OrderItemPojo();
-		//oi.setMrp(66);
+
 		oi.setOrderId(0);
-		//oi.setProductId(1);
+
 		oi.setQuantity(56);
 		oiservice.add(oi, "ggjhg", 56);
 		HashMap<OrderItemPojo, String> hm = oiservice2.get(1);
@@ -86,8 +85,7 @@ public class OrderItemServiceTest2 extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(2);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
@@ -104,9 +102,9 @@ public class OrderItemServiceTest2 extends AbstractUnitTest{
 		form2.setQuantity(100);
 		iservice.add(ppp, form2);
 		OrderItemPojo oi = new OrderItemPojo();
-		//oi.setMrp(66);
+
 		oi.setOrderId(0);
-		//oi.setProductId(1);
+
 		oi.setQuantity(56);
 		oiservice.add(oi, "ggjhg", 56);
 		

@@ -56,5 +56,35 @@ public class OrderItemController {
 	public List<OrderItemData> getAll(@PathVariable int orderid) {
 		return dto.getAll(orderid);
 	}
+	
+	
+	@ApiOperation(value = "Deletes an employee")
+	@RequestMapping(path = "/api/orderitem/edit/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Object> delete(@PathVariable int id) throws ApiException {
+		try {
+			dto.delete(id);
+			return new ResponseEntity<Object>(HttpStatus.OK);
+		} catch (ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@ApiOperation(value = "Updates an employee")
+	@RequestMapping(path = "/api/orderitem/edit/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody OrderItemForm form) throws ApiException {
+		try {
+			dto.update(id, form);
+			return new ResponseEntity<Object>(HttpStatus.OK);
+		} catch (ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	@ApiOperation(value = "Gets a single employee by ID")
+	@RequestMapping(path = "/api/orderitem/edit/{id}", method = RequestMethod.GET)
+	public OrderItemData get(@PathVariable int id) throws ApiException {
+		return dto.get(id);
+	}
 
 }

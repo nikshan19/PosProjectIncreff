@@ -7,6 +7,11 @@ function getEmployeeUrl2(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/upload/product";
 }
+function getEmployeeUrl3(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/brand";
+}
+
 
 //BUTTON ACTIONS
 function addEmployee(event){
@@ -132,6 +137,7 @@ function displayEditEmployee(id){
 	   success: function(data) {
 	   		console.log("Employee data fetched");
 	   		console.log(data);	
+	   		dropdown2();
 	   		displayEmployee(data);     //...
 	   },
 	   error: function(){
@@ -142,8 +148,8 @@ function displayEditEmployee(id){
 
 function displayEmployee(data){
 	$("#product-edit-form input[name=barcode]").val(data.barcode);	
-	$("#product-edit-form input[name=brand]").val(data.brand);	
-	$("#product-edit-form input[name=category]").val(data.category);	
+	let element = document.getElementById("inputBrandCategory2");
+    element.value = data.brandCategory;
 	$("#product-edit-form input[name=name]").val(data.name);	
 	$("#product-edit-form input[name=mrp]").val(data.mrp);	
 	$("#product-edit-form input[name=id]").val(data.id);	
@@ -154,13 +160,11 @@ function displayEmployee(data){
 function myFunction() {
 	
   var x = $("#product-form input[name=barcode]").val();
-  var y =$("#product-form input[name=brand]").val();  
-   var z =$("#product-form input[name=category]").val();  
   var a =$("#product-form input[name=name]").val();  
   var b =$("#product-form input[name=mrp]").val();  
  pattern=/^\d+(?:\.\d{1,2})?$/;
  pattern2=/^\d*/;
-  	if (x==""||x==null, a==""||a==null, y==""||y==null, z==""||z==null) {
+  	if (x==""||x==null, a==""||a==null) {
       showError("Please Fill All Required Fields");
       return false;
   } 
@@ -318,14 +322,14 @@ function displayUploadData(){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+  
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+
     return json;
 }
 
@@ -343,3 +347,63 @@ function init(){
 
 $(document).ready(init);
 $(document).ready(getEmployeeList);
+$(document).ready(dropdown);
+
+function dropdown(){
+	console.log("dropdown starts");
+	
+	var url = getEmployeeUrl3();
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+		var select = document.getElementById('inputBrandCategory');
+		for(var i in data){
+		var e = data[i];	
+		var opt = document.createElement('option');
+		opt.value = e.id;
+		opt.innerHTML = e.brand+'-'+e.category;
+		select.appendChild(opt);
+	}
+		
+	
+		console.log("dropdown stops");
+
+	   },
+	   error: function(){
+	   		showError("An error has occurred");
+	   }
+	});
+	
+	
+} 
+
+function dropdown2(){
+	console.log("dropdown starts");
+	
+	var url = getEmployeeUrl3();
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+		var select = document.getElementById('inputBrandCategory2');
+		$("#inputBrandCategory2").empty();
+		for(var i in data){
+		var e = data[i];	
+		var opt = document.createElement('option');
+		opt.value = e.id;
+		opt.innerHTML = e.brand+'-'+e.category;
+		select.appendChild(opt);
+	}
+		
+	
+		console.log("dropdown stops");
+
+	   },
+	   error: function(){
+	   		showError("An error has occurred");
+	   }
+	});
+	
+	
+} 

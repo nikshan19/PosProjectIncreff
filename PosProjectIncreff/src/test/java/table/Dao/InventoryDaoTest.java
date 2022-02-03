@@ -37,8 +37,7 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(1);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
@@ -64,8 +63,7 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(2);
+
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
@@ -96,8 +94,7 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(3);
+
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();

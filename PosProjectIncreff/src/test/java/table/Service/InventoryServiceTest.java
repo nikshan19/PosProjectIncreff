@@ -36,8 +36,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(1);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
@@ -63,8 +62,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(2);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
@@ -95,8 +93,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(3);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
@@ -125,8 +122,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-//		pp.setBarcode("  ggjhg");
-//		pp.setBrandPojo(4);
+
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();

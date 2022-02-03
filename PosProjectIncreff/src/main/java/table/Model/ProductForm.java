@@ -5,8 +5,7 @@ import table.Pojo.BrandPojo;
 public class ProductForm {
 	
 	private String barcode;
-	private String brand;
-	private String category; 
+	private int brandCategory;
 	private String name;
 	private double mrp;
 	public String getBarcode() {
@@ -15,17 +14,11 @@ public class ProductForm {
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
 	}
-	public String getBrand() {
-		return brand;
+	public int getBrandCategory() {
+		return brandCategory;
 	}
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
+	public void setBrandCategory(int brandCategory) {
+		this.brandCategory = brandCategory;
 	}
 	public String getName() {
 		return name;
@@ -39,7 +32,6 @@ public class ProductForm {
 	public void setMrp(double mrp) {
 		this.mrp = mrp;
 	}
-	
 	
 	
 	

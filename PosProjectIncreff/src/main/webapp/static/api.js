@@ -207,14 +207,14 @@ function showSuccess(msg){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+   
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 
@@ -270,12 +270,16 @@ function uploadRows(){
 	   success: function(response) {
 			uploadRows();
 			getEmployeeList();  
+			$("#row-box").toggle();
+			
 	   },
 	   error: function(response){
 			
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();
+	   		$("#row-box").toggle();
+	   		$("#download-errors").toggle();
 	   }
 	});
 
@@ -325,6 +329,9 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#employeeFile').on('change', updateFileName)
+    
+   
+    
 }
 
 $(document).ready(init);

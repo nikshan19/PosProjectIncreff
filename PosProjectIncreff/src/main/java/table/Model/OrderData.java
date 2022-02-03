@@ -6,7 +6,7 @@ public class OrderData extends OrderForm {
 	
 	private int id;
 	private String dateTime;
-	
+	private int toggle;
 	
 	public int getId() {
 		return id;
@@ -22,5 +22,13 @@ public class OrderData extends OrderForm {
 
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
+	}
+
+	public int getToggle() {
+		return toggle;
+	}
+
+	public void setToggle(int toggle) {
+		this.toggle = toggle;
 	}
 }

@@ -1,5 +1,6 @@
 package table.Dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -71,10 +72,10 @@ public class BrandDao {
 	}
 
 	public List<BrandPojo> selectAll() {
-		Session session = em.unwrap(Session.class);
-		String hql = "FROM BrandPojo p ORDER BY p.brand asc";
-		Query query = session.createQuery(hql);
-		return query.getResultList();
+		TypedQuery<BrandPojo> query = getQuery(select_all);
+		List<BrandPojo> l = query.getResultList();
+		Collections.reverse(l);
+		return l;
 	}
 
 	public void update(BrandPojo p) throws ApiException {

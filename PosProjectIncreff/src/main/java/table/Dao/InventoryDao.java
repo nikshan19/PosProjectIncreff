@@ -1,6 +1,7 @@
 package table.Dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,6 +28,7 @@ public class InventoryDao {
 	private static String select_idB = "select p from ProductPojo p where barcode=:barcode";
 	private static String select_idP = "select p from ProductPojo p where id=:id";
 	private static String select_idi = "select p from InventoryPojo p where id=:id";
+	private static String select_idall = "select p from ProductPojo p";
 
 	@PersistenceContext
 	EntityManager em;
@@ -102,9 +104,7 @@ public class InventoryDao {
 	}
 
 	public List<InventoryData> selectAll() {
-		Session session = em.unwrap(Session.class);
-		String hql = "FROM ProductPojo p ORDER BY p.name asc";
-		Query query = session.createQuery(hql);
+		TypedQuery<ProductPojo> query = em.createQuery(select_idall, ProductPojo.class);
 		List<ProductPojo> l = query.getResultList();
 		List<InventoryData> list = new ArrayList<InventoryData>();
 
@@ -124,6 +124,7 @@ public class InventoryDao {
 			d.setId(p.getId());
 			list.add(d);
 		}
+		Collections.reverse(list);
 		return list;
 
 	}

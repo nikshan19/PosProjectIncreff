@@ -50,8 +50,7 @@ public class ProductDto {
 	public ProductData get(int id) throws ApiException {
 		ProductPojo p = service.get(id);
 		ProductData d =  convert(p);
-		d.setBrand(service.getBP(p.getBrandPojo()).getBrand());
-		d.setCategory(service.getBP(p.getBrandPojo()).getCategory());
+		
 		return d;
 	}
 	public List<ProductData> getAll() throws ApiException {
@@ -71,6 +70,7 @@ public class ProductDto {
 		ProductPojo p = new ProductPojo();
 		p.setName(form.getName());
 		p.setMrp(form.getMrp());
+		p.setBrandPojo(form.getBrandCategory());
 		return p;
 	}
 	
@@ -100,8 +100,7 @@ public class ProductDto {
 		ProductForm form1 = new ProductForm();
 		form1.setBarcode(form.getBarcode());
 		form1.setName(form.getName());
-		form1.setBrand(form.getBrand());
-		form1.setCategory(form.getCategory());
+		form1.setBrandCategory(getBP(form.getBrand(), form.getCategory()));
 		form1.setMrp(mrp);
 		ProductPojo p = convert(form1);
 		HashMap<ProductPojo, ProductForm> hm = new HashMap<ProductPojo, ProductForm>();
@@ -115,6 +114,7 @@ public class ProductDto {
 		data.setName(p.getName());
 		data.setMrp(p.getMrp());
 		data.setId(p.getId());
+		data.setBrandCategory(p.getBrandPojo());
 		return data;
 	}
 
@@ -131,10 +131,13 @@ public class ProductDto {
 	public void normalize(ProductPojo p, ProductForm form) {
 		
 		form.setBarcode(form.getBarcode().toLowerCase().trim());
-		form.setBrand(form.getBrand().toLowerCase().trim());
-		form.setCategory(form.getCategory().toLowerCase().trim());
+
 		p.setName(p.getName().toLowerCase().trim());
 		
+	}
+	
+	public int getBP(String brand, String category) throws ApiException {
+		return dao.getBrandCat(brand, category);
 	}
 	
 	

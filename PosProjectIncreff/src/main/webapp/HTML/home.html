@@ -19,7 +19,7 @@
 
 
 	<div class="container-fluid">
-		<div class="split left bg-light">
+		<div class="split left bg-white">
 			<img th:src="@{/static/brand.png}" height="120px" width="100px"
 				style="position: absolute; top: 30%; left: 43%;">
 			<button type="button" class="btn btn-sm btn-outline-primary mr-2"
@@ -30,7 +30,7 @@
 				<i class="bi bi-upload"></i> Upload
 			</button>
 			<button type="button" class="btn btn-sm btn-outline-dark"
-				style="position: relative; top: 48%; left: 37%;">Refresh</button>
+				id="refresh-data" style="position: relative; top: 48%; left: 37%;">Refresh</button>
 
 		</div>
 		<!-- left side ends -->
@@ -148,29 +148,35 @@
 
 					<div class="modal-header">
 						<h5 class="modal-title">Upload Brands</h5>
-
-
 					</div>
 
 					<div class="modal-body">
-						<div class="employee-file">
-							<input type="file" class="custom-file-input" id="employeeFile">
-							<label class="custom-file-label" for="employeeFile"
-								id="employeeFileName">Choose file</label>
+						<form>
+						<div class="row">
+						<div class="col">
+						<input type="file" class="form-control" id="employeeFile">
+						</div>	
 						</div>
-						<a th:href="@{/sample/employee.tsv}" target="_blank">Download
-							Sample</a> <br> Rows: <span id="rowCount">0</span>, Processed: <span
+						</form>
+						
+						
+						
+						<a th:href="@{/sample/brand2.tsv}" target="_blank">Download
+							Sample</a>
+							<div id="row-box" style="display:none;">
+							 <br> Rows: <span id="rowCount">0</span>, Processed: <span
 							id="processCount">0</span>, Errors: <span id="errorCount">0</span>
+							</div>
 					</div>
 
 					<div class="modal-footer">
 
-						<button type="button" class="btn btn-warning" id="download-errors">
+						<button type="button" class="btn btn-sm btn-outline-warning mr-2" id="download-errors" style="display:none;">
 							Download Errors
 						</button>
-							<button type="button" class="btn btn-secondary"
+							<button type="button" class="btn btn-sm btn-outline-secondary mr-2"
 								data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary" id="process-data">Upload</button>
+							<button type="button" class="btn btn-sm btn-outline-primary mr-2" id="process-data">Upload</button>
 							
 					</div>
 				</div>

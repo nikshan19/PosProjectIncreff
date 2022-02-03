@@ -32,6 +32,11 @@ public class OrderItemDao {
 	private static String select_all_order_id = "select p from OrderItemPojo p where orderId=:orderId";
 	private static String select_quantity = "select p from InventoryPojo p where id=:id";
 	private static String select_2 = "select p from OrderItemPojo p where productId=:productId AND mrp=:mrp AND orderId=:orderId";
+	private static String select_product = "select p from ProductPojo p where id=:id";
+	private static String select_inventory = "select p from InventoryPojo p where id=:id";
+	private static String select_barcode_product = "select p from ProductPojo p where barcode=:barcode";
+	private static String select_idd = "select p from OrderItemPojo p where id=:id";
+	private static String delete_idd = "delete from OrderItemPojo p where id=:id";
 
 	@PersistenceContext
 	EntityManager em;
@@ -88,11 +93,42 @@ public class OrderItemDao {
 
 	}
 
-	public int delete(int id) throws ApiException {
+	public void delete(int id) throws ApiException {
+		OrderItemPojo p;
+		try {
+			TypedQuery<OrderItemPojo> query = getQuery(select_idd);
+			query.setParameter("id", id);
+			p = query.getSingleResult();
+		} catch (NoResultException e) {
+			p = null;
+		}
 
-		Query query = em.createQuery(delete_id);
-		query.setParameter("orderId", id);
-		return query.executeUpdate();
+		if (p == null) {
+			throw new ApiException("OrderItem with given id doesnot exist");
+		}
+
+		Query query = em.createQuery(delete_idd);
+		query.setParameter("id", id);
+
+		TypedQuery<InventoryPojo> query1 = em.createQuery(select_inventory, InventoryPojo.class);
+		query1.setParameter("id", p.getProductId());
+		InventoryPojo ip = query1.getSingleResult();
+		int addv = p.getQuantity() + ip.getQuantity();
+		ip.setQuantity(addv);
+		
+		TypedQuery<OrderItemPojo> qq = em.createQuery(select_all_order_id, OrderItemPojo.class);
+		qq.setParameter("orderId", p.getOrderId());
+		List<OrderItemPojo> ll = qq.getResultList();
+		int orderId = p.getOrderId();
+		query.executeUpdate();
+		if(ll.size()==1) {
+			Query qu = em.createQuery(delete_order_id );
+			qu.setParameter("id", orderId);
+			qu.executeUpdate();
+		}
+		
+		
+		
 
 	}
 
@@ -120,12 +156,84 @@ public class OrderItemDao {
 
 	}
 
-	public OrderItemPojo onlySelect(int id, int orderId) {
+//	public OrderItemPojo onlySelect(int id, int orderId) {
+//		OrderItemPojo p;
+//		try {
+//			TypedQuery<OrderItemPojo> query = getQuery(select_id);
+//			query.setParameter("id", id);
+//			query.setParameter("orderId", orderId);
+//			p = query.getSingleResult();
+//		} catch (NoResultException e) {
+//			p = null;
+//		}
+//		return p;
+//
+//	}
+
+	public HashMap<OrderItemPojo, String> selectAll(int id) {
 		OrderItemPojo p;
 		try {
-			TypedQuery<OrderItemPojo> query = getQuery(select_id);
+			TypedQuery<OrderItemPojo> query = getQuery(select_idd);
 			query.setParameter("id", id);
-			query.setParameter("orderId", orderId);
+			p = query.getSingleResult();
+		} catch (NoResultException e) {
+			p = null;
+		}
+		
+		TypedQuery<ProductPojo> query1 = em.createQuery(select_product, ProductPojo.class);
+		query1.setParameter("id", p.getProductId());
+		String barcode = query1.getSingleResult().getBarcode();
+		HashMap<OrderItemPojo, String> hm = new HashMap<OrderItemPojo, String>();
+		hm.put(p, barcode);
+		return hm;
+	}
+
+
+	public void update(OrderItemPojo p, String barcode, int quantity, double mrp) throws ApiException {
+		ProductPojo pp;
+		try {
+			TypedQuery<ProductPojo> query1 = em.createQuery(select_barcode_product, ProductPojo.class);
+			query1.setParameter("barcode", barcode);
+			pp = query1.getSingleResult();
+		} catch (NoResultException e) {
+
+			throw new ApiException("no product exist with barcode: " + barcode);
+		}
+
+		if (pp.getMrp() < mrp) {
+			throw new ApiException("Selling Price: " + mrp + "cannot be greater than MRP; " + pp.getMrp());
+		}
+		
+		
+		TypedQuery<InventoryPojo> qIp = em.createQuery(select_inventory, InventoryPojo.class);
+		qIp.setParameter("id", p.getProductId());
+		InventoryPojo ip = qIp.getSingleResult();
+		ip.setQuantity(p.getQuantity()+ip.getQuantity());
+		
+		p.setMrp(mrp);
+		p.setProductId(pp.getId());
+
+		TypedQuery<InventoryPojo> qIp2 = em.createQuery(select_inventory, InventoryPojo.class);
+		qIp2.setParameter("id", p.getProductId());
+		InventoryPojo ip2 = qIp2.getSingleResult();
+		
+
+		int add_value = ip2.getQuantity() - quantity;
+		if (add_value < 0) {
+			throw new ApiException("qunatity in inventory has value less than added :" + ip2.getQuantity());
+		} else {
+			p.setQuantity(quantity);
+			ip2.setQuantity(add_value);
+
+		}
+
+	}
+	
+	public OrderItemPojo onlySelect2(int id) {
+		OrderItemPojo p;
+		try {
+			TypedQuery<OrderItemPojo> query = getQuery(select_idd);
+			query.setParameter("id", id);
 			p = query.getSingleResult();
 		} catch (NoResultException e) {
 			p = null;
@@ -133,69 +241,9 @@ public class OrderItemDao {
 		return p;
 
 	}
+	
 
-	public HashMap<String, OrderItemPojo> selectAll() {
-		TypedQuery<OrderItemPojo> query = getQuery(select_all);
-		List<OrderItemPojo> l1 = query.getResultList();
-		HashMap<String, OrderItemPojo> hm = new HashMap<String, OrderItemPojo>();
-		for (OrderItemPojo o : l1) {
-			TypedQuery<ProductPojo> q = em.createQuery(select_productid, ProductPojo.class);
-			q.setParameter("id", o.getProductId());
-
-			hm.put(q.getSingleResult().getBarcode(), o);
-
-		}
-		HashMap<String, OrderItemPojo> hml = sortHash(hm);
-
-		return hm;
-	}
-
-	public HashMap<String, OrderItemPojo> sortHash(HashMap<String, OrderItemPojo> hm) {
-
-		List<String> l = new ArrayList<String>(hm.keySet());
-		Collections.sort(l);
-		HashMap<String, OrderItemPojo> hml = new HashMap<String, OrderItemPojo>();
-		for (String s : l) {
-			hml.put(s, hm.get(s));
-		}
-		return hml;
-
-	}
-
-	public void update(OrderItemPojo p, String barcode, int quantity) throws ApiException {
-		ProductPojo pp;
-		try {
-			TypedQuery<ProductPojo> query = em.createQuery(select_barcode, ProductPojo.class);
-			query.setParameter("barcode", barcode);
-			pp = query.getSingleResult();
-		} catch (NoResultException e) {
-			throw new ApiException("product doesnot exist with barcode: " + barcode);
-		}
-		int old_pid = p.getProductId();
-		TypedQuery<InventoryPojo> qIp = em.createQuery(select_quantity, InventoryPojo.class);
-		qIp.setParameter("id", old_pid);
-		InventoryPojo ip = qIp.getSingleResult();
-		ip.setQuantity(p.getQuantity() + ip.getQuantity());
-
-		p.setProductId(pp.getId());
-
-		TypedQuery<InventoryPojo> qIp2 = em.createQuery(select_quantity, InventoryPojo.class);
-		qIp2.setParameter("id", p.getProductId());
-		InventoryPojo ip2 = qIp2.getSingleResult();
-
-		int add_value = ip2.getQuantity() - quantity;
-		if (add_value < 0) {
-			throw new ApiException("qunatity in inventory has value less than added :" + ip.getQuantity());
-		} else {
-			p.setQuantity(quantity);
-			ip2.setQuantity(add_value);
-		}
-
-		if (p.getMrp() != pp.getMrp()) {
-			throw new ApiException("MRP of this product is: " + pp.getMrp());
-		}
-
-	}
+	
 
 	TypedQuery<OrderItemPojo> getQuery(String jpql) {
 		return em.createQuery(jpql, OrderItemPojo.class);

@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 public class OrderPojo {
 
 	 @Id
-	 @GeneratedValue(strategy = GenerationType.TABLE, generator = "id_generator")
+	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 private int id;
 	 
 	 @Temporal(TemporalType.TIMESTAMP)
@@ -28,7 +28,7 @@ public class OrderPojo {
 	 public void onCreate() {
 		 dateTime = new Date();
 	 }
-	 
+	 private int toggle;
 	
 	public int getId() {
 		return id;
@@ -41,6 +41,12 @@ public class OrderPojo {
 	}
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
+	}
+	public int getToggle() {
+		return toggle;
+	}
+	public void setToggle(int toggle) {
+		this.toggle = toggle;
 	}
 
 	

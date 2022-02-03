@@ -39,7 +39,7 @@ function updateOrderItem(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		console.log("Employee update");	
+	   		
 	   		
 	   		getOrderList();
 	   		    //...
@@ -134,7 +134,7 @@ function pdf(){
 	   url: url,
 	   type: 'GET',
 	   success: function() {
-	   		console.log("Pdf done");
+	   		
 	   		location.href = "http://localhost:8080/PosProjectIncreff/api/pdf/"+id;	    //...
 	   },
 	   error: function(){
@@ -149,14 +149,14 @@ function pdf(){
 //HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
-    console.log(serialized);
+    
     var s = '';
     var data = {};
     for(s in serialized){
         data[serialized[s]['name']] = serialized[s]['value']
     }
     var json = JSON.stringify(data);
-    console.log(json);
+    
     return json;
 }
 

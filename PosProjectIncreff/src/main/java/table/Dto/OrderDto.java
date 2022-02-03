@@ -34,10 +34,10 @@ public class OrderDto {
 
 	}
 
-	public void update(int id, OrderForm form) throws ApiException {
+	public void update(int id) throws ApiException {
 
-		OrderPojo p = convert(form);
-		service.update(id, p);
+		
+		service.update(id);
 
 	}
 
@@ -68,6 +68,7 @@ public class OrderDto {
 		OrderData data = new OrderData();
 		data.setDateTime(p.getDateTime().toString());
 		data.setId(p.getId());
+		data.setToggle(p.getToggle());
 		return data;
 	}
 
