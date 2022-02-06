@@ -13,6 +13,29 @@ function getOrderItem2Url(){
 	return baseUrl + "/api/orderitem/edit";
 }
 
+function deleteOrder(id){
+	
+	var url = getEmployeeUrl() + "/" + id;
+	
+	$.ajax({
+	   url: url,
+	   type: 'DELETE',
+	   success: function(data, textStatus, xhr) {
+	   			showSuccess("Product deleted from cart");
+	   			getEmployeeList();
+	   
+	   		    //...
+	   },
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
+	   }
+	});
+}
+
+
+
+
+
 var oId;
 function getOrderItemList(id){
 	oId = id;
@@ -21,6 +44,19 @@ function getOrderItemList(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
+
+			if(data.length>0){
+				$('#mf').html('<button type="button" class=" close btn btn-outline-danger" id="cancel-order" onclick="deleteOrder(' + id + ')"'+'data-dismiss="modal">Cancel Order</button>'
+						+'<button type="button" class=" close btn btn-outline-secondary" id="close-r"'
+							+'data-dismiss="modal">Close</button>'
+	);
+			}
+			else{
+				
+				$('#edit-order-modal').modal('toggle');
+				
+			}
+			
 	   			
 	   		displayOrderItemList(data);
 	   		     //...
@@ -37,9 +73,9 @@ function displayOrderItemList(data){
 	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteOrderItem(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteOrderItem(' + e.id +','+e.orderId+ ')"><i class="bi bi-trash"></i></button>'
 		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
-		var row = '<tr>'
+		var row = '<tr id="'+e.id+'">'
 		+ '<td>' + c + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.quantity + '</td>'
@@ -53,13 +89,13 @@ function displayOrderItemList(data){
 }
 
 function displayEditOrderItem(id){
-	
+	var el = document.getElementById(""+id+"");
+	el.style.backgroundColor="red";
 	var url = getOrderItem2Url() + "/" + id;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   		
 	   		displayOrderItem(data);     //...
 	   },
 	   error: function(){
@@ -109,15 +145,16 @@ function getOrderId(id){
 
 function displayOrderItem(data){
 	$("#cart-edit-form input[name=barcode]").val(data.barcode);	
+	var span = document.getElementById("spanB");
+	span.innerHTML = data.barcode;
 	$("#cart-edit-form input[name=quantity]").val(data.quantity);
 	$("#cart-edit-form input[name=mrp]").val(data.mrp);	
 	$("#cart-edit-form input[name=id]").val(data.id);	
 	$('#edit-cart-modal').modal('toggle');
 }
 
-function deleteOrderItem(id){
-	var r = getOrderId(id);
-	console.log(r);
+function deleteOrderItem(id, orderId){
+	
 	var url = getOrderItem2Url() + "/" + id;
 	
 	$.ajax({
@@ -125,7 +162,10 @@ function deleteOrderItem(id){
 	   type: 'DELETE',
 	   success: function(data, textStatus, xhr) {
 	   		showSuccess("Product deleted from cart");
-	   			getOrderItem(r);
+	   			getOrderItemList(orderId);
+	   			$('#edit-order-modal').modal('toggle');
+	   			getEmployeeList();
+	   
 	   		    //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -173,11 +213,15 @@ function updateOrderItem(event){
        },	   
 	   success: function(data, textStatus, xhr) {
 	   		showSuccess("Order Updated");
-	   		getOrderItem(id);		
+	   		var el = document.getElementById(""+id+"");
+			el.style.backgroundColor="transparent";	
+	   		getOrderItem(id);
+	   			
 	   		     //...
 	   },
 	   error: function(data, textStatus, xhr){
 	   		showError("Error: "+data.responseText);
+	   		f1();
 	   }
 	});
 
@@ -196,9 +240,16 @@ function displayEmployeeList(data){
 	var c=1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-outline-primary border-0" onclick="addE(' + e.id + ')"><i class="bi bi-receipt"></i></button>'
+		var buttonHtml='';
+		if(e.toggle==1){
+		buttonHtml += '<button type="button" class="btn btn-outline-primary border-0" onclick="addE(' + e.id + ')">Download Invoice</button>'
+		}
 		if(e.toggle==0){
-		buttonHtml+= '<button type="button"  class="btn btn-outline-primary border-0" onclick="getOrderItemList(' + e.id + ')"><i class="bi bi-pencil"></i></button>'
+		buttonHtml+= '<button type="button"  class="btn btn-outline-primary border-0" onclick="addF(' + e.id + ')">Generate Invoice</button>'	
+		buttonHtml+= '<button type="button"  class="btn btn-outline-primary border-0" onclick="getO(' + e.id + ')"><i class="bi bi-pencil"></i></button>'
+}
+		if(e.toggle==2){
+			buttonHtml+='<button type="button" class="btn btn-outline-danger border-0">Cancelled</button>'
 		}
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
@@ -210,6 +261,18 @@ function displayEmployeeList(data){
 	}
 }
 
+function getO(id){
+	
+	
+	
+	
+	getOrderItemList(id);
+}
+
+function addF(id){
+	updateOrder(id);
+}
+
 function addE(id){
 	
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -218,7 +281,7 @@ function addE(id){
 	   url: url,
 	   type: 'GET',
 	   success: function() {
-	   		updateOrder(id);
+	   		
 	   		location.href = "http://localhost:8080/PosProjectIncreff/api/order/pdf/"+id;	
 	   },
 	   error: function(){
@@ -314,8 +377,18 @@ function toJson($form){
 
     return json;
 }
+function f1(){
+	
+	var table = document.getElementById("editorder-table");
+	for (var i = 0, row; row = table.rows[i]; i++) {
+  	if(row.style.backgroundColor=="red"){
+	row.style.backgroundColor = "transparent"
+}
+		    
+}
 
-
+	
+}
 
 //INITIALIZATION CODE
 function init(){
@@ -323,11 +396,11 @@ function init(){
 	$('#refresh-data').click(getEmployeeList);
 	$('#place-order').click(placeOrder);
 	$('#update-product').click(updateOrderItem);
+	$('#cancel-eo').click(f1);
+	
+	
 }
 
 $(document).ready(init);
 $(document).ready(getEmployeeList);
-
-
-
 

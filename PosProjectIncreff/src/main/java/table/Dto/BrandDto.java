@@ -69,7 +69,17 @@ public class BrandDto {
 
 		return list2;
 	}
+	public List<BrandData> getAllSorted() {
 
+		List<BrandPojo> list = service.getAllSorted();
+		List<BrandData> list2 = new ArrayList<BrandData>();
+		for (BrandPojo p : list) {
+
+			list2.add(convert(p));
+		}
+
+		return list2;
+	}
 	public BrandPojo convertUpload(BrandForm form) throws ApiException {
 		if (form.getBrand() == "" || form.getBrand() == null) {
 			throw new ApiException("Brand cannot be null");

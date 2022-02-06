@@ -137,7 +137,7 @@ function displayEditEmployee(id){
 	   success: function(data) {
 	   		console.log("Employee data fetched");
 	   		console.log(data);	
-	   		dropdown2();
+	   		dropdown2(data.brandCategory);
 	   		displayEmployee(data);     //...
 	   },
 	   error: function(){
@@ -148,12 +148,11 @@ function displayEditEmployee(id){
 
 function displayEmployee(data){
 	$("#product-edit-form input[name=barcode]").val(data.barcode);	
-	let element = document.getElementById("inputBrandCategory2");
-    element.value = data.brandCategory;
 	$("#product-edit-form input[name=name]").val(data.name);	
 	$("#product-edit-form input[name=mrp]").val(data.mrp);	
-	$("#product-edit-form input[name=id]").val(data.id);	
+	$("#product-edit-form input[name=id]").val(data.id);
 	$('#edit-product-modal').modal('toggle');
+	
 }
 
 
@@ -183,6 +182,34 @@ function myFunction() {
   }
   
 }
+
+function myFunction2() {
+	
+  var x = $("#product-edit-form input[name=barcode]").val();
+  var a =$("#product-edit-form input[name=name]").val();  
+  var b =$("#product-edit-form input[name=mrp]").val();  
+ pattern=/^\d+(?:\.\d{1,2})?$/;
+ pattern2=/^\d*/;
+  	if (x==""||x==null, a==""||a==null) {
+      showError("Please Fill All Required Fields");
+      return false;
+  } 
+  	else if(b<=0){
+	showError("MRP cannot be zero");
+	return false
+}
+	else if(!pattern.test(b)){
+		showError("Mrp has to be in '0.00' format");
+		return false
+	}
+	
+  else{
+	updateEmployee();
+
+  }
+  
+}
+
 
 function showError(msg){
 	
@@ -270,12 +297,19 @@ function uploadRows(){
 	   success: function(response) {
 	   		uploadRows();  
 	   		getEmployeeList();
+	   		
+			document.getElementById('row-box').style.display = "";
+			
 	   },
 	   error: function(response){
 			
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();
+	   		
+	   		document.getElementById('row-box').style.display = "";
+	   		
+	   		document.getElementById('download-errors').style.display = "";
 	   }
 	});
 
@@ -337,7 +371,7 @@ function toJson($form){
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(myFunction);
-	$('#update-product').click(updateEmployee);
+	$('#update-product').click(myFunction2);
 	$('#refresh-data').click(getEmployeeList);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
@@ -378,7 +412,7 @@ function dropdown(){
 	
 } 
 
-function dropdown2(){
+function dropdown2(bc){
 	console.log("dropdown starts");
 	
 	var url = getEmployeeUrl3();
@@ -392,6 +426,9 @@ function dropdown2(){
 		var e = data[i];	
 		var opt = document.createElement('option');
 		opt.value = e.id;
+		if(bc==e.id){
+			opt.selected='selected';
+		}
 		opt.innerHTML = e.brand+'-'+e.category;
 		select.appendChild(opt);
 	}

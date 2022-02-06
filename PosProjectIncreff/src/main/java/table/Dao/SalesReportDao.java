@@ -141,6 +141,7 @@ public class SalesReportDao {
 		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>(); // quantity
 		TypedQuery<BrandPojo> qq = em.createQuery(select_all_brands, BrandPojo.class);
 		List<BrandPojo> lll = qq.getResultList();
+		Collections.sort(lll);
 		if (lll.size() == 0) {
 			throw new ApiException("No Brand available");
 
@@ -219,6 +220,7 @@ public class SalesReportDao {
 		TypedQuery<BrandPojo> qq = em.createQuery(select_brand, BrandPojo.class);
 		qq.setParameter("brand", form.getBrand());
 		List<BrandPojo> lll = qq.getResultList();
+		Collections.sort(lll);
 		if (lll.size() == 0) {
 			throw new ApiException("Brand not available");
 
@@ -312,6 +314,7 @@ public class SalesReportDao {
 		TypedQuery<BrandPojo> qq = em.createQuery(select_cat, BrandPojo.class);
 		qq.setParameter("category", form.getCategory());
 		List<BrandPojo> lll = qq.getResultList();
+		Collections.sort(lll);
 		if (lll.size() == 0) {
 			throw new ApiException("Brand  with category added not available");
 
@@ -404,6 +407,7 @@ public class SalesReportDao {
 		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>(); // quantity
 		TypedQuery<BrandPojo> qq = em.createQuery(select_all_brands, BrandPojo.class);
 		List<BrandPojo> lll = qq.getResultList();
+		Collections.sort(lll);
 		if (lll.size() == 0) {
 			throw new ApiException("No Brand available");
 

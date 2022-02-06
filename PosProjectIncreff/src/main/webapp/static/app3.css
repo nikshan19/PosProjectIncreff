@@ -41,6 +41,15 @@ body {
 
 }
 
+.b{
+	
+  
+  border: 7px solid #ddd;
+  padding: 50px;
+  margin: 20px;
+  height:95%
+}
+
 /* If you want the content centered horizontally and vertically */
 .centered{
   position: absolute;

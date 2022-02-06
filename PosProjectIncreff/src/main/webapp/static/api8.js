@@ -150,12 +150,12 @@ $(document).ready(show);
 function show(){
 	$("#datepicker1").datepicker({
   format: 'yyyy-mm-dd',
-  maxDate: 0 // change format here
+  maxDate: '0' // change format here
   
   });
   $("#datepicker2").datepicker({
   format: 'yyyy-mm-dd',
-  maxDate: 0// change format here
+  maxDate: '0'// change format here
   
   });
 }

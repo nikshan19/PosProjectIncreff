@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Entity
 
-public class BrandPojo {
+public class BrandPojo implements Comparable<BrandPojo> {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -44,6 +44,12 @@ public class BrandPojo {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public int compareTo(BrandPojo o) {
+		String a = this.getBrand()+this.getCategory();
+		String b = o.getBrand()+o.getCategory();
+		return a.compareTo(b);
 	}
 
 	

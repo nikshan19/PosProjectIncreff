@@ -270,7 +270,8 @@ function uploadRows(){
 	   success: function(response) {
 			uploadRows();
 			getEmployeeList();  
-			$("#row-box").toggle();
+			
+			document.getElementById('row-box').style.display = "";
 			
 	   },
 	   error: function(response){
@@ -278,8 +279,10 @@ function uploadRows(){
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();
-	   		$("#row-box").toggle();
-	   		$("#download-errors").toggle();
+	   		
+	   		document.getElementById('row-box').style.display = "";
+	   		
+	   		document.getElementById('download-errors').style.display = "";
 	   }
 	});
 

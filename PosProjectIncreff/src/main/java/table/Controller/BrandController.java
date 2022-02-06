@@ -107,6 +107,13 @@ public class BrandController {
 		l = new ArrayList<BrandData>(dto.getAll());
 		return dto.getAll();
 	}
+	@ApiOperation(value = "Gets list of all employees")
+	@RequestMapping(path = "/api/brandreport", method = RequestMethod.GET)
+	public List<BrandData> getAllSorted() {
+		l = new ArrayList<BrandData>(dto.getAllSorted());
+		return dto.getAllSorted();
+	}
+	
 
 	@ApiOperation(value = "Gets a single orderitem by ID")
 	@RequestMapping(path = "/api/brandreport/pdf", method = RequestMethod.GET)

@@ -2,8 +2,6 @@ package table.Service;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +22,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 import table.Dao.PDFGeneratorDao;
-import table.Model.OrderItemData;
 import table.Pojo.OrderItemPojo;
+import table.Pojo.OrderPojo;
 
 @Service
 public class PDFGeneratorService {
@@ -71,6 +69,23 @@ public class PDFGeneratorService {
 		Paragraph paragraph = new Paragraph("Invoice", fontTitle);
 		paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 		document.add(paragraph);
+		
+
+		Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+		fontTitle.setSize(12);
+		
+		OrderPojo op = getOrder(list2.get(0).getOrderId());
+		String[] list1 = op.getdT().split(" ");
+		
+		Paragraph paragraph4 = new Paragraph("Order Id: "+op.getId()+"", font);
+		paragraph4.setAlignment(Paragraph.ALIGN_CENTER);
+		document.add(paragraph4);
+		
+		Paragraph paragraph1 = new Paragraph("\nDate: "+list1[0]+"                                                                                                           Time: "+list1[1].substring(0, 5)+"", font);
+		paragraph1.setAlignment(Paragraph.ALIGN_LEFT);
+		document.add(paragraph1);
+		
+		
 
 		PdfPTable table = new PdfPTable(5);
 		table.setWidthPercentage(100f);
@@ -96,14 +111,9 @@ public class PDFGeneratorService {
 		paragraphl.setAlignment(Paragraph.ALIGN_CENTER);
 		document.add(paragraphl);
 
-		Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-		fontTitle.setSize(12);
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
+		
 
-		Paragraph paragraph1 = new Paragraph("Date: " + dtf.format(now) + "\n\n", font);
-		paragraphl.setAlignment(Paragraph.ALIGN_RIGHT);
-		document.add(paragraph1);
+		
 
 		Paragraph paragraph2 = new Paragraph("Signature", font);
 		paragraphl.setAlignment(Paragraph.ALIGN_RIGHT);
@@ -121,5 +131,10 @@ public class PDFGeneratorService {
 	@Transactional
 	public List<OrderItemPojo> getSpecList(int id) {
 		return dao.getSpecList(id);
+	}
+	
+	@Transactional
+	public OrderPojo getOrder(int orderId) {
+		return dao.getOrder(orderId);
 	}
 }

@@ -77,6 +77,13 @@ public class BrandDao {
 		Collections.reverse(l);
 		return l;
 	}
+	public List<BrandPojo> selectAllSorted() {
+		TypedQuery<BrandPojo> query = getQuery(select_all);
+		List<BrandPojo> l = query.getResultList();
+		Collections.sort(l);
+		return l;
+	}
+	
 
 	public void update(BrandPojo p) throws ApiException {
 		BrandPojo bp;

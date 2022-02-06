@@ -42,6 +42,10 @@ public class BrandService {
 	public List<BrandPojo> getAll() {
 		return dao.selectAll();
 	}
+	@Transactional
+	public List<BrandPojo> getAllSorted() {
+		return dao.selectAllSorted();
+	}
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(int id, BrandPojo newPojo) throws ApiException {

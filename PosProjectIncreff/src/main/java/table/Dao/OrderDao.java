@@ -1,5 +1,8 @@
 package table.Dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,7 +13,6 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
-import table.Pojo.BrandPojo;
 import table.Pojo.InventoryPojo;
 import table.Pojo.OrderItemPojo;
 import table.Pojo.OrderPojo;
@@ -24,6 +26,9 @@ public class OrderDao {
 	private static String select_all = "select p from OrderPojo p";
 	private static String select_all_with_0 = "select p from OrderItemPojo p where orderId=:id";
 	private static String select_quantity = "select p from InventoryPojo p where id=:id";
+	private static String delete_orderItem = "delete from OrderItemPojo p where id=:id";
+	
+	
 
 	@PersistenceContext
 	EntityManager em;
@@ -62,11 +67,25 @@ public class OrderDao {
 
 	}
 
-	public int delete(int id) {
-		Query query = em.createQuery(delete_id);
+	public void delete(int id) {
+		TypedQuery<OrderItemPojo> query = em.createQuery(select_all_with_0, OrderItemPojo.class);
 		query.setParameter("id", id);
-		return query.executeUpdate();
-	}
+		List<OrderItemPojo> l = query.getResultList();
+		for(OrderItemPojo p: l) {
+			TypedQuery<InventoryPojo> q = em.createQuery(select_quantity, InventoryPojo.class);
+			q.setParameter("id", p.getProductId());
+			InventoryPojo ip = q.getSingleResult();
+			ip.setQuantity(ip.getQuantity()+p.getQuantity());
+			Query dq = em.createQuery(delete_orderItem);
+			dq.setParameter("id", p.getId());
+			dq.executeUpdate();
+			
+		}
+		TypedQuery<OrderPojo> dq = getQuery(select_id);
+		dq.setParameter("id", id);
+		OrderPojo op = dq.getSingleResult();
+		op.setToggle(2);
+		}
 
 	public OrderPojo select(int id) {
 		OrderPojo p;
@@ -82,7 +101,9 @@ public class OrderDao {
 
 	public List<OrderPojo> selectAll() {
 		TypedQuery<OrderPojo> query = getQuery(select_all);
-		return query.getResultList();
+		List<OrderPojo> l = query.getResultList();
+		Collections.reverse(l);
+		return l;
 	}
 
 	public void update(int id) {
@@ -96,6 +117,10 @@ public class OrderDao {
 		}
 		if (p!=null) {
 			p.setToggle(1);
+			 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+			 Date date = new Date();  
+			String s = String.valueOf(formatter.format(date));
+			p.setdT(s);
 		}
 
 	}

@@ -1,3 +1,19 @@
+function getEmployeeUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/order";
+}
+
+
+function getProductUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/product";
+}
+
+function getInventoryUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/inventory";
+}
+
 function getOrderItemUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/orderitem";
@@ -73,7 +89,7 @@ function addOrder(event){
 	   		//location.reload();
 	   		getOrderItemList();
 	   		//getEmployeeList(); 
-	   		location.href = "http://localhost:8080/PosProjectIncreff/ui/invoice";
+	   		location.href = "http://localhost:8080/PosProjectIncreff/ui/order2";
 	 		//count=0;
 	   		    //...
 	   },
@@ -131,6 +147,8 @@ function displayEditOrderItem(id){
 
 function displayOrderItem(data){
 	$("#cart-edit-form input[name=barcode]").val(data.barcode);	
+	var span = document.getElementById("spanB");
+	span.innerHTML = "Product barcode: "+data.barcode;
 	$("#cart-edit-form input[name=quantity]").val(data.quantity);
 	$("#cart-edit-form input[name=mrp]").val(data.mrp);	
 	$("#cart-edit-form input[name=id]").val(data.id);	
@@ -249,6 +267,187 @@ function refresh(){
 
 
 
+function addOrderItem2(event){
+	
+
+	var $form = $("#order-edit-form");
+	
+	var json = toJson($form);
+	
+	var url = getOrderItemUrl();
+
+
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },	   
+	   success: function(data, textStatus, xhr) {
+			$('#edit-order-modal').modal('toggle');
+			$("#order-edit-form").trigger("reset");
+	   		showSuccess("Product added to cart");	
+			getOrderItemList();
+	   		
+	   		    //...
+	   },
+	   error: function(data, textStatus, xhr){
+			$('#edit-order-modal').modal('toggle');
+	   		showError("Error: "+data.responseText);
+	   		
+	   }
+	});
+	
+return false;
+
+}
+
+function displayOrderList(id){
+	var url = getOrderItemUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		
+	   		displayOrderItemList(data);
+	   		
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});	
+}
+
+
+function getProductList(){
+	var url = getProductUrl();
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   	
+	   		displayProductList(data);     //...
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+}
+
+function displayProductList(data){
+	console.log('Printing product data');
+	var $tbody = $('#order-table').find('tbody');
+	$tbody.empty();
+	var c = 1;
+	for(var n in data){
+		var e = data[n];
+		var buttonHtml = '<button type="button" class="btn btn-outline-primary border-0" onclick="addE(' + e.id + ')">Add to Cart</button>';
+		var row = '<tr>'
+		+ '<td>' + c + '</td>'
+		+ '<td>' + e.name + '</td>'
+		+ '<td>' + e.barcode + '</td>'
+		+ '<td>' + e.mrp + '</td>'
+		+ '<td>' + buttonHtml + '</td>'
+		+ '</tr>';
+        $tbody.append(row);
+        c++;
+	}
+}
+
+function addE(id){
+	
+	var url = getProductUrl();
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+		
+		var barcode;
+		var mrp;
+		for(var n in data ){
+			var e = data[n];
+		
+			if(e.id==id){
+				barcode = e.barcode;
+				mrp = e.mrp;
+		}
+	}
+	
+	
+	$("#order-edit-form input[name=barcode]").val(barcode);	
+	var span = document.getElementById("spanBB");
+	span.innerHTML = "Product barcode: "+barcode;
+	$("#order-edit-form input[name=mrp]").val(mrp);	
+	$('#edit-order-modal').modal('toggle');
+	   	
+	   		  
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+	
+	
+	
+	
+}
+
+function displayEditEmployee(id){
+	var url = getEmployeeUrl() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   			
+	   		displayEmployee(data);
+	   		displayOrderItem();     //...
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});	
+}
+
+function displayEmployee(data){
+	$("#order-edit-form input[name=dateTime]").val(data.dateTime);	
+	$("#order-edit-form input[name=id]").val(data.id);
+		
+	$('#edit-order-modal').modal('toggle');
+}
+
+function formValidate2(){
+	
+		var a = $("#order-edit-form input[name=barcode]").val()
+		var b = $("#order-edit-form input[name=quantity]").val()
+		var c = $("#order-edit-form input[name=mrp]").val()
+		
+		
+		var pattern= /^\d+(?:\.\d{1,2})?$/;
+		if(a==""||a==null){
+			showError("All input fields must be filled");
+			return false;
+		}
+		else if(b<=0||c<=0){
+			showError("Quantity and Mrp cannot be zero");
+			return false;
+		}
+		else if(!pattern.test(c)){
+			showError("Mrp has to be in '0.00' format");
+			return false;
+			
+		}
+		else{
+			addOrderItem2();
+		}
+		
+	}
+
+
+
+
+
+
 //INITIALIZATION CODE
 function init(){
 	
@@ -256,11 +455,11 @@ function init(){
 	$('#place-order').click(addOrder);
 	$('#update-product').click(formValidate1);
 	$('#refresh-data').click(refresh);
-
+	$('#update-employee').click(formValidate2);
 }
 $(document).ready(init);
 $(document).ready(getOrderItemList);
-
+$(document).ready(getProductList);
 
 
 

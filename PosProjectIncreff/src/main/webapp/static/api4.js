@@ -139,6 +139,12 @@ function displayEditEmployee(id){
 function displayEmployee(data){
 	$("#inventory-edit-form input[name=barcode]").val(data.barcode);	
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);	
+	var span = document.getElementById("spanB");
+	span.innerHTML = "Product name: "+data.name+"<br/>";
+	
+	var span = document.getElementById("spanBB");
+	span.innerHTML = "Product barcode: "+data.barcode;
+	
 	$('#edit-inventory-modal').modal('toggle');
 }
 
@@ -161,9 +167,32 @@ function formValidation(){
 else{
 	addEmployee();
 }
+}	
+	
+function myFunction(){
+	
+	var x = $("#inventory-edit-form input[name=barcode]").val();
+  	var y = $("#inventory-edit-form input[name=quantity]").val();  
+  	
+  	if(x==""||x==null){
+	showError("Fill all input fileds");
+	return false;
+}
+  	else if(y<=0){
+	showError("Enter valid inputs");
+	return false;
+}
+else{
+	updateEmployee();
+}
 	
 	
 }
+
+
+
+
+
 
 function showError(msg){
 	
@@ -264,11 +293,19 @@ function uploadRows(){
 	   success: function(response) {
 	   		uploadRows();  
 	   		getEmployeeList();
+	   		
+			document.getElementById('row-box').style.display = "";
+			
 	   },
 	   error: function(response){
+			
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();
+	   		
+	   		document.getElementById('row-box').style.display = "";
+	   		
+	   		document.getElementById('download-errors').style.display = "";
 	   }
 	});
 
@@ -313,7 +350,7 @@ function displayUploadData(){
 //INITIALIZATION CODE
 function init(){
 	
-	$('#update-inventory').click(updateEmployee);
+	$('#update-inventory').click(myFunction);
 	$('#refresh-data').click(getEmployeeList);
 	$('#add').click(formValidation);
 	$('#upload-data').click(displayUploadData);

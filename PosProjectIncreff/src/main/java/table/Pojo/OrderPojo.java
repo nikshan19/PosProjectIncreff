@@ -26,9 +26,11 @@ public class OrderPojo {
 	 
 	 @PrePersist
 	 public void onCreate() {
+		 
 		 dateTime = new Date();
 	 }
 	 private int toggle;
+	 private String dT;
 	
 	public int getId() {
 		return id;
@@ -50,6 +52,13 @@ public class OrderPojo {
 	}
 
 	
+
+	public String getdT() {
+		return dT;
+	}
+	public void setdT(String dT) {
+		this.dT = dT;
+	}
 	
 	
 	

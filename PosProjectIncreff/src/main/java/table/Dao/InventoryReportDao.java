@@ -1,6 +1,7 @@
 package table.Dao;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class InventoryReportDao {
 	public HashMap<BrandPojo, Integer> selectAll() {
 		TypedQuery<BrandPojo> query = em.createQuery(select_all_brand, BrandPojo.class);
 		List<BrandPojo> lB = query.getResultList();
+		Collections.sort(lB);
 		HashMap<BrandPojo, Integer> hm = new HashMap<BrandPojo, Integer>();
 		if (lB.size() == 0) {
 			return hm;
@@ -38,7 +40,7 @@ public class InventoryReportDao {
 			q1.setParameter("brandPojo", b.getId());
 			List<ProductPojo> lP = q1.getResultList();
 			if (lP.size() == 0) {
-				return hm;
+				continue;
 			}
 			int quant = 0;
 			for (ProductPojo p : lP) {
@@ -48,7 +50,7 @@ public class InventoryReportDao {
 					q2.setParameter("id", p.getId());
 					i = q2.getSingleResult();
 				} catch (NoResultException e) {
-					return hm;
+					continue;
 				}
 				quant += i.getQuantity();
 			}

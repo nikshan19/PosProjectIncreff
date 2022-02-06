@@ -1,5 +1,6 @@
 package table.Dto;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,8 @@ public class OrderDto {
 
 	public OrderData convert(OrderPojo p) {
 		OrderData data = new OrderData();
-		data.setDateTime(p.getDateTime().toString());
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");  
+		data.setDateTime(formatter.format(p.getDateTime()));
 		data.setId(p.getId());
 		data.setToggle(p.getToggle());
 		return data;

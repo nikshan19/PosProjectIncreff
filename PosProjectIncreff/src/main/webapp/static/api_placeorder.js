@@ -4,7 +4,6 @@ function getEmployeeUrl(){
 	return baseUrl + "/api/order";
 }
 
-
 function getOrderItemUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/orderitem";
@@ -21,9 +20,19 @@ function getInventoryUrl(){
 }
 
 
+function getOrderUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/order";
+}
+
+function getOrderItem2Url(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/orderitem2";
+}
 
 
 
+/*
 
 function addOrderItem2(event){
 	
@@ -59,7 +68,9 @@ function addOrderItem2(event){
 return false;
 
 }
+*/
 
+/*
 
 function displayOrderList(id){
 	var url = getOrderItemUrl() + "/" + id;
@@ -77,7 +88,7 @@ function displayOrderList(id){
 	});	
 }
 
-
+*/
 
 
 
@@ -90,7 +101,7 @@ function getProductList(){
 	   success: function(data) {
 	   			
 	   		d=data;
-	   		displayProductList(data);     //...
+	   		//displayProductList(data);     //...
 	   },
 	   error: function(){
 	   		alert("An error has occurred");
@@ -99,6 +110,7 @@ function getProductList(){
 }
 
 
+/*
 function displayProductList(data){
 	console.log('Printing product data');
 	var $tbody = $('#order-table').find('tbody');
@@ -118,8 +130,8 @@ function displayProductList(data){
         c++;
 	}
 }
-
-
+*/
+/*
 function addE(id){
 	var barcode;
 	var mrp;
@@ -138,8 +150,8 @@ function addE(id){
 	$('#edit-order-modal').modal('toggle');
 	
 }
-
-
+*/
+/*
 
 function displayEditEmployee(id){
 	var url = getEmployeeUrl() + "/" + id;
@@ -164,7 +176,7 @@ function displayEmployee(data){
 	$('#edit-order-modal').modal('toggle');
 }
 
-
+*/
 
 function formValidate1(){
 	
@@ -193,7 +205,7 @@ function formValidate1(){
 		
 	}
 	
-
+/*
 function formValidate2(){
 	
 		var a = $("#order-edit-form input[name=barcode]").val()
@@ -223,7 +235,7 @@ function formValidate2(){
 	
 
 
-
+*/
 
 
 function cartPage(){
@@ -251,7 +263,8 @@ function addOrderItem(event){
        },	   
 	   success: function(data, textStatus, xhr) {
 	   		showSuccess("Product added to cart");	
-	   		getEmployeeList(); 
+	   		//getEmployeeList(); 
+	   		getOrderItemList();
 	   		    //...
 	   },
 	   error: function(data, textStatus, xhr){
@@ -264,9 +277,184 @@ function addOrderItem(event){
 
 return false;
 
-
+// from here cart begins
 
 }
+
+function getOrderItemList(){
+	var url = getOrderItemUrl()+"/"+0;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   			
+	   		displayOrderItemList(data);     //...
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+}
+
+function displayOrderItemList(data){
+	console.log('Printing orderitem data');
+	var $tbody = $('#editorder-table').find('tbody');
+	$tbody.empty();
+	var c = 1;
+	for(var i in data){
+		var e = data[i];
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteOrderItem(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
+		var row = '<tr>'
+		+ '<td>' + c + '</td>'
+		+ '<td>' + e.barcode + '</td>'
+		+ '<td>' + e.quantity + '</td>'
+		+ '<td>' + e.mrp + '</td>'
+		+ '<td>' + buttonHtml + '</td>'
+		+ '</tr>';
+        $tbody.append(row);
+        c++;
+	}
+}
+
+function addOrder(event){
+	//Set the values to update
+	
+	
+	var $form = $("#demo-form");
+	var json = toJson($form);
+	var url = getOrderUrl();
+
+
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },	   
+	   success: function(data, textStatus, xhr) {
+	   		
+	   		//location.reload();
+	   		getOrderItemList();
+	   		//getEmployeeList(); 
+	   		location.href = "http://localhost:8080/PosProjectIncreff/ui/order2";
+	 		//count=0;
+	   		    //...
+	   },
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
+	   }
+	});
+
+return false;
+}
+
+function updateOrderItem(event){
+	$('#edit-cart-modal').modal('toggle');
+	//Get the ID
+	var id = $("#cart-edit-form input[name=id]").val();	
+	var url = getOrderItem2Url() + "/" + id;
+
+	//Set the values to update
+	var $form = $("#cart-edit-form");
+	var json = toJson($form);
+
+	$.ajax({
+	   url: url,
+	   type: 'PUT',
+	   data: json,
+	   headers: {
+       	'Content-Type': 'application/json'
+       },	   
+	   success: function(data, textStatus, xhr) {
+	   		showSuccess("Cart Updated");		
+	   		getOrderItemList();     //...
+	   },
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
+	   }
+	});
+
+	return false;
+}
+
+function displayEditOrderItem(id){
+	var url = getOrderItem2Url() + "/" + id;
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		
+	   		displayOrderItem(data);     //...
+	   },
+	   error: function(){
+	   		showError("An error has occurred");
+	   }
+	});	
+}
+
+function displayOrderItem(data){
+	$("#cart-edit-form input[name=barcode]").val(data.barcode);	
+	var span = document.getElementById("spanB");
+	span.innerHTML = "Product barcode: "+data.barcode;
+	
+	$("#cart-edit-form input[name=quantity]").val(data.quantity);
+	$("#cart-edit-form input[name=mrp]").val(data.mrp);	
+	$("#cart-edit-form input[name=id]").val(data.id);	
+	$('#edit-cart-modal').modal('toggle');
+}
+
+
+function deleteOrderItem(id){
+	var url = getOrderItem2Url() + "/" + id;
+
+	$.ajax({
+	   url: url,
+	   type: 'DELETE',
+	   success: function(data, textStatus, xhr) {
+	   		showSuccess("Product deleted from cart");	
+	   		getOrderItemList();     //...
+	   },
+	   error: function(data, textStatus, xhr){
+	   		showError("Error: "+data.responseText);
+	   }
+	});
+}
+
+
+function formValidate11(){
+	
+		var a = $('#cart-edit-form input[name=barcode]').val()
+		var b = $('#cart-edit-form input[name=quantity]').val()
+		var c = $('#cart-edit-form input[name=mrp]').val()
+		
+		var pattern= /^\d+(?:\.\d{1,2})?$/;
+		if(a==""||a==null){
+			showError("All input fields must be filled");
+			return false;
+		}
+		else if(b<=0||c<=0){
+			showError("Quantity and Mrp cannot be zero");
+			return false;
+		}
+		else if(!pattern.test(c)){
+			showError("Mrp has to be in '0.00' format");
+			return false;
+			
+		}
+		else{
+			updateOrderItem();
+		}
+		
+	}
+	
+
+
+
+
+
+
 
 
 	
@@ -336,6 +524,8 @@ function showSuccess(msg){
 }
 
 function val(){
+	$("#pd").hide();
+	$("#detail-form").hide();
 	
 	var a = $("#order-form input[name=barcode]").val()
 	if(a==""||a==null){
@@ -343,8 +533,7 @@ function val(){
 			return false;
 		}
 	else{
-		$("#pd").show();
-		$("#detail-form").show();
+		
 		display(a);
 	}	
 	
@@ -352,12 +541,18 @@ function val(){
 }
 
 function display(barcode){
-	var name;
-	var mrp;
-	var id;
-	var t=0;
-	for(n in d){
-		var e = d[n];
+	
+	var urll = getProductUrl();
+	$.ajax({
+	   url: urll,
+	   type: 'GET',
+	   success: function(data) {
+			var name;
+			var mrp;
+			var id;
+	   		var t=0;
+		for(n in data){
+		var e = data[n];
 		console.log(e.barcode+" "+barcode);
 		if(e.barcode == barcode){
 			console.log(e.barcode+" "+barcode);
@@ -374,8 +569,11 @@ function display(barcode){
 		return false;
 	}
 	
-	$("#detail-form input[name=name]").val(name);	
-	$("#detail-form input[name=mrp]").val(mrp);
+	var span1 = document.getElementById("spanBB");
+	span1.innerHTML = "Name: "+name;
+	
+	var span2 = document.getElementById("spanBBB");
+	span2.innerHTML = "MRP: "+mrp;
 
 	var url = getInventoryUrl() + "/" + id;
 	$.ajax({
@@ -383,13 +581,30 @@ function display(barcode){
 	   type: 'GET',
 	   success: function(data) {
 	   		
-	   		$("#detail-form input[name=quantity]").val(data.quantity);
-	   		   //...
+	   		var span3 = document.getElementById("spanBBBB");
+			span3.innerHTML = "Quantity: "+data.quantity;
+	   		$("#pd").show();
+			$("#detail-form").show();
 	   },
 	   error: function(){
 	   		showError("An error has occurred");
 	   }
 	});	
+	
+	
+	
+	
+	   },
+	   error: function(){
+	   		alert("An error has occurred");
+	   }
+	});
+
+	
+	
+	
+	
+	
 	
 }
 function refresh(){
@@ -402,14 +617,17 @@ function init(){
 	
 	$('#add-order').click(formValidate1);
 	$('#cart-data').click(cartPage);
-	$('#update-employee').click(formValidate2);
+	//$('#update-employee').click(formValidate2);
 	$('#fetch').click(val);
 	$('#refresh-data').click(refresh);
 	$("#pd").hide();
 	$("#detail-form").hide();
+	$('#place-order').click(addOrder);
+	$('#update-product').click(formValidate11);
+	
 
 }
 
 $(document).ready(init);
-$(document).ready(getProductList);
 
+$(document).ready(getOrderItemList);

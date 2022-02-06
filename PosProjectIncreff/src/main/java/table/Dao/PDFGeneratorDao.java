@@ -26,6 +26,7 @@ public class PDFGeneratorDao {
 	private static String select_id = "select p from BrandPojo p where id=:id";
 	private static String select_idP = "select p from ProductPojo p where id=:id";
 	private static String select_all_order = "select p from OrderPojo p";
+	private static String select_an_order = "select p from OrderPojo p where id=:id";
 	private static String select_oi = "select p from OrderItemPojo p where orderId=:id";
 	
 	@PersistenceContext
@@ -65,6 +66,13 @@ public class PDFGeneratorDao {
 		query.setParameter("id", id);
 		List<OrderItemPojo> l = query.getResultList();
 		return l;
+		
+	}
+	
+	public OrderPojo getOrder(int orderId) {
+		TypedQuery<OrderPojo> query = em.createQuery(select_an_order, OrderPojo.class);
+		query.setParameter("id", orderId);
+		return query.getSingleResult();
 		
 	}
 	

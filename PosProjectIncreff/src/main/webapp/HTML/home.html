@@ -2,7 +2,10 @@
 <!DOCTYPE html>
 <html lan="en">
 
-<head th:replace="snippets2.html :: name_head"></head>
+<head th:replace="snippets2.html :: name_head">
+
+
+</head>
 <body>
 	<nav th:replace="snippets2.html :: name_navbar"></nav>
 	<header>
@@ -20,18 +23,19 @@
 
 	<div class="container-fluid">
 		<div class="split left bg-white">
+			<div class="b">
 			<img th:src="@{/static/brand.png}" height="120px" width="100px"
 				style="position: absolute; top: 30%; left: 43%;">
 			<button type="button" class="btn btn-sm btn-outline-primary mr-2"
-				style="position: relative; top: 48%; left: 35%;" data-toggle="modal"
+				style="position: relative; top: 55%; left: 32%;" data-toggle="modal"
 				data-target="#brand-modal">Add</button>
 			<button type="button" class="btn btn-sm btn-outline-primary mr-2"
-				id="upload-data" style="position: relative; top: 48%; left: 36%;">
+				id="upload-data" style="position: relative; top: 55%; left: 33%;">
 				<i class="bi bi-upload"></i> Upload
 			</button>
 			<button type="button" class="btn btn-sm btn-outline-dark"
-				id="refresh-data" style="position: relative; top: 48%; left: 37%;">Refresh</button>
-
+				id="refresh-data" style="position: relative; top: 55%; left: 34%;">Refresh</button>
+			</div>
 		</div>
 		<!-- left side ends -->
 		<div class="modal" tabindex="-1" role="dialog" id="brand-modal">
@@ -199,7 +203,6 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script
 			src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-		<!--  <script th:src="@{static/js/jquery.min.js}"></script>-->
 		<script th:src="@{/static/api.js}"></script>
 		<script th:src="@{/static/papaparse.min.js}"></script>
 		<script th:src="@{/static/app.js}"></script>

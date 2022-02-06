@@ -27,7 +27,6 @@ public class OrderService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void delete(int id) throws ApiException {
-		dto.getCheck(id);
 		dao.delete(id);
 
 	}

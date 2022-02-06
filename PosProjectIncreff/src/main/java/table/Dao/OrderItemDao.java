@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import table.Model.OrderItemData;
 import table.Pojo.InventoryPojo;
 import table.Pojo.OrderItemPojo;
+import table.Pojo.OrderPojo;
 import table.Pojo.ProductPojo;
 import table.Service.ApiException;
 
@@ -37,6 +38,7 @@ public class OrderItemDao {
 	private static String select_barcode_product = "select p from ProductPojo p where barcode=:barcode";
 	private static String select_idd = "select p from OrderItemPojo p where id=:id";
 	private static String delete_idd = "delete from OrderItemPojo p where id=:id";
+	private static String select_order_id = "select p from OrderPojo p where id=:id";
 
 	@PersistenceContext
 	EntityManager em;
@@ -122,9 +124,10 @@ public class OrderItemDao {
 		int orderId = p.getOrderId();
 		query.executeUpdate();
 		if(ll.size()==1) {
-			Query qu = em.createQuery(delete_order_id );
-			qu.setParameter("id", orderId);
-			qu.executeUpdate();
+			TypedQuery<OrderPojo> dq = em.createQuery(select_order_id, OrderPojo.class);
+			dq.setParameter("id", orderId);
+			OrderPojo op = dq.getSingleResult();
+			op.setToggle(2);
 		}
 		
 		
