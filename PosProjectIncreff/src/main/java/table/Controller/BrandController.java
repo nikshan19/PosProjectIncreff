@@ -41,12 +41,9 @@ import table.Service.PDFGeneratorService2;
 public class BrandController {
 
 	@Autowired
-	private BrandService service;
-	@Autowired
 	private PDFGeneratorService2 pservice;
 	@Autowired
 	private BrandDto dto;
-
 	private List<BrandData> l;
 
 	@ApiOperation(value = "Adds an employee")
@@ -55,9 +52,8 @@ public class BrandController {
 		try {
 			dto.add(form);
 			return new ResponseEntity<Object>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<Object>("Brand-Category Combination cannot be repeated",
-					HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (ApiException e) {
+			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -107,13 +103,13 @@ public class BrandController {
 		l = new ArrayList<BrandData>(dto.getAll());
 		return dto.getAll();
 	}
+
 	@ApiOperation(value = "Gets list of all employees")
 	@RequestMapping(path = "/api/brandreport", method = RequestMethod.GET)
 	public List<BrandData> getAllSorted() {
 		l = new ArrayList<BrandData>(dto.getAllSorted());
 		return dto.getAllSorted();
 	}
-	
 
 	@ApiOperation(value = "Gets a single orderitem by ID")
 	@RequestMapping(path = "/api/brandreport/pdf", method = RequestMethod.GET)

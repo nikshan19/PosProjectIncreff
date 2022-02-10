@@ -35,7 +35,7 @@ import table.Service.PDFGeneratorService;
 @RestController
 public class OrderController {
 
-	@Autowired 
+	@Autowired
 	private PDFGeneratorService pservice;
 	@Autowired
 	private OrderDto dto;
@@ -76,21 +76,20 @@ public class OrderController {
 	public List<OrderData> getAll() {
 		return dto.getAll();
 	}
-	
-	@ApiOperation(value="Gets a single orderitem by ID")
-	@RequestMapping(path="/api/order/pdf/{id}", method=RequestMethod.GET)
-	
-		public void generatePDF(@PathVariable int id, HttpServletResponse response) throws IOException, DocumentException {
-	        response.setContentType("application/pdf");
-	        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
-	        String currentDateTime = dateFormatter.format(new Date());
 
-	        String headerKey = "Content-Disposition";
-	        String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
-	        response.setHeader(headerKey, headerValue);
-	        List<OrderItemPojo> list = pservice.getSpecList(id); 
-	        pservice.export(response,list);
-	        System.out.println("size: "+list.size());
-	    }
+	@ApiOperation(value = "Gets a single orderitem by ID")
+	@RequestMapping(path = "/api/order/pdf/{id}", method = RequestMethod.GET)
+
+	public void generatePDF(@PathVariable int id, HttpServletResponse response) throws IOException, DocumentException {
+		response.setContentType("application/pdf");
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+		String currentDateTime = dateFormatter.format(new Date());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename=Invoice_" + currentDateTime + ".pdf";
+		response.setHeader(headerKey, headerValue);
+		List<OrderItemPojo> list = pservice.getSpecList(id);
+		pservice.export(response, list);
+	}
 
 }

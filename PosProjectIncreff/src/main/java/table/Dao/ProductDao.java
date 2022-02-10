@@ -23,6 +23,7 @@ import table.Service.ApiException;
 public class ProductDao {
 
 	private static String delete_id = "delete from ProductPojo p where id=:id";
+	private static String delete_id_i = "delete from InventoryPojo p where id=:id";
 	private static String select_id = "select p from ProductPojo p where id=:id";
 	private static String select_all = "select p from ProductPojo p";
 	private static String select_idB = "select p from BrandPojo p where id=:id";
@@ -32,7 +33,7 @@ public class ProductDao {
 
 	@PersistenceContext
 	EntityManager em;
-	
+
 	@Autowired
 	InventoryDao dao;
 
@@ -61,7 +62,7 @@ public class ProductDao {
 			} else {
 				p.setBrandPojo(bp.getId());
 				em.persist(p);
-				
+
 				InventoryPojo ip = new InventoryPojo();
 				ip.setId(p.getId());
 				ip.setQuantity(0);
@@ -76,16 +77,16 @@ public class ProductDao {
 		}
 	}
 
-	public int delete(int id) throws ApiException {
-		TypedQuery<InventoryPojo> q = em.createQuery(select_idP, InventoryPojo.class);
-		q.setParameter("id", id);
-		if (q.getResultList().size() != 0) {
-			throw new ApiException("product with given id exists, id: " + id);
-		} else {
-			Query query = em.createQuery(delete_id);
-			query.setParameter("id", id);
-			return query.executeUpdate();
-		}
+	public void delete(int id) throws ApiException {
+
+		Query query = em.createQuery(delete_id_i);
+		query.setParameter("id", id);
+		query.executeUpdate();
+
+		Query query1 = em.createQuery(delete_id);
+		query1.setParameter("id", id);
+		query1.executeUpdate();
+
 	}
 
 	public ProductPojo select(int id) {
@@ -137,29 +138,29 @@ public class ProductDao {
 		}
 		if ((pp == null) || (pp != null && pp.getId() == p.getId())) {
 			p.setBarcode(form.getBarcode());
-			
+
 		}
 
 		else {
 			throw new ApiException("product with barcode: " + form.getBarcode() + " already exists");
 		}
 	}
-	
-	
+
 	public int getBrandCat(String brand, String category) throws ApiException {
 		BrandPojo bp;
 		try {
-		TypedQuery<BrandPojo> query = em.createQuery("select p from BrandPojo p where brand=:brand AND category=:category", BrandPojo.class);
-		query.setParameter("brand", brand);
-		query.setParameter("category", category);
-		bp = query.getSingleResult();
-		}catch(NoResultException e) {
-			bp=null;
+			TypedQuery<BrandPojo> query = em.createQuery(
+					"select p from BrandPojo p where brand=:brand AND category=:category", BrandPojo.class);
+			query.setParameter("brand", brand);
+			query.setParameter("category", category);
+			bp = query.getSingleResult();
+		} catch (NoResultException e) {
+			bp = null;
 		}
-		if(bp==null) {
-			throw new ApiException("Brand with brand: "+brand+" and category: "+category+" doesnot exists");
+		if (bp == null) {
+			throw new ApiException("Brand with brand: " + brand + " and category: " + category + " doesnot exists");
 		}
-		
+
 		return bp.getId();
 	}
 

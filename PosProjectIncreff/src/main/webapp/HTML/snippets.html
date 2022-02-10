@@ -70,7 +70,7 @@
 }
 .dropdown-content {
   display: none;
-  position: relative;
+  position: fixed;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -122,7 +122,7 @@
 </head>
 
 <div class="topnav" id="myTopnav" th:fragment="name_navbar">
-<a class="navbar-brand" th:href="@{/ui/home}"> <img width="150px" height="45px" nitro-lazy-src="https://cdn-dcipo.nitrocdn.com/ObxDphCvvxXxGuNEOLEUHAksXENOsXhh/assets/static/optimized/rev-38f1264/wp-content/themes/increff/files/images/brand-logo-3.png" class=" lazyloaded" nitro-lazy-empty="" id="MjIyOjE3OQ==-1" src="https://cdn-dcipo.nitrocdn.com/ObxDphCvvxXxGuNEOLEUHAksXENOsXhh/assets/static/optimized/rev-38f1264/wp-content/themes/increff/files/images/brand-logo-3.png">
+<a class="navbar-brand" th:href="@{/ui/home}"> <img width="150px" height="45px" src="https://www.increff.com/wp-content/themes/increff/files/images/brand-logo-3.png">
 		</a>
 
 	
@@ -131,7 +131,7 @@
   <a th:href="@{/ui/inventory}">Inventory</a>
   <a th:href="@{/ui/order2}">Order</a>
   <div class="dropdown">
-    <button class="dropbtn">Reports 
+    <button class="active dropbtn">Reports 
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">

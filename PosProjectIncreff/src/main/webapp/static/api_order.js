@@ -21,7 +21,7 @@ function deleteOrder(id){
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data, textStatus, xhr) {
-	   			showSuccess("Product deleted from cart");
+	   			showSuccess("Order Cancelled");
 	   			getEmployeeList();
 	   
 	   		    //...
@@ -67,14 +67,14 @@ function getOrderItemList(id){
 	});
 }
 function displayOrderItemList(data){
-	console.log('Printing orderitem data');
+	//console.log('Printing orderitem data');
 	var $tbody = $('#editorder-table').find('tbody');
 	$tbody.empty();
 	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteOrderItem(' + e.id +','+e.orderId+ ')"><i class="bi bi-trash"></i></button>'
-		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" data-toggle="tooltip"  title="Delete" onclick="deleteOrderItem(' + e.id +','+e.orderId+ ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" data-toggle="tooltip"  title="Edit" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
 		var row = '<tr id="'+e.id+'">'
 		+ '<td>' + c + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -161,7 +161,7 @@ function deleteOrderItem(id, orderId){
 	   url: url,
 	   type: 'DELETE',
 	   success: function(data, textStatus, xhr) {
-	   		showSuccess("Product deleted from cart");
+	   		showSuccess("OrderItem deleted");
 	   			getOrderItemList(orderId);
 	   			$('#edit-order-modal').modal('toggle');
 	   			getEmployeeList();
@@ -195,7 +195,7 @@ function getEmployeeList(){
 
 
 function updateOrderItem(event){
-	$('#edit-cart-modal').modal('toggle');
+	
 	//Get the ID
 	var id = $("#cart-edit-form input[name=id]").val();	
 	var url = getOrderItem2Url() + "/" + id;
@@ -212,6 +212,7 @@ function updateOrderItem(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
+		$('#edit-cart-modal').modal('toggle');
 	   		showSuccess("Order Updated");
 	   		var el = document.getElementById(""+id+"");
 			el.style.backgroundColor="transparent";	
@@ -234,27 +235,32 @@ function updateOrderItem(event){
 
 
 function displayEmployeeList(data){
-	console.log('Printing employee data');
+	//console.log('Printing employee data');
 	var $tbody = $('#order-table').find('tbody');
 	$tbody.empty();
 	var c=1;
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml='';
+		var statusHtml='';
 		if(e.toggle==1){
 		buttonHtml += '<button type="button" class="btn btn-outline-primary border-0" onclick="addE(' + e.id + ')">Download Invoice</button>'
+		
+		statusHtml+='<span class="text-success">Confirmed</span>'
 		}
 		if(e.toggle==0){
 		buttonHtml+= '<button type="button"  class="btn btn-outline-primary border-0" onclick="addF(' + e.id + ')">Generate Invoice</button>'	
-		buttonHtml+= '<button type="button"  class="btn btn-outline-primary border-0" onclick="getO(' + e.id + ')"><i class="bi bi-pencil"></i></button>'
+		buttonHtml+= '<button type="button"  class="btn btn-outline-primary border-0" data-toggle="tooltip"  title="Edit" onclick="getO(' + e.id + ')"><i class="bi bi-pencil"></i></button>'
+		statusHtml+='<span class="text-info">in progress</span>'
 }
 		if(e.toggle==2){
-			buttonHtml+='<button type="button" class="btn btn-outline-danger border-0">Cancelled</button>'
+			statusHtml+='<span class="text-danger">Cancelled</span>'
 		}
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.dateTime + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
+		+ '<td>' + statusHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
         c++;
@@ -271,6 +277,8 @@ function getO(id){
 
 function addF(id){
 	updateOrder(id);
+	addE(id);
+	
 }
 
 function addE(id){
@@ -282,7 +290,8 @@ function addE(id){
 	   type: 'GET',
 	   success: function() {
 	   		
-	   		location.href = "http://localhost:8080/PosProjectIncreff/api/order/pdf/"+id;	
+	   		location.href = "http://localhost:8080/PosProjectIncreff/api/order/pdf/"+id;
+	   		showSuccess("Invoice Downloaded");	
 	   },
 	   error: function(){
 	   		alert("An error has occurred");
@@ -302,7 +311,7 @@ function updateOrder(id){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
-	   		showSuccess("Order Updated");
+	   		showSuccess("Invoice Generated");
 	   		getEmployeeList();		
 	   		     //...
 	   },
@@ -325,9 +334,10 @@ function showError(msg){
 	
 	$('#EpicToast').html('<div class="d-flex">'
     			+'<div class="toast-body">'
+    			+'<span style="color:white; padding:5px; font-size: 1rem;"><i class="bi bi-x-circle"></i></span>'
       			+''+msg+''
    				+' </div>'
-    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>'
   				+'</div>'
 				
 	);
@@ -335,7 +345,7 @@ function showError(msg){
 	
 	var option={
 		animation:true,
-		delay:2000
+		delay:5000
 	};
 	var t = document.getElementById("EpicToast");
 	var tElement = new bootstrap.Toast(t, option);
@@ -347,9 +357,10 @@ function showSuccess(msg){
 	
 	$('#EpicToast1').html('<div class="d-flex">'
     			+'<div class="toast-body">'
+    			+'<span style="color:white; padding:5px; font-size: 1rem;"><i class="bi bi-check-circle"></i></span>'
       			+''+msg+''
    				+' </div>'
-    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>'
   				+'</div>'
 				
 	);
@@ -390,12 +401,35 @@ function f1(){
 	
 }
 
+function formValidation(){
+	var x = $('#cart-edit-form input[name=quantity]').val();
+	var y = $('#cart-edit-form input[name=mrp]').val();
+	pattern=/^\d+(?:\.\d{1,2})?$/;
+	
+	if(x<=0){
+		showError("Quantity should be greater than zero");
+		
+	}
+	else if(y<=0){
+		showError("Price should be greater than zero");
+		return false;
+	}
+	else if(!pattern.test(y)){
+		showError("Invalid Price entered");
+		return false
+	}
+	else{
+		updateOrderItem();
+	}
+	
+}
+
 //INITIALIZATION CODE
 function init(){
 	
 	$('#refresh-data').click(getEmployeeList);
 	$('#place-order').click(placeOrder);
-	$('#update-product').click(updateOrderItem);
+	$('#update-product').click(formValidation);
 	$('#cancel-eo').click(f1);
 	
 	

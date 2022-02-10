@@ -35,10 +35,11 @@ public class OrderItemDto {
 
 		return service.getAll(id);
 	}
-	
+
 	public void delete(int id) throws ApiException {
 		service.delete(id);
 	}
+
 	public void update(int id, OrderItemForm form) throws ApiException {
 		OrderItemPojo p = getCheck2(id);
 		service.update(p, form.getBarcode(), form.getQuantity(), form.getMrp());
@@ -48,7 +49,7 @@ public class OrderItemDto {
 	public OrderItemData get(int id) throws ApiException {
 
 		HashMap<OrderItemPojo, String> hm = service.get(id);
-		
+
 		List<OrderItemPojo> l = new ArrayList<OrderItemPojo>(hm.keySet());
 		OrderItemPojo p = l.get(0);
 		String barcode = hm.get(p);
@@ -58,7 +59,6 @@ public class OrderItemDto {
 		return data;
 
 	}
-	
 
 	public OrderItemPojo convert(OrderItemForm form) {
 		OrderItemPojo p = new OrderItemPojo();
@@ -82,32 +82,37 @@ public class OrderItemDto {
 		return data;
 	}
 
-	// traanactional can only be used on public methods
-	public String normalize(OrderItemPojo p, String barcode) {
+	public String normalize(OrderItemPojo p, String barcode) throws ApiException {
 		String b = barcode.toLowerCase().trim();
+		if (b.isBlank()) {
+			throw new ApiException("Please enter valid barcode");
+		}
 		return b;
 	}
-	public String normalize2(String barcode) {
+
+	public String normalize2(String barcode) throws ApiException {
 
 		String b = barcode.toLowerCase().trim();
+		if (b.isBlank()) {
+			throw new ApiException("Please enter valid barcode");
+		}
 		return b;
 	}
-	
 
 	@Transactional(rollbackOn = ApiException.class)
 	public HashMap<OrderItemPojo, String> getCheck(int id) throws ApiException {
 		HashMap<OrderItemPojo, String> hm = dao.selectAll(id);
-		
+
 		List<OrderItemPojo> l = new ArrayList<OrderItemPojo>(hm.keySet());
 		OrderItemPojo p = l.get(0);
 		if (p == null) {
 			throw new ApiException("Brand with given id doesnot exists, id: " + id);
 		}
-	
+
 		return hm;
-		
+
 	}
-	
+
 	@Transactional(rollbackOn = ApiException.class)
 	public OrderItemPojo getCheck2(int id) throws ApiException {
 		OrderItemPojo p = dao.onlySelect2(id);

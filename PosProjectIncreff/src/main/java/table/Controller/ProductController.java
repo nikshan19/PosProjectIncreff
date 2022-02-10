@@ -28,8 +28,6 @@ import table.Service.ProductService;
 public class ProductController {
 
 	@Autowired
-	private ProductService service;
-	@Autowired
 	private ProductDto dto;
 
 	@ApiOperation(value = "Adds an product")

@@ -48,14 +48,14 @@ function getOrderItemList(){
 
 
 function displayOrderItemList(data){
-	console.log('Printing orderitem data');
+	//console.log('Printing orderitem data');
 	var $tbody = $('#editorder-table').find('tbody');
 	$tbody.empty();
 	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteOrderItem(' + e.id + ')"><i class="bi bi-trash"></i></button>'
-		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" data-toggle="tooltip"  title="Delete" onclick="deleteOrderItem(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" data-toggle="tooltip"  title="Edit" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
 		var row = '<tr>'
 		+ '<td>' + c + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -90,6 +90,7 @@ function addOrder(event){
 	   		getOrderItemList();
 	   		//getEmployeeList(); 
 	   		location.href = "http://localhost:8080/PosProjectIncreff/ui/order2";
+	   		showError("Order Placed!");
 	 		//count=0;
 	   		    //...
 	   },
@@ -102,7 +103,7 @@ return false;
 }
 
 function updateOrderItem(event){
-	$('#edit-cart-modal').modal('toggle');
+	
 	//Get the ID
 	var id = $("#cart-edit-form input[name=id]").val();	
 	var url = getOrderItem2Url() + "/" + id;
@@ -119,6 +120,7 @@ function updateOrderItem(event){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(data, textStatus, xhr) {
+			$('#edit-cart-modal').modal('toggle');
 	   		showSuccess("Cart Updated");		
 	   		getOrderItemList();     //...
 	   },
@@ -184,16 +186,20 @@ function formValidate1(){
 		var c = $('#cart-edit-form input[name=mrp]').val()
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
-		if(a==""||a==null){
+		if(a.length==0){
 			showError("All input fields must be filled");
 			return false;
 		}
-		else if(b<=0||c<=0){
-			showError("Quantity and Mrp cannot be zero");
+		else if(b<=0){
+			showError("Quantity should be greater than zero");
+			return false;
+		}
+		else if(c<=0){
+			showError("Price should be greater than zero");
 			return false;
 		}
 		else if(!pattern.test(c)){
-			showError("Mrp has to be in '0.00' format");
+			showError("Invalid Price entered");
 			return false;
 			
 		}
@@ -208,9 +214,10 @@ function showError(msg){
 	
 	$('#EpicToast').html('<div class="d-flex">'
     			+'<div class="toast-body">'
+    			+'<span style="color:white; padding:5px; font-size: 1rem;"><i class="bi bi-x-circle"></i></span>'
       			+''+msg+''
    				+' </div>'
-    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>'
   				+'</div>'
 				
 	);
@@ -218,7 +225,7 @@ function showError(msg){
 	
 	var option={
 		animation:true,
-		delay:2000
+		delay:5000
 	};
 	var t = document.getElementById("EpicToast");
 	var tElement = new bootstrap.Toast(t, option);
@@ -230,9 +237,10 @@ function showSuccess(msg){
 	
 	$('#EpicToast1').html('<div class="d-flex">'
     			+'<div class="toast-body">'
+    			+'<span style="color:white; padding:5px; font-size: 1rem;"><i class="bi bi-check-circle"></i></span>'
       			+''+msg+''
    				+' </div>'
-    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>'
   				+'</div>'
 				
 	);
@@ -247,7 +255,6 @@ function showSuccess(msg){
 	tElement.show();
 	
 }
-
 function toJson($form){
     var serialized = $form.serializeArray();
     
@@ -293,7 +300,7 @@ function addOrderItem2(event){
 	   		    //...
 	   },
 	   error: function(data, textStatus, xhr){
-			$('#edit-order-modal').modal('toggle');
+			
 	   		showError("Error: "+data.responseText);
 	   		
 	   }
@@ -336,7 +343,7 @@ function getProductList(){
 }
 
 function displayProductList(data){
-	console.log('Printing product data');
+	//console.log('Printing product data');
 	var $tbody = $('#order-table').find('tbody');
 	$tbody.empty();
 	var c = 1;
@@ -424,16 +431,20 @@ function formValidate2(){
 		
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
-		if(a==""||a==null){
+		if(a.length==0){
 			showError("All input fields must be filled");
 			return false;
 		}
-		else if(b<=0||c<=0){
-			showError("Quantity and Mrp cannot be zero");
+		else if(b<=0){
+			showError("Quantity should be greater than zero");
+			return false;
+		}
+		else if(c<=0){
+			showError("Price should be greater than zero");
 			return false;
 		}
 		else if(!pattern.test(c)){
-			showError("Mrp has to be in '0.00' format");
+			showError("Invalid Price entered");
 			return false;
 			
 		}

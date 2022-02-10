@@ -1,6 +1,6 @@
 package table.Model;
 
-public class InventoryReportData extends InventoryForm {
+public class InventoryReportData extends InventoryForm implements Comparable<InventoryReportData> {
 	
 	private String brand;
 	private String category;
@@ -22,6 +22,11 @@ public class InventoryReportData extends InventoryForm {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public int compareTo(InventoryReportData o) {
+		String a = this.getBrand()+this.getCategory();
+		String b = o.getBrand()+o.getCategory();
+		return a.compareTo(b);
 	}
 	
 

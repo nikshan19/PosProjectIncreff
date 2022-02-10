@@ -115,8 +115,8 @@ function displayEmployeeList(data){
 	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" data-toggle="tooltip"  title="Delete"  onclick="deleteEmployee(' + e.id + ')"><i class="bi bi-trash"></i></button>'
-		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" data-toggle="tooltip"  title="Edit" onclick="displayEditEmployee(' + e.id + ')"><i class="bi bi-pen"></i></button>'
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" data-tooltip="Delete"  onclick="deleteEmployee(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" data-tooltip="Edit" onclick="displayEditEmployee(' + e.id + ')"><i class="bi bi-pen"></i></button>'
 		var row = '<tr>'
 		+ '<td>' + c + '</td>'
 		+ '<td>'  + e.name + '</td>'

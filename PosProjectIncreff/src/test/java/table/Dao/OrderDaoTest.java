@@ -44,13 +44,11 @@ public class OrderDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp, form);
@@ -69,7 +67,7 @@ public class OrderDaoTest extends AbstractUnitTest{
 		OrderPojo o = new OrderPojo();
 		odao.insert(o);
 		
-		assertEquals(10001,oi.getOrderId());
+		assertEquals(1,oi.getOrderId());
 	}
 	
 	

@@ -69,6 +69,7 @@ public class BrandDto {
 
 		return list2;
 	}
+
 	public List<BrandData> getAllSorted() {
 
 		List<BrandPojo> list = service.getAllSorted();
@@ -80,11 +81,12 @@ public class BrandDto {
 
 		return list2;
 	}
+
 	public BrandPojo convertUpload(BrandForm form) throws ApiException {
 		if (form.getBrand() == "" || form.getBrand() == null) {
-			throw new ApiException("Brand cannot be null");
+			throw new ApiException("Brand is required");
 		} else if (form.getCategory() == "" || form.getCategory() == null) {
-			throw new ApiException("Category cannot be null");
+			throw new ApiException("Category is required");
 		} else {
 
 			return convert(form);
@@ -109,10 +111,15 @@ public class BrandDto {
 		return data;
 	}
 
-	public void normalize(BrandPojo p) {
+	public void normalize(BrandPojo p) throws ApiException {
 
 		p.setBrand(p.getBrand().toLowerCase().trim());
 		p.setCategory(p.getCategory().toLowerCase().trim());
+
+		if (p.getBrand().isBlank() || p.getCategory().isBlank()) {
+			throw new ApiException("Please enter valid inputs");
+		}
+
 	}
 
 	@Transactional(rollbackOn = ApiException.class)

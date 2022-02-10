@@ -43,7 +43,7 @@ public class InventoryDao {
 			pp = null;
 		}
 		if (pp == null) {
-			throw new ApiException("product with given barcode doesnot exists: " + form.getBarcode());
+			throw new ApiException("Product with barcode: '" + form.getBarcode() + "' doesnot exists");
 		} else {
 
 			InventoryPojo ip;
@@ -93,7 +93,7 @@ public class InventoryDao {
 			p = null;
 		}
 		if (p == null) {
-			throw new ApiException("Inventory with given id doenot exist");
+			throw new ApiException("Inventory with barcode: '" + pp.getBarcode() + "' doesnot exist");
 		}
 		InventoryData data = new InventoryData();
 		data.setBarcode(pp.getBarcode());
@@ -141,7 +141,7 @@ public class InventoryDao {
 		}
 
 		if (p == null) {
-			throw new ApiException("No Product with barcode " + form.getBarcode() + " found");
+			throw new ApiException("Product with barcode '" + form.getBarcode() + "' doesnot exist");
 		} else {
 			InventoryPojo ip;
 			try {
@@ -152,7 +152,7 @@ public class InventoryDao {
 				ip = null;
 			}
 			if (ip == null) {
-				throw new ApiException("Inventory with given barcode not found");
+				throw new ApiException("Inventory with barcode '" + form.getBarcode() + "' not found");
 			}
 
 			return ip;
@@ -171,7 +171,7 @@ public class InventoryDao {
 			p = null;
 		}
 		if (p == null) {
-			throw new ApiException("Inventory eith given id not found");
+			throw new ApiException("Inventory with given barcode not found");
 		}
 
 		return p;

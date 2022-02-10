@@ -34,8 +34,6 @@ import table.Service.InventoryService;
 public class InventoryController {
 
 	@Autowired
-	private InventoryService service;
-	@Autowired
 	private InventoryDto dto;
 
 	@ApiOperation(value = "Adds an inventory")
@@ -84,7 +82,6 @@ public class InventoryController {
 		}
 
 	}
-
 
 	@ApiOperation(value = "Gets a single inventory by ID")
 	@RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)

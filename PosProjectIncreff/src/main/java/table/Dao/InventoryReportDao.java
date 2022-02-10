@@ -29,7 +29,6 @@ public class InventoryReportDao {
 	public HashMap<BrandPojo, Integer> selectAll() {
 		TypedQuery<BrandPojo> query = em.createQuery(select_all_brand, BrandPojo.class);
 		List<BrandPojo> lB = query.getResultList();
-		Collections.sort(lB);
 		HashMap<BrandPojo, Integer> hm = new HashMap<BrandPojo, Integer>();
 		if (lB.size() == 0) {
 			return hm;

@@ -3,7 +3,16 @@
 
 <head th:replace="snippets3.html :: name_head"></head>
 <body>
-	<header> </header>
+	<header>
+
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: red; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: green; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast1"></div>
+
+	</header>
 
 
 	<div class="container-fluid">
@@ -27,7 +36,7 @@
 									<input type="text" class="form-control" name="barcode"
 										id="inputBarcode" placeholder="Enter Barcode">
 										<div class="input-group-append">
-    								<button type="button" class="btn btn-outline-primary" id="fetch"><i class="bi bi-card-list"></i></button>
+    								<button type="button" class="btn btn-outline-primary" data-toggle="tooltip"  title="Fetch details about product"  id="fetch"><i class="bi bi-card-list"></i></button>
   									</div>
 												
 								</div>
@@ -36,8 +45,8 @@
 								<label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
 								<div class="col">
 									<input type="number" class="form-control" name="quantity"
-										id="inputQuantity" placeholder="Enter Quantity" min="0"
-										value="0" step="1" ondrop="return false;"
+										id="inputQuantity" placeholder="Enter Quantity" min="1"
+										value="1" step="1" ondrop="return false;"
 										onpaste="return false;"
 										onkeypress="return event.charCode>=48 && event.charCode<=57">
 								</div>
@@ -88,18 +97,18 @@
 					<form class="form-inline" id="detail-form">
 						<div class="row">
 							<div class="col">
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanBB"></span>
 								</div>
 							</div>
 
 							<div class="col">
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanBBB"></span>
 								</div>
 							</div>
 							<div class="col">
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanBBBB"></span>
 								</div>
 							</div>
@@ -129,14 +138,7 @@
 			<button type="button" class="btn btn-sm btn-outline-primary mr-2"
 				style="position: relative; top: 1%;" id="place-order">Confirm
 				Order</button>
-				
-			<div class="toast align-items-center text-white border-0"
-				style="position: absolute; background-color: red; top: 10px; right: 10px;"
-				role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
-			<div class="toast align-items-center text-white border-0"
-				style="position: absolute; background-color: green; top: 10px; right: 10px;"
-				role="alert" aria-live="assertive" aria-atomic="true"
-				id="EpicToast1"></div>
+			
 				<!--  
 			<div class="row">
 				<div class="col-12 table-responsive">
@@ -249,7 +251,7 @@
 									<input type="text" class="form-control" name="barcode"
 										placeholder="Enter Barcode">
 								</div>
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanB"></span>
 								</div>
 								

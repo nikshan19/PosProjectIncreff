@@ -23,7 +23,6 @@ public class BrandDao {
 	private static String select_id = "select p from BrandPojo p where id=:id";
 	private static String select_all = "select p from BrandPojo p";
 	private static String select_idP = "select p from ProductPojo p where brandPojo=:id";
-	private static String sort_brand = "FROM BrandPojo p ORDER BY brand asc";
 	private static String select_brand_cat = "select p from BrandPojo p where brand=:brand AND category=:category";
 
 	@PersistenceContext
@@ -40,7 +39,7 @@ public class BrandDao {
 			bp = null;
 		}
 		if (bp != null) {
-			throw new ApiException("Brand-Category Combination cannot be repeated");
+			throw new ApiException("Brand-Category Combination already exists");
 		}
 
 		em.persist(p);
@@ -51,7 +50,7 @@ public class BrandDao {
 		TypedQuery<ProductPojo> q = em.createQuery(select_idP, ProductPojo.class);
 		q.setParameter("id", id);
 		if (q.getResultList().size() != 0) {
-			throw new ApiException("product with given id exists, id: " + id);
+			throw new ApiException("Product with given id: '" + id + "' exists");
 		} else {
 			Query query = em.createQuery(delete_id);
 			query.setParameter("id", id);
@@ -77,13 +76,13 @@ public class BrandDao {
 		Collections.reverse(l);
 		return l;
 	}
+
 	public List<BrandPojo> selectAllSorted() {
 		TypedQuery<BrandPojo> query = getQuery(select_all);
 		List<BrandPojo> l = query.getResultList();
 		Collections.sort(l);
 		return l;
 	}
-	
 
 	public void update(BrandPojo p) throws ApiException {
 		BrandPojo bp;
@@ -96,7 +95,7 @@ public class BrandDao {
 			bp = null;
 		}
 		if (bp != null) {
-			throw new ApiException("Brand-Category Combination cannot be repeated");
+			throw new ApiException("Brand-Category Combination already exists");
 		}
 
 	}

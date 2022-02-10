@@ -56,12 +56,13 @@ public class OrderItemDao {
 
 		if (pp == null) {
 
-			throw new ApiException("product doesnot exist with barcode: " + barcode);
+			throw new ApiException("Product doesnot exist with barcode: '" + barcode + "'");
 		}
 
 		if (pp.getMrp() < mrp) {
 
-			throw new ApiException("product MRP:" + pp.getMrp() + " is less than selling price entered: " + mrp);
+			throw new ApiException(
+					"Product's MRP: '" + pp.getMrp() + "' is less than selling price entered: '" + mrp + "'");
 		}
 
 		p.setProductId(pp.getId());
@@ -73,7 +74,7 @@ public class OrderItemDao {
 		InventoryPojo ip = qIp.getSingleResult();
 		if (p.getQuantity() > ip.getQuantity()) {
 
-			throw new ApiException("qunatity in inventory has value less than added :" + ip.getQuantity());
+			throw new ApiException("Qunatity limit : '" + ip.getQuantity() + "'");
 
 		}
 
@@ -106,7 +107,7 @@ public class OrderItemDao {
 		}
 
 		if (p == null) {
-			throw new ApiException("OrderItem with given id doesnot exist");
+			throw new ApiException("OrderItem with given barcode doesnot exist");
 		}
 
 		Query query = em.createQuery(delete_idd);
@@ -117,21 +118,18 @@ public class OrderItemDao {
 		InventoryPojo ip = query1.getSingleResult();
 		int addv = p.getQuantity() + ip.getQuantity();
 		ip.setQuantity(addv);
-		
+
 		TypedQuery<OrderItemPojo> qq = em.createQuery(select_all_order_id, OrderItemPojo.class);
 		qq.setParameter("orderId", p.getOrderId());
 		List<OrderItemPojo> ll = qq.getResultList();
 		int orderId = p.getOrderId();
 		query.executeUpdate();
-		if(ll.size()==1) {
+		if (ll.size() == 1) {
 			TypedQuery<OrderPojo> dq = em.createQuery(select_order_id, OrderPojo.class);
 			dq.setParameter("id", orderId);
 			OrderPojo op = dq.getSingleResult();
 			op.setToggle(2);
 		}
-		
-		
-		
 
 	}
 
@@ -159,20 +157,6 @@ public class OrderItemDao {
 
 	}
 
-//	public OrderItemPojo onlySelect(int id, int orderId) {
-//		OrderItemPojo p;
-//		try {
-//			TypedQuery<OrderItemPojo> query = getQuery(select_id);
-//			query.setParameter("id", id);
-//			query.setParameter("orderId", orderId);
-//			p = query.getSingleResult();
-//		} catch (NoResultException e) {
-//			p = null;
-//		}
-//		return p;
-//
-//	}
-
 	public HashMap<OrderItemPojo, String> selectAll(int id) {
 		OrderItemPojo p;
 		try {
@@ -182,7 +166,7 @@ public class OrderItemDao {
 		} catch (NoResultException e) {
 			p = null;
 		}
-		
+
 		TypedQuery<ProductPojo> query1 = em.createQuery(select_product, ProductPojo.class);
 		query1.setParameter("id", p.getProductId());
 		String barcode = query1.getSingleResult().getBarcode();
@@ -190,7 +174,6 @@ public class OrderItemDao {
 		hm.put(p, barcode);
 		return hm;
 	}
-
 
 	public void update(OrderItemPojo p, String barcode, int quantity, double mrp) throws ApiException {
 		ProductPojo pp;
@@ -200,30 +183,28 @@ public class OrderItemDao {
 			pp = query1.getSingleResult();
 		} catch (NoResultException e) {
 
-			throw new ApiException("no product exist with barcode: " + barcode);
+			throw new ApiException("Product with barcode: '" + barcode + "' doesnot exist");
 		}
 
 		if (pp.getMrp() < mrp) {
-			throw new ApiException("Selling Price: " + mrp + "cannot be greater than MRP; " + pp.getMrp());
+			throw new ApiException("Selling Price: '" + mrp + "' cannot be greater than MRP: '" + pp.getMrp() + "'");
 		}
-		
-		
+
 		TypedQuery<InventoryPojo> qIp = em.createQuery(select_inventory, InventoryPojo.class);
 		qIp.setParameter("id", p.getProductId());
 		InventoryPojo ip = qIp.getSingleResult();
-		ip.setQuantity(p.getQuantity()+ip.getQuantity());
-		
+		ip.setQuantity(p.getQuantity() + ip.getQuantity());
+
 		p.setMrp(mrp);
 		p.setProductId(pp.getId());
 
 		TypedQuery<InventoryPojo> qIp2 = em.createQuery(select_inventory, InventoryPojo.class);
 		qIp2.setParameter("id", p.getProductId());
 		InventoryPojo ip2 = qIp2.getSingleResult();
-		
 
 		int add_value = ip2.getQuantity() - quantity;
 		if (add_value < 0) {
-			throw new ApiException("qunatity in inventory has value less than added :" + ip2.getQuantity());
+			throw new ApiException("Qunatity limit: '" + ip2.getQuantity() + "'");
 		} else {
 			p.setQuantity(quantity);
 			ip2.setQuantity(add_value);
@@ -231,7 +212,7 @@ public class OrderItemDao {
 		}
 
 	}
-	
+
 	public OrderItemPojo onlySelect2(int id) {
 		OrderItemPojo p;
 		try {
@@ -244,9 +225,6 @@ public class OrderItemDao {
 		return p;
 
 	}
-	
-
-	
 
 	TypedQuery<OrderItemPojo> getQuery(String jpql) {
 		return em.createQuery(jpql, OrderItemPojo.class);

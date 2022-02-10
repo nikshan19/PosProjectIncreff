@@ -36,13 +36,12 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
+		form.setBrandCategory(p.getId());
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pservice.add(pp, form);
@@ -52,7 +51,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		form2.setBarcode("ggjhg");
 		form2.setQuantity(100);
 		iservice.add(ppp, form2);
-		assertEquals(1,ppp.getId());
+		assertEquals(0,ppp.getId());
 	}
 	
 	@Test
@@ -62,13 +61,12 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
+		form.setBrandCategory(p.getId());
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pservice.add(pp, form);
@@ -79,7 +77,7 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		form2.setQuantity(100);
 		iservice.add(ppp, form2);
 		InventoryData bp = iservice.get(2);
-		System.out.println("testGet "+bp.getId());
+
 		assertEquals(2, bp.getId());
 	} 
 	
@@ -93,13 +91,12 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
+		form.setBrandCategory(p.getId());
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pservice.add(pp, form);
@@ -122,13 +119,12 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bservice.add(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
+		form.setBrandCategory(p.getId());
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pservice.add(pp, form);
@@ -138,14 +134,13 @@ public class InventoryServiceTest extends AbstractUnitTest{
 		form2.setBarcode("ggjhg");
 		form2.setQuantity(100);
 		iservice.add(ppp, form2);
-		
-		
-		form2.setQuantity(120);
+		form2.setId(pp.getId());
 		InventoryPojo pnew = new InventoryPojo();
 		pnew.setQuantity(120);
+		pnew.setId(form2.getId());
 		iservice.update("ggjhg",pnew, form2);
-
-		assertEquals(120, ppp.getQuantity());
+		InventoryData pppp = iservice.get(pp.getId());
+		assertEquals(120, pppp.getQuantity());
 	}
 	
 	

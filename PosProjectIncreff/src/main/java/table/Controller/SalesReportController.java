@@ -1,6 +1,7 @@
 package table.Controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class SalesReportController {
 			d.setRevenue(hm.get(q));
 			list2.add(d);
 		}
+		Collections.sort(list2);
 		return ResponseEntity.accepted().body(list2);
 		}catch(ApiException e) {
 			return new ResponseEntity<Object>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);

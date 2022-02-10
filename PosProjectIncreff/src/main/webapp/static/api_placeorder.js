@@ -32,64 +32,6 @@ function getOrderItem2Url(){
 
 
 
-/*
-
-function addOrderItem2(event){
-	
-
-	var $form = $("#order-edit-form");
-	
-	var json = toJson($form);
-	
-	var url = getOrderItemUrl();
-
-
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(data, textStatus, xhr) {
-			$('#edit-order-modal').modal('toggle');
-			$("#order-edit-form").trigger("reset");
-	   		showSuccess("Product added to cart");	
-	   		getEmployeeList(); 
-	   		    //...
-	   },
-	   error: function(data, textStatus, xhr){
-			$('#edit-order-modal').modal('toggle');
-	   		showError("Error: "+data.responseText);
-	   		
-	   }
-	});
-	
-return false;
-
-}
-*/
-
-/*
-
-function displayOrderList(id){
-	var url = getOrderItemUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		
-	   		displayOrderItemList(data);
-	   		
-	   },
-	   error: function(){
-	   		alert("An error has occurred");
-	   }
-	});	
-}
-
-*/
-
 
 
 var d;
@@ -110,73 +52,6 @@ function getProductList(){
 }
 
 
-/*
-function displayProductList(data){
-	console.log('Printing product data');
-	var $tbody = $('#order-table').find('tbody');
-	$tbody.empty();
-	var c = 1;
-	for(var n in data){
-		var e = data[n];
-		var buttonHtml = '<button type="button" class="btn btn-outline-primary border-0" onclick="addE(' + e.id + ')">Add to Cart</button>';
-		var row = '<tr>'
-		+ '<td>' + c + '</td>'
-		+ '<td>' + e.name + '</td>'
-		+ '<td>' + e.barcode + '</td>'
-		+ '<td>' + e.mrp + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
-        $tbody.append(row);
-        c++;
-	}
-}
-*/
-/*
-function addE(id){
-	var barcode;
-	var mrp;
-	for(var n in d ){
-		var e = d[n];
-		
-		if(e.id==id){
-			barcode = e.barcode;
-			mrp = e.mrp;
-		}
-	}
-	
-	
-	$("#order-edit-form input[name=barcode]").val(barcode);	
-	$("#order-edit-form input[name=mrp]").val(mrp);	
-	$('#edit-order-modal').modal('toggle');
-	
-}
-*/
-/*
-
-function displayEditEmployee(id){
-	var url = getEmployeeUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   			
-	   		displayEmployee(data);
-	   		displayOrderItem();     //...
-	   },
-	   error: function(){
-	   		alert("An error has occurred");
-	   }
-	});	
-}
-
-function displayEmployee(data){
-	$("#order-edit-form input[name=dateTime]").val(data.dateTime);	
-	$("#order-edit-form input[name=id]").val(data.id);
-		
-	$('#edit-order-modal').modal('toggle');
-}
-
-*/
 
 function formValidate1(){
 	
@@ -186,16 +61,20 @@ function formValidate1(){
 		
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
-		if(a==""||a==null){
+		if(a.length==0){
 			showError("All input fields must be filled");
 			return false;
 		}
-		else if(b<=0||c<=0){
-			showError("Quantity and Mrp cannot be zero");
+		else if(b<=0){
+			showError("Quantity should be greater than zero");
+			return false;
+		}
+		else if(c<=0){
+			showError("Price should be greater than zero");
 			return false;
 		}
 		else if(!pattern.test(c)){
-			showError("Mrp has to be in '0.00' format");
+			showError("Invalid price entered");
 			return false;
 			
 		}
@@ -205,37 +84,6 @@ function formValidate1(){
 		
 	}
 	
-/*
-function formValidate2(){
-	
-		var a = $("#order-edit-form input[name=barcode]").val()
-		var b = $("#order-edit-form input[name=quantity]").val()
-		var c = $("#order-edit-form input[name=mrp]").val()
-		
-		
-		var pattern= /^\d+(?:\.\d{1,2})?$/;
-		if(a==""||a==null){
-			showError("All input fields must be filled");
-			return false;
-		}
-		else if(b<=0||c<=0){
-			showError("Quantity and Mrp cannot be zero");
-			return false;
-		}
-		else if(!pattern.test(c)){
-			showError("Mrp has to be in '0.00' format");
-			return false;
-			
-		}
-		else{
-			addOrderItem2();
-		}
-		
-	}
-	
-
-
-*/
 
 
 function cartPage(){
@@ -263,7 +111,7 @@ function addOrderItem(event){
        },	   
 	   success: function(data, textStatus, xhr) {
 	   		showSuccess("Product added to cart");	
-	   		//getEmployeeList(); 
+	   		$('#order-form').trigger("reset");
 	   		getOrderItemList();
 	   		    //...
 	   },
@@ -297,14 +145,14 @@ function getOrderItemList(){
 }
 
 function displayOrderItemList(data){
-	console.log('Printing orderitem data');
+	//console.log('Printing orderitem data');
 	var $tbody = $('#editorder-table').find('tbody');
 	$tbody.empty();
 	var c = 1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" onclick="deleteOrderItem(' + e.id + ')"><i class="bi bi-trash"></i></button>'
-		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
+		var buttonHtml = '<button type="button" class="btn btn-outline-danger border-0" data-toggle="tooltip"  title="Delete" onclick="deleteOrderItem(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		buttonHtml += ' <button type="button" class="btn btn-outline-primary border-0" data-toggle="tooltip"  title="Edit" onclick="displayEditOrderItem(' + e.id + ')"><i class="bi bi-pen"></i></button>';
 		var row = '<tr>'
 		+ '<td>' + c + '</td>'
 		+ '<td>' + e.barcode + '</td>'
@@ -335,12 +183,11 @@ function addOrder(event){
        },	   
 	   success: function(data, textStatus, xhr) {
 	   		
-	   		//location.reload();
+
 	   		getOrderItemList();
-	   		//getEmployeeList(); 
 	   		location.href = "http://localhost:8080/PosProjectIncreff/ui/order2";
-	 		//count=0;
-	   		    //...
+	   		showError("Order Placed!");
+
 	   },
 	   error: function(data, textStatus, xhr){
 	   		showError("Error: "+data.responseText);
@@ -386,7 +233,7 @@ function displayEditOrderItem(id){
 	   type: 'GET',
 	   success: function(data) {
 	   		
-	   		displayOrderItem(data);     //...
+	   		displayOrderItem(data);    
 	   },
 	   error: function(){
 	   		showError("An error has occurred");
@@ -430,16 +277,20 @@ function formValidate11(){
 		var c = $('#cart-edit-form input[name=mrp]').val()
 		
 		var pattern= /^\d+(?:\.\d{1,2})?$/;
-		if(a==""||a==null){
+		if(a.length==0){
 			showError("All input fields must be filled");
 			return false;
 		}
-		else if(b<=0||c<=0){
-			showError("Quantity and Mrp cannot be zero");
+		else if(b<=0){
+			showError("Quantity should be greater than zero");
+			return false;
+		}
+		else if(c<=0){
+			showError("Price should be greater than zero");
 			return false;
 		}
 		else if(!pattern.test(c)){
-			showError("Mrp has to be in '0.00' format");
+			showError("Invalid Price entered");
 			return false;
 			
 		}
@@ -483,9 +334,10 @@ function showError(msg){
 	
 	$('#EpicToast').html('<div class="d-flex">'
     			+'<div class="toast-body">'
+    			+'<span style="color:white; padding:5px; font-size: 1rem;"><i class="bi bi-x-circle"></i></span>'
       			+''+msg+''
    				+' </div>'
-    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>'
   				+'</div>'
 				
 	);
@@ -493,7 +345,7 @@ function showError(msg){
 	
 	var option={
 		animation:true,
-		delay:2000
+		delay:5000
 	};
 	var t = document.getElementById("EpicToast");
 	var tElement = new bootstrap.Toast(t, option);
@@ -505,9 +357,10 @@ function showSuccess(msg){
 	
 	$('#EpicToast1').html('<div class="d-flex">'
     			+'<div class="toast-body">'
+    			+'<span style="color:white; padding:5px; font-size: 1rem;"><i class="bi bi-check-circle"></i></span>'
       			+''+msg+''
    				+' </div>'
-    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>'
+    			+'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>'
   				+'</div>'
 				
 	);
@@ -553,9 +406,9 @@ function display(barcode){
 	   		var t=0;
 		for(n in data){
 		var e = data[n];
-		console.log(e.barcode+" "+barcode);
+		//console.log(e.barcode+" "+barcode);
 		if(e.barcode == barcode){
-			console.log(e.barcode+" "+barcode);
+			//console.log(e.barcode+" "+barcode);
 			name=e.name;
 			mrp=e.mrp
 			id = e.id
@@ -565,7 +418,7 @@ function display(barcode){
 		
 	}
 	if(t==0){
-		showError("Product with barcode doesnot exist");
+		showError("Product with given barcode doesnot exist");
 		return false;
 	}
 	

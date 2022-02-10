@@ -32,13 +32,11 @@ public class ProductDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp, form);
@@ -53,18 +51,15 @@ public class ProductDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp, form);
 		ProductPojo bp = pdao.select(2);
-		System.out.println("testGet "+bp.getId());
 		assertEquals(2, bp.getId());
 	} 
 	
@@ -78,13 +73,11 @@ public class ProductDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp, form);

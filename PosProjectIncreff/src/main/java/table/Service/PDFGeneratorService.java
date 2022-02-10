@@ -33,11 +33,11 @@ public class PDFGeneratorService {
 
 	private void writeTableHeader(PdfPTable table) {
 		PdfPCell cell = new PdfPCell();
-		cell.setBackgroundColor(Color.BLUE);
+		cell.setBackgroundColor(Color.GRAY);
 		cell.setPadding(5);
 
 		Font font = FontFactory.getFont(FontFactory.HELVETICA);
-		font.setColor(Color.WHITE);
+		font.setColor(Color.BLACK);
 
 		cell.setPhrase(new Phrase("Brand", font));
 		table.addCell(cell);
@@ -50,7 +50,7 @@ public class PDFGeneratorService {
 
 		cell.setPhrase(new Phrase("Price", font));
 		table.addCell(cell);
-		
+
 		cell.setPhrase(new Phrase("Subtotal", font));
 		table.addCell(cell);
 
@@ -69,23 +69,22 @@ public class PDFGeneratorService {
 		Paragraph paragraph = new Paragraph("Invoice", fontTitle);
 		paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 		document.add(paragraph);
-		
 
 		Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		fontTitle.setSize(12);
-		
+
 		OrderPojo op = getOrder(list2.get(0).getOrderId());
 		String[] list1 = op.getdT().split(" ");
-		
-		Paragraph paragraph4 = new Paragraph("Order Id: "+op.getId()+"", font);
-		paragraph4.setAlignment(Paragraph.ALIGN_CENTER);
+
+		Paragraph paragraph4 = new Paragraph("Order Id: " + op.getId() + "", font);
+		paragraph4.setAlignment(Paragraph.ALIGN_LEFT);
 		document.add(paragraph4);
-		
-		Paragraph paragraph1 = new Paragraph("\nDate: "+list1[0]+"                                                                                                           Time: "+list1[1].substring(0, 5)+"", font);
+
+		Paragraph paragraph1 = new Paragraph("Invoice Date: " + list1[0]
+				+ "                                                                                             Time: "
+				+ list1[1].substring(0, 5) + "", font);
 		paragraph1.setAlignment(Paragraph.ALIGN_LEFT);
 		document.add(paragraph1);
-		
-		
 
 		PdfPTable table = new PdfPTable(5);
 		table.setWidthPercentage(100f);
@@ -101,25 +100,16 @@ public class PDFGeneratorService {
 			table.addCell(l.get(1));
 			table.addCell(String.valueOf(o.getQuantity()));
 			table.addCell(String.valueOf(o.getMrp()));
-			table.addCell(String.valueOf(o.getMrp()*o.getQuantity()));
+			table.addCell(String.valueOf(o.getMrp() * o.getQuantity()));
 			val += o.getMrp() * o.getQuantity();
 
 		}
 
 		document.add(table);
 		Paragraph paragraphl = new Paragraph("Total: " + val, fontTitle);
-		paragraphl.setAlignment(Paragraph.ALIGN_CENTER);
+		paragraphl.setAlignment(Paragraph.ALIGN_RIGHT);
 		document.add(paragraphl);
 
-		
-
-		
-
-		Paragraph paragraph2 = new Paragraph("Signature", font);
-		paragraphl.setAlignment(Paragraph.ALIGN_RIGHT);
-		document.add(paragraph2);
-
-		System.out.println("size: " + list2.size());
 		document.close();
 	}
 
@@ -127,12 +117,12 @@ public class PDFGeneratorService {
 	public List<OrderItemPojo> getList() {
 		return dao.getList();
 	}
-	
+
 	@Transactional
 	public List<OrderItemPojo> getSpecList(int id) {
 		return dao.getSpecList(id);
 	}
-	
+
 	@Transactional
 	public OrderPojo getOrder(int orderId) {
 		return dao.getOrder(orderId);

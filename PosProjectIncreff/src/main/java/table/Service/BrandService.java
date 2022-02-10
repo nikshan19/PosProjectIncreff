@@ -42,6 +42,7 @@ public class BrandService {
 	public List<BrandPojo> getAll() {
 		return dao.selectAll();
 	}
+
 	@Transactional
 	public List<BrandPojo> getAllSorted() {
 		return dao.selectAllSorted();

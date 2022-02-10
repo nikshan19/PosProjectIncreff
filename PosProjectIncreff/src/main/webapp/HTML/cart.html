@@ -5,6 +5,17 @@
 <head th:replace="snippets4.html :: name_head"></head>
 <body>
 
+	<header>
+
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: red; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
+		<div class="toast align-items-center text-white border-0"
+			style="position: absolute; background-color: green; top: 10px; right: 10px;"
+			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast1"></div>
+
+	</header>
+	
 	<div class="container-fluid">
 
 		<div class="split left bg-white">
@@ -69,13 +80,8 @@
 			
 		
 			
-			<div class="toast align-items-center text-white border-0"
-				style="position: absolute; background-color: red; top: 10px; right: 10px;"
-				role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast"></div>
-			<div class="toast align-items-center text-white border-0"
-				style="position: absolute; background-color: green; top: 10px; right: 10px;"
-				role="alert" aria-live="assertive" aria-atomic="true"
-				id="EpicToast1"></div>
+		
+			
 			<div class="row" style="position: relative; top: 3%;">
 				<div class="col-12 table-responsive">
 					<table class="table table-striped" id="editorder-table">
@@ -119,7 +125,7 @@
 									<input type="text" class="form-control" name="barcode"
 										placeholder="Enter Barcode">
 								</div>
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanB"></span>
 								</div>
 								
@@ -129,13 +135,13 @@
 								<label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
 								<div class="col-sm-10">
 									<input type="number" class="form-control" name="quantity"
-										placeholder="Enter Quantity" min="0" value="0" step="1"
+										placeholder="Enter Quantity" min="1" value="1" step="1"
 										ondrop="return false;" onpaste="return false;"
 										onkeypress="return event.charCode>=48 && event.charCode<=57">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="inputMrp" class="col-sm-2 col-form-label">Mrp</label>
+								<label for="inputMrp" class="col-sm-2 col-form-label">Price</label>
 								<div class="col-sm-10">
 									<input type="number" class="form-control" name="mrp"
 										placeholder="Enter MRP" min="0" value="0" step="0.01"
@@ -175,7 +181,7 @@
 									<input type="text" class="form-control" name="barcode"
 										placeholder="Enter Barcode">
 								</div>
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanBB"></span>
 								</div>
 							</div>
@@ -183,14 +189,17 @@
 								<label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
 								<div class="col-sm-10">
 									<input type="number" class="form-control" name="quantity"
-										 placeholder="Enter Quantity" min="0" value="0">
+										 placeholder="Enter Quantity"min="1" value="1" step="1"
+										ondrop="return false;" onpaste="return false;"
+										onkeypress="return event.charCode>=48 && event.charCode<=57">
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="inputMrp" class="col-sm-2 col-form-label">Price</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name="mrp"
-										placeholder="Enter Price">
+									<input type="number" class="form-control" name="mrp"
+										placeholder="Enter Price" min="0" value="0" step="0.01"
+										pattern="/^\d+(?:\.\d{1,2})?$/">
 								</div>
 							</div>
 						</form>

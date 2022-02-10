@@ -37,11 +37,10 @@ public class PDFExportController {
 	        String currentDateTime = dateFormatter.format(new Date());
 
 	        String headerKey = "Content-Disposition";
-	        String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
+	        String headerValue = "attachment; filename=Invoice_" + currentDateTime + ".pdf";
 	        response.setHeader(headerKey, headerValue);
 	        List<OrderItemPojo> list = getList(); 
 	        pservice.export(response,list);
-	        System.out.println("size: "+list.size());
 	    }
 	
 	public List<OrderItemPojo> getList(){

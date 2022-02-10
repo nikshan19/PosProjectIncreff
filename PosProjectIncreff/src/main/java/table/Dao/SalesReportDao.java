@@ -34,7 +34,6 @@ public class SalesReportDao {
 	private static String select_cat = "select p from BrandPojo p where category=:category";
 	private static String select_brand = "select p from BrandPojo p where brand=:brand";
 	private static String select_oid_orderitem = "select p from OrderItemPojo p where orderId=:orderId";
-
 	private static String end_date_null = "select o from OrderPojo o where dateTime>=:dt1";
 	private static String start_date_null = "select o from OrderPojo o where dateTime<=:dt2";
 	private static String all_orders = "select o from OrderPojo o";
@@ -47,7 +46,7 @@ public class SalesReportDao {
 	public HashMap<List<String>, HashMap<Integer, Double>> selectAll(SalesReportForm form) throws ApiException {
 		BrandPojo lll;
 		Set<List<String>> s = new HashSet<List<String>>();
-		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>(); // quantity
+		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>();
 		try {
 			TypedQuery<BrandPojo> qq = em.createQuery(select_brand_cat_brand, BrandPojo.class);
 			qq.setParameter("brand", form.getBrand());
@@ -77,10 +76,10 @@ public class SalesReportDao {
 			throw new ApiException("start date cannot occur after end date");
 		}
 		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		if(d1.compareTo(date)>0) {
+		if (d1.compareTo(date) > 0) {
 			throw new ApiException("start date cannot occur after today");
 		}
-		if(d2.compareTo(date)>0) {
+		if (d2.compareTo(date) > 0) {
 			throw new ApiException("end date cannot occur after today");
 		}
 		String startdate = form.getStartdate() + " 00:00:00.0";
@@ -141,7 +140,6 @@ public class SalesReportDao {
 		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>(); // quantity
 		TypedQuery<BrandPojo> qq = em.createQuery(select_all_brands, BrandPojo.class);
 		List<BrandPojo> lll = qq.getResultList();
-		Collections.sort(lll);
 		if (lll.size() == 0) {
 			throw new ApiException("No Brand available");
 
@@ -216,7 +214,7 @@ public class SalesReportDao {
 	public HashMap<List<String>, HashMap<Integer, Double>> catNull(SalesReportForm form) throws ApiException {
 
 		Set<List<String>> s = new HashSet<List<String>>();
-		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>(); // quantity
+		HashMap<List<String>, HashMap<Integer, Double>> hm2 = new HashMap<List<String>, HashMap<Integer, Double>>();
 		TypedQuery<BrandPojo> qq = em.createQuery(select_brand, BrandPojo.class);
 		qq.setParameter("brand", form.getBrand());
 		List<BrandPojo> lll = qq.getResultList();
@@ -242,10 +240,10 @@ public class SalesReportDao {
 			throw new ApiException("start date cannot occur after end date");
 		}
 		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		if(d1.compareTo(date)>0) {
+		if (d1.compareTo(date) > 0) {
 			throw new ApiException("start date cannot occur after today");
 		}
-		if(d2.compareTo(date)>0) {
+		if (d2.compareTo(date) > 0) {
 			throw new ApiException("end date cannot occur after today");
 		}
 		String startdate = form.getStartdate() + " 00:00:00.0";
@@ -336,10 +334,10 @@ public class SalesReportDao {
 			throw new ApiException("start date cannot occur after end date");
 		}
 		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		if(d1.compareTo(date)>0) {
+		if (d1.compareTo(date) > 0) {
 			throw new ApiException("start date cannot occur after today");
 		}
-		if(d2.compareTo(date)>0) {
+		if (d2.compareTo(date) > 0) {
 			throw new ApiException("end date cannot occur after today");
 		}
 		String startdate = form.getStartdate() + " 00:00:00.0";
@@ -429,10 +427,10 @@ public class SalesReportDao {
 			throw new ApiException("start date cannot occur after end date");
 		}
 		java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-		if(d1.compareTo(date)>0) {
+		if (d1.compareTo(date) > 0) {
 			throw new ApiException("start date cannot occur after today");
 		}
-		if(d2.compareTo(date)>0) {
+		if (d2.compareTo(date) > 0) {
 			throw new ApiException("end date cannot occur after today");
 		}
 		String startdate = form.getStartdate() + " 00:00:00.0";

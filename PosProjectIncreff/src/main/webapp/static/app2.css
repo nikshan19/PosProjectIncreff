@@ -62,7 +62,9 @@ body {
   text-align: center;
 }
 
-
+.toast{
+	z-index:1056;
+}
 
 
 

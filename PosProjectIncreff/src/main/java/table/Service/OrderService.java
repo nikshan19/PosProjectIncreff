@@ -44,9 +44,6 @@ public class OrderService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(int id) throws ApiException {
-		
-		
-
 		dao.update(id);
 	}
 

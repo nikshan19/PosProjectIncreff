@@ -39,17 +39,11 @@ public class OrderItemDao2 {
 		}
 
 		if (p == null) {
-			throw new ApiException("OrderItem with given id doesnot exist");
+			throw new ApiException("OrderItem with given barcode doesnot exist");
 		}
 
 		Query query = em.createQuery(delete_id);
 		query.setParameter("id", id);
-
-//		TypedQuery<InventoryPojo> query1 = em.createQuery(select_inventory, InventoryPojo.class);
-//		query1.setParameter("id", p.getProductId());
-//		InventoryPojo ip = query1.getSingleResult();
-//		int addv = p.getQuantity() + ip.getQuantity();
-//		ip.setQuantity(addv);
 
 		return query.executeUpdate();
 
@@ -94,11 +88,11 @@ public class OrderItemDao2 {
 			pp = query1.getSingleResult();
 		} catch (NoResultException e) {
 
-			throw new ApiException("no product exist with barcode: " + barcode);
+			throw new ApiException("Product with barcode: '" + barcode + "' doesnot exist");
 		}
 
 		if (pp.getMrp() < mrp) {
-			throw new ApiException("Selling Price: " + mrp + "cannot be greater than MRP; " + pp.getMrp());
+			throw new ApiException("Selling Price: '" + mrp + "' cannot be greater than MRP: '" + pp.getMrp() + "'");
 		}
 		p.setMrp(mrp);
 
@@ -110,7 +104,7 @@ public class OrderItemDao2 {
 
 		int add_value = ip2.getQuantity() - quantity;
 		if (add_value < 0) {
-			throw new ApiException("qunatity in inventory has value less than added :" + ip2.getQuantity());
+			throw new ApiException("Qunatity limit : '" + ip2.getQuantity() + "'");
 		} else {
 			p.setQuantity(quantity);
 

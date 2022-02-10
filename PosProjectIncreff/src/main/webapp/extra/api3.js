@@ -312,7 +312,7 @@ function showError(msg){
 	
 	var option={
 		animation:true,
-		delay:2000
+		delay:5000
 	};
 	var t = document.getElementById("EpicToast");
 	var tElement = new bootstrap.Toast(t, option);

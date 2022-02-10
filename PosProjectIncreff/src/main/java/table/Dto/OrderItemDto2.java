@@ -63,10 +63,12 @@ public class OrderItemDto2 {
 		return data;
 	}
 
-	// traanactional can only be used on public methods
-	public String normalize(String barcode) {
+	public String normalize(String barcode) throws ApiException {
 
 		String b = barcode.toLowerCase().trim();
+		if (b.isBlank()) {
+			throw new ApiException("Please enter valid barcode");
+		}
 		return b;
 	}
 

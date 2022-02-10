@@ -1,6 +1,6 @@
 package table.Model;
 
-public class SalesReportData extends BrandForm {
+public class SalesReportData extends BrandForm implements Comparable<SalesReportData> {
 	
 	
 	private String category;
@@ -23,6 +23,12 @@ public class SalesReportData extends BrandForm {
 	}
 	public void setRevenue(double revenue) {
 		this.revenue = revenue;
+	}
+	public int compareTo(SalesReportData o) {
+		String a = this.getBrand()+this.getCategory();
+		String b = o.getBrand()+o.getCategory();
+		return a.compareTo(b);
+		
 	}
 	
 

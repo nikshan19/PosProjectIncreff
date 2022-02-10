@@ -14,7 +14,6 @@
 		<div class="toast align-items-center text-white border-0"
 			style="position: absolute; background-color: green; top: 10px; right: 10px;"
 			role="alert" aria-live="assertive" aria-atomic="true" id="EpicToast1"></div>
-
 	</header>
 
 
@@ -28,8 +27,8 @@
 <div class="dropdown" style="position: relative; top: 55%; left: 40%;z-index:100;">
   <button class="dropbtn1 btn-sm btn-outline-primary mr-2 dropdown-toggle">Place Order</button>
   <div class="dropdown-content" style="position: relative; z-index:101;">
-    <a th:href="@{/ui/placeorder}">Manually</a>
-    <a th:href="@{/ui/cart}">Select from Product List</a>
+    <a th:href="@{/ui/placeorder}">Scan Barcode</a>
+    <a th:href="@{/ui/cart}">Select Product</a>
   </div>
 </div>
 
@@ -56,7 +55,8 @@
 							<tr>
 								<th scope="col">OrderID</th>
 								<th scope="col">DateTime</th>
-								<th scope="col">Options</th>
+								<th scope="col">Actions</th>
+								<th scope="col">Status</th>
 
 							</tr>
 						</thead>
@@ -136,7 +136,7 @@
 								<div class="col">
 									<input type="text" class="form-control" name="barcode"
 										placeholder="Enter Barcode" style="display:none;">
-								<div class = "text-primary" style="position: relative;font-weight: bold;">
+								<div class = "text-info" style="position: relative;font-weight: bold;">
 								<span id="spanB"></span>
 								</div>
 								</div>
@@ -146,16 +146,16 @@
 								<label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
 								<div class="col">
 									<input type="number" class="form-control" name="quantity"
-										placeholder="Enter Quantity" min="0" value="0" step="1"
+										placeholder="Enter Quantity" min="1" value="1" step="1"
 										ondrop="return false;" onpaste="return false;"
 										onkeypress="return event.charCode>=48 && event.charCode<=57">
 								</div>
 							</div>
 							<div class="col">
-								<label for="inputMrp" class="col-sm-2 col-form-label">Mrp</label>
+								<label for="inputMrp" class="col-sm-2 col-form-label">Price</label>
 								<div class="col">
 									<input type="number" class="form-control" name="mrp"
-										placeholder="Enter MRP" min="0" value="0" step="0.01"
+										placeholder="Enter Price" min="0" value="0" step="0.01"
 										pattern="/^\d+(?:\.\d{1,2})?$/">
 								</div>
 							</div>

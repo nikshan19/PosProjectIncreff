@@ -36,8 +36,6 @@ import table.Service.OrderItemService2;
 public class OrderItemController2 {
 
 	@Autowired
-	private OrderItemService2 service;
-	@Autowired
 	private OrderItemDto2 dto;
 
 	@ApiOperation(value = "Deletes an employee")

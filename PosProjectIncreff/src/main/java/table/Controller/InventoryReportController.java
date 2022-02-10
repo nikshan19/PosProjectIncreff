@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,7 @@ public class InventoryReportController {
 			list2.add(d);
 		}
 		l = new ArrayList<InventoryReportData>(list2);
+		Collections.sort(list2);
 		return list2;
 	}
 

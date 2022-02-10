@@ -27,8 +27,6 @@ public class OrderDao {
 	private static String select_all_with_0 = "select p from OrderItemPojo p where orderId=:id";
 	private static String select_quantity = "select p from InventoryPojo p where id=:id";
 	private static String delete_orderItem = "delete from OrderItemPojo p where id=:id";
-	
-	
 
 	@PersistenceContext
 	EntityManager em;
@@ -39,7 +37,7 @@ public class OrderDao {
 		List<OrderItemPojo> l = query1.getResultList();
 
 		if (l.size() == 0) {
-			throw new ApiException("No item selected in order");
+			throw new ApiException("No item in cart");
 		}
 
 		else {
@@ -56,7 +54,7 @@ public class OrderDao {
 				InventoryPojo ip = qIp.getSingleResult();
 				if (oi.getQuantity() > ip.getQuantity()) {
 
-					throw new ApiException("qunatity in inventory has value less than added :" + ip.getQuantity());
+					throw new ApiException("Qunatity limit: " + ip.getQuantity());
 				} else {
 
 					ip.setQuantity(ip.getQuantity() - oi.getQuantity());
@@ -71,21 +69,21 @@ public class OrderDao {
 		TypedQuery<OrderItemPojo> query = em.createQuery(select_all_with_0, OrderItemPojo.class);
 		query.setParameter("id", id);
 		List<OrderItemPojo> l = query.getResultList();
-		for(OrderItemPojo p: l) {
+		for (OrderItemPojo p : l) {
 			TypedQuery<InventoryPojo> q = em.createQuery(select_quantity, InventoryPojo.class);
 			q.setParameter("id", p.getProductId());
 			InventoryPojo ip = q.getSingleResult();
-			ip.setQuantity(ip.getQuantity()+p.getQuantity());
+			ip.setQuantity(ip.getQuantity() + p.getQuantity());
 			Query dq = em.createQuery(delete_orderItem);
 			dq.setParameter("id", p.getId());
 			dq.executeUpdate();
-			
+
 		}
 		TypedQuery<OrderPojo> dq = getQuery(select_id);
 		dq.setParameter("id", id);
 		OrderPojo op = dq.getSingleResult();
 		op.setToggle(2);
-		}
+	}
 
 	public OrderPojo select(int id) {
 		OrderPojo p;
@@ -115,10 +113,10 @@ public class OrderDao {
 		} catch (NoResultException e) {
 			p = null;
 		}
-		if (p!=null) {
+		if (p != null) {
 			p.setToggle(1);
-			 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-			 Date date = new Date();  
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date date = new Date();
 			String s = String.valueOf(formatter.format(date));
 			p.setdT(s);
 		}

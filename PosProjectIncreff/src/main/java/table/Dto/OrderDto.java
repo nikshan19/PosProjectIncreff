@@ -37,7 +37,6 @@ public class OrderDto {
 
 	public void update(int id) throws ApiException {
 
-		
 		service.update(id);
 
 	}
@@ -67,7 +66,7 @@ public class OrderDto {
 
 	public OrderData convert(OrderPojo p) {
 		OrderData data = new OrderData();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");  
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 		data.setDateTime(formatter.format(p.getDateTime()));
 		data.setId(p.getId());
 		data.setToggle(p.getToggle());
@@ -83,7 +82,6 @@ public class OrderDto {
 		return p;
 	}
 
-	// traanactional can only be used on public methods
 	public void normalize(OrderPojo p) {
 
 	}

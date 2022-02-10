@@ -56,8 +56,7 @@ public class OrderItemController {
 	public List<OrderItemData> getAll(@PathVariable int orderid) {
 		return dto.getAll(orderid);
 	}
-	
-	
+
 	@ApiOperation(value = "Deletes an employee")
 	@RequestMapping(path = "/api/orderitem/edit/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> delete(@PathVariable int id) throws ApiException {
@@ -68,7 +67,7 @@ public class OrderItemController {
 			return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@ApiOperation(value = "Updates an employee")
 	@RequestMapping(path = "/api/orderitem/edit/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> update(@PathVariable int id, @RequestBody OrderItemForm form) throws ApiException {

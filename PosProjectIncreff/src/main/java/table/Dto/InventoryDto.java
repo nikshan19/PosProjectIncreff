@@ -70,7 +70,6 @@ public class InventoryDto {
 		InventoryPojo p = new InventoryPojo();
 		p.setQuantity(form.getQuantity());
 
-		// p.setId(form.getId());
 		return p;
 	}
 
@@ -89,7 +88,7 @@ public class InventoryDto {
 			quantity = 0;
 		}
 		if (quantity <= 0) {
-			throw new ApiException("quantity added is not accepted");
+			throw new ApiException("Quantity added is not accepted");
 		}
 
 		InventoryForm form1 = new InventoryForm();
@@ -109,8 +108,11 @@ public class InventoryDto {
 		return data;
 	}
 
-	public void normalize(InventoryForm p) {
+	public void normalize(InventoryForm p) throws ApiException {
 		p.setBarcode(p.getBarcode().toLowerCase().trim());
+		if (p.getBarcode().isBlank()) {
+			throw new ApiException("Please enter valid barcode");
+		}
 	}
 
 	@Transactional(rollbackOn = ApiException.class)

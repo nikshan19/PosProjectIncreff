@@ -37,23 +37,23 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName(" nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp, form);
 		InventoryPojo ppp = new InventoryPojo();
+		
 		ppp.setQuantity(100);
 		InventoryForm form2 = new InventoryForm();
 		form2.setBarcode("ggjhg");
 		form2.setQuantity(100);
 		idao.insert(ppp, form2);
-		assertEquals(1,ppp.getId());
+
+		assertEquals(0,ppp.getId());
 	}
 	
 	@Test
@@ -63,13 +63,11 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp, form);
@@ -80,7 +78,7 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		form2.setQuantity(100);
 		idao.insert(ppp, form2);
 		InventoryData bp = idao.select(2);
-		System.out.println("testGet "+bp.getId());
+
 		assertEquals(2, bp.getId());
 	} 
 	
@@ -94,13 +92,11 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		p.setCategory("nikshan");
 		bdao.insert(p);
 		ProductPojo pp = new ProductPojo();
-
+		pp.setBrandPojo(p.getId());
 		pp.setMrp(77);
 		pp.setName("nnnnn");
 		ProductForm form = new ProductForm();
 		form.setBarcode("ggjhg");
-		form.setBrand("romil jain");
-		form.setCategory("nikshan");
 		form.setMrp(77);
 		form.setName("nnnnn");
 		pdao.insert(pp,form);
@@ -111,7 +107,6 @@ public class InventoryDaoTest extends AbstractUnitTest{
 		form2.setQuantity(100);
 		idao.insert(ppp, form2);
 		List<InventoryData> l = idao.selectAll();
-		
 		assertEquals(1, l.size());
 	
 	}
